@@ -1,0 +1,18 @@
+@import url('./root.css');
+@import url('./login-panel.css');
+@import url('./inputs.css');
+
+@import url('./admin-panel.css');
+@import url('./header.css');
+@import url('./aside.css');
+@import url('./section.css');
+
+
+
+
+
+
+@import url('./simple-scrollbar.css');
+
+/* important */
+@import url('./color-mode.css');

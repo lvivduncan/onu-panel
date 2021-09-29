@@ -1,0 +1,85 @@
+
+/* фіксований хедер */
+#admin-panel header
+{
+    grid-area: header;
+
+    position: fixed;
+    top: 0;
+    left: 260px;
+    width: calc(100% - 260px);
+    height: 70px;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    
+    /* background: var(--white); */
+    /* box-shadow: 0 0 35px 0 rgb(154 161 171 / 15%); */
+
+    background: var(--bg-block);
+    color: var(--color-block);
+    box-shadow: var(--shadow-block);
+
+}
+
+#dark-mode #admin-panel header
+{
+    background: var(--gray-dark);
+    box-shadow: none;
+}
+
+#admin-panel.toggle header
+{
+    left: 40px;
+    width: calc(100% - 40px);
+}
+
+/* toggle sidebar */
+#menu-button
+{
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+
+/* search form */
+#search form
+{
+    display: flex;
+}
+
+#search input
+{
+    border-radius: 3px 0 0 3px;
+    border: none;
+    background: var(--light);
+}
+
+#search button
+{
+    border: none;
+    border-radius: 0 3px 3px 0;
+    width: 42px;
+    height: 38px;
+    position: relative;
+}
+
+#search svg
+{
+    position: absolute;
+    top: calc(50% - 10px);
+    left: calc(50% - 10px);
+    width: 20px;
+    height: 20px;
+}
+
+
+/* open right sidebar */
+#settings
+{
+    margin-left: auto;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}

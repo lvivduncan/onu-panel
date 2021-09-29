@@ -1,0 +1,84 @@
+
+/* перемикач кольорів */
+#color-mode
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#color-mode.active
+{
+    color: var(--white)
+}
+
+#color-mode span
+{
+    position: relative;
+    border-radius: 12px;
+    height: 18px;
+    background: var(--white);
+    border: 1px solid var(--blue);
+    width: 34px;
+    margin: 0 10px;
+    cursor: pointer;
+    transition: .5s;
+}
+
+#color-mode.active span
+{
+    background: var(--blue);
+}
+
+#color-mode span::before
+{
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 10px;
+    background: var(--blue);
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transition: .5s;
+}
+
+#color-mode.active span::before
+{
+    transform: translateX(16px);
+    background: var(--white);
+}
+/* перемикач кольорів */
+
+
+
+
+
+
+
+/* del */
+body#dark-mode
+{
+    /* background: var(--gray-ultradark); */
+}
+
+body#dark-mode #enter
+{
+    background: transparent;
+}
+
+
+/* del */
+
+body#dark-mode input[type="text"],
+body#dark-mode input[type="password"],
+body#dark-mode input[type="number"],
+body#dark-mode input[type="phone"],
+body#dark-mode input[type="text"]:focus,
+body#dark-mode input[type="password"]:focus,
+body#dark-mode input[type="number"]:focus,
+body#dark-mode input[type="phone"]:focus
+{
+    border-color: var(--white);
+}

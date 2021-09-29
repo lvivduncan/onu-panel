@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login-panel</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="shortcut icon" href="./favicon.ico">
+</head>
+<body>
+
+    <div id="enter">
+        <div id="login-panel" class="mode-object">
+            <header>
+                panel
+            </header>
+            <div id="login-panel-content">
+
+                <div id="login-panel-desc">
+                    <h2>Sign In</h2>
+                    <p>Enter your email address and password to access admin panel.</p>
+                </div>
+
+                <form>
+                    <div class="field">
+                        <label>
+                            <p>Ім'я</p>
+                            <input type="text" id="uname" name="uname" placeholder="Введіть ім'я" required>
+                        </label>                    
+                    </div>
+
+                    <div class="field">
+                        <label id="label-password">
+                            <p>Пароль <!--<span id="reset-password">Забули пароль?</span>--></p>
+                            <input type="password" name="password" id="password" placeholder="Введіть пароль" required>
+                            <span class="view"></span>
+                        </label>
+                    </div>
+
+                    <div class="field-checkbox">
+                        <input type="checkbox" name="" id="login-panel-checkbox"> <label for="login-panel-checkbox"> Запам'ятати?</label>                   
+                    </div>
+
+                    <div class="flex-center">
+                        <button>Увійти</button>
+                    </div>
+                </form>
+            </div>
+            <div id="color-mode">
+                light <span></span> dark
+            </div>
+        </div>        
+    </div>
+    
+    <script src="js/script.js"></script>
+</body>
+</html>

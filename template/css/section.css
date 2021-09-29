@@ -1,0 +1,158 @@
+
+/* main */
+#admin-panel section
+{
+
+    grid-area: section;
+
+    margin-top: 70px;
+}
+
+/* хлібні крихти */
+#breadcrumbs
+{
+    text-align: right;
+    margin: 20px;
+}
+
+#breadcrumbs li
+{
+    display: inline-block;
+}
+
+#breadcrumbs li::before
+{
+    content: ' < ';
+    display: inline-block;
+}
+
+#breadcrumbs li:first-child:before
+{
+    content: '';
+}
+
+#breadcrumbs span
+{
+    display: inline-block;
+}
+
+#breadcrumbs span::before
+{
+    content: ' < ';
+    display: inline-block;
+    margin-right: 10px;
+}
+
+#breadcrumbs p
+{
+    color: var(--color-breadcrumbs);
+    text-decoration: underline;
+    display: inline-block;
+    padding: 0 10px;
+    cursor: pointer;
+}
+
+#breadcrumbs p:hover
+{
+    text-decoration: none;
+}
+
+#breadcrumbs li:last-child p
+{
+    text-decoration: none;
+    color: var(--gray);
+    cursor: text;
+}
+
+/* ///////////////////
+блок виводу інформації
+/////////////////// */
+#output
+{
+    margin: 20px;
+}
+
+/* один великий блок з текстовою інформацією */
+#output.one-block
+{
+    background: var(--bg-block);
+    color: var(--color-block);
+    box-shadow: var(--shadow-block);
+    
+    padding: 20px;
+    border-radius: 3px;    
+}
+/* один великий блок з текстовою інформацією */
+
+/* грід на 6 / 4 / 2 блоки */
+#output.grid
+{
+    display: grid;
+    grid-template-columns: repeat(6,1fr);
+    grid-gap: 20px;
+}
+
+@media(max-width:996px)
+{
+    #output.grid
+    {
+        grid-template-columns: repeat(4,1fr);
+    }    
+}
+
+@media(max-width:776px)
+{
+    #output.grid
+    {
+        grid-template-columns: repeat(2,1fr);
+    }    
+}
+
+#output.grid > *
+{
+    background: var(--bg-block);
+    color: var(--color-block);
+    box-shadow: var(--shadow-block);
+
+    padding: 20px;
+    border-radius: 3px;    
+}
+/* грід на 6 / 4 / 2 блоки */
+
+
+
+
+
+
+
+
+
+
+
+/* del? */
+/* 
+#output ul
+{
+    display: block;
+    margin: 0;
+}
+
+#output li
+{
+    display: block;
+    padding: 5px;
+    cursor: pointer;
+    border-top: 1px solid var(--light);
+}
+
+#output li:first-child
+{
+    border: none;
+}
+
+#output li strong
+{
+    display: inline-block;
+    margin-left: 5px;
+} */
+/* del? */

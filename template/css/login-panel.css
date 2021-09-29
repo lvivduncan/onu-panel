@@ -1,0 +1,71 @@
+/* шаблон входу до системи */
+#enter
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background: url('../images/bg-pattern-light.svg');
+    background-size: cover;
+    background-position: center;
+}
+
+#login-panel
+{
+    box-shadow: 0 0 35px 0 rgb(154 161 171 / 15%);
+    width: 415px;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+@media(max-width: 460px)
+{
+    #login-panel
+    {
+        width: 95%;
+    }
+}
+
+#login-panel header
+{
+    text-transform: uppercase;
+    background: var(--blue);
+    color: var(--white);
+    height: 95px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+#login-panel-content
+{
+    padding: 30px;
+}
+
+#login-panel-desc
+{
+    text-align: center;
+    width: 80%;
+    margin: auto;
+}
+
+#login-panel-desc h2
+{
+    font-size: 20px;
+    margin: 0 0 10px;
+    font-weight: 500;
+}
+
+#login-panel-desc p
+{
+    margin: 0 0 20px;
+    color: var(--gray-ultralight);
+    font-size: 15px;
+}
+
+#login-panel #color-mode
+{
+    padding: 5px 0;
+}

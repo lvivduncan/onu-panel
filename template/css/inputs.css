@@ -1,0 +1,156 @@
+input
+{
+    padding: 10px;
+    outline: none;
+    font-family: inherit;
+    color: var(--gray);
+}
+
+input[type="text"],
+input[type="password"],
+input[type="number"],
+input[type="phone"]
+{
+    width: 100%;
+    display: block;
+    border: 1px solid var(--gray-light);
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+input[type="phone"]:focus
+{
+    border-color: var(--gray)
+}
+
+input[type="checkbox"]
+{
+
+}
+
+label
+{
+    cursor: pointer;
+    color: var(--gray);
+    font-weight: 600;
+    font-size: 15px;
+}
+
+/* забули пароль? */
+label p
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#reset-password
+{
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--gray);
+}
+
+#reset-password.active
+{
+    color: var(--tomato);
+}
+/* забули пароль? */
+
+#label-password
+{
+    position: relative;
+    width: 100%;
+    display: block;
+}
+
+#label-password input
+{
+    width: calc(100% - 52px);
+    border-radius: 3px 0 0 3px;
+    height: 38px;
+}
+
+/* button eye */
+#label-password .view
+{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 38px;
+    width: 52px;
+    border: 1px solid var(--gray-light);
+    border-left: none;
+    border-radius: 0 3px 3px 0;
+    background: var(--light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#label-password .view::before
+{
+    content: '';
+    display: inline-block;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23838c96' viewBox='0 0 16 16'%3E%3Cpath d='M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z'/%3E%3Cpath d='M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z'/%3E%3C/svg%3E");
+    background-size: cover;
+    background-position: center;
+    width: 20px;
+    height: 20px;
+}
+
+#label-password .view.active::before
+{
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23838c96' viewBox='0 0 16 16'%3E%3Cpath d='m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7.029 7.029 0 0 0 2.79-.588zM5.21 3.088A7.028 7.028 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474L5.21 3.089z'/%3E%3Cpath d='M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829l-2.83-2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12-.708.708z'/%3E%3C/svg%3E");
+}
+/* button eye */
+
+label p
+{
+    margin: 0 0 5px;
+}
+
+.field
+{
+    margin: 0 0 20px;
+    user-select: none;
+}
+
+.field-checkbox
+{
+    margin: 0 0 20px;
+    user-select: none;
+    display: flex;
+    align-items: center;
+}
+
+.field-checkbox input
+{
+    margin-right: 5px;
+}
+
+button
+{
+    display: inline-block;
+    color: var(--white);
+    background: var(--blue);
+    border: 1px solid var(--blue);
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    user-select: none;
+    padding: 9px 13px;
+    font-size: 15px;
+    border-radius: 3px;
+    transition: .5s;
+}
+
+button:hover,
+button:focus
+{
+    background: var(--blue-dark);
+    border-color: var(--blue-dark);
+}

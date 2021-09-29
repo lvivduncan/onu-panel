@@ -1,0 +1,12 @@
+#admin-panel
+{
+    display: grid;
+    grid-template-rows: auto 1fr;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+        'aside header'
+        'aside section';
+    /* grid-gap: 20px 0; */
+    /* background: var(--gray-light); */
+}
+

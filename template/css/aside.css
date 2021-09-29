@@ -1,0 +1,114 @@
+
+/* sidebar */
+#admin-panel aside
+{
+    grid-area: aside;
+
+    height: 100vh;
+    width: 260px;
+    background: var(--gray-dark);
+}
+
+#admin-panel.toggle aside
+{
+    width: 60px;
+}
+
+#admin-panel aside h1
+{
+    height: 70px;
+    line-height: 70px;
+    text-align: center;
+
+    text-transform: uppercase;
+    color: var(--gray);
+    font-size: 24px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#admin-panel aside svg
+{
+    width: 24px;
+    height: 24px;
+}
+
+#admin-panel aside h1 span
+{
+    display: inline-block;
+    margin-left: 5px;
+}
+
+#admin-panel.toggle aside h1 span
+{
+    display: none;
+}
+
+#scroll
+{
+    height: calc(100vh - 70px);
+    display: flex;
+    flex-flow: column;
+}
+
+#scroll ul
+{
+    margin: 20px 30px;
+    display: block;
+}
+
+#scroll ul ul
+{
+    margin: 0 0 0 25px;
+}
+
+#scroll ul ul ul
+{
+    margin: 0 0 0 15px;
+}
+
+#scroll li
+{
+    display: block;
+}
+
+#scroll li p
+{
+    font-size: 15px;
+    padding: 8px 0;
+    color: var(--color-nav);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: .5s;
+    cursor: pointer;
+}
+
+#scroll li p.active
+{
+    color: var(--color-nav-active);
+}
+
+#scroll li p:hover,
+#scroll li p:focus
+{
+    color: var(--color-nav-hover);
+}
+
+#scroll p svg
+{
+    width: 14px;
+    margin-right: 10px;
+}
+
+#scroll li span
+{
+    display: block;
+}
+
+#scroll li span.toggle
+{
+    display: none;
+}
