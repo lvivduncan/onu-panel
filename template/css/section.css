@@ -88,7 +88,7 @@
 #output.grid
 {
     display: grid;
-    grid-template-columns: repeat(6,1fr);
+    grid-template-columns: repeat(4,1fr);
     grid-gap: 20px;
 }
 
@@ -96,7 +96,7 @@
 {
     #output.grid
     {
-        grid-template-columns: repeat(4,1fr);
+        grid-template-columns: repeat(3,1fr);
     }    
 }
 
@@ -108,16 +108,34 @@
     }    
 }
 
-#output.grid > *
+@media(max-width:550px)
+{
+    #output.grid
+    {
+        grid-template-columns: 1fr;
+    }    
+}
+
+/* окремий елемент */
+#output.grid .output-item
 {
     background: var(--bg-block);
     color: var(--color-block);
     box-shadow: var(--shadow-block);
 
     padding: 20px;
-    border-radius: 3px;    
+    border-radius: 3px;
+    
+    cursor: pointer;
+    overflow: hidden;
 }
 /* грід на 6 / 4 / 2 блоки */
+
+.output-item span
+{
+    color: var(--color-block-span);
+    display: block;
+}
 
 
 

@@ -24,6 +24,22 @@
     width: 60px;
 }
 
+@media(max-width:776px)
+{
+    .ss-content
+    {
+        width: 100%;
+    }
+}
+
+@media(max-width:550px)
+{
+    #admin-panel.toggle .ss-content
+    {
+        width: 100%;
+    }
+}
+
 .ss-content.rtl
 {
     width: calc(100% + 18px);

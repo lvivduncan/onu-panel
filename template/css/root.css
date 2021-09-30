@@ -41,6 +41,7 @@
     /* universal color */
     --bg-block: #fff; /* --gray-dark: #3a444e; */
     --color-block: #838c96; /* --gray: #838c96;*/
+    --color-block-span: #000;
     --shadow-block: 0 0 35px 0 rgb(154 161 171 / 15%);
     --bg-body: #fff;
     --color-body: #838c96;
@@ -51,7 +52,6 @@
 
     --color-breadcrumbs: #333940;
     
-
 }
 
 html,
@@ -74,7 +74,8 @@ body
 #dark-mode
 {
     --bg-block: #3a444e;
-    --color-block: #fff;
+    --color-block: #98a6ad;
+    --color-block-span: #fff;
     --shadow-block: none;
 
     --bg-body: #333940;

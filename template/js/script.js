@@ -177,6 +177,8 @@ if(adminPanel !== null){
      */
 }
 
+// проміжна перемінна для хлібних крихт
+let devices_parent = null;
 
 /**
  * @aside 
@@ -227,6 +229,7 @@ for(let el = 0; el < asideLength; el++){
 
 output && output.addEventListener('click', event => {
 
+    // TODO: зробити перевірку за іншим атрибутом!
     if(event.target.hasAttribute('data-href')){
 
         // get href aside element
@@ -238,31 +241,29 @@ output && output.addEventListener('click', event => {
         // if not home
         const paths = event.target.dataset.paths;
 
-        // if id exitst
+        // if id exists
         const id = event.target.dataset.id;
 
-        // if parent_id exists
-        const nerwork_device_id = event.target.dataset.nerwork_device_id;
+        // if network_device_id exists
+        const network_device_id = event.target.dataset.network_device_id;
 
         // render breadcrumbs
         route(href,paths,titles);
 
-        // console.log(parent_id, id)
-
         // render #output
-        // render(null, id); // add nerwork_device_id
+        if(network_device_id !== undefined) {
 
+            render(null, id, network_device_id);
+        } else if(id !== undefined) {
 
-        if(nerwork_device_id !== null){
+            render(null, id);
+            devices_parent = href;
+        } 
+        // else {
 
-            render(null, id, nerwork_device_id);
-        } else if(id !== null){
-
-            render(null, id, null);
-        } else {
-
-            render(href, null, null);
-        }
+        //     render(href);
+        //     // alert(href)
+        // }
     }
 });
 
@@ -278,9 +279,17 @@ breadcrumbs && breadcrumbs.addEventListener('click', event => {
 
     // get href aside element
     const href = event.target.dataset.href;
+
+    if(href === 'devices' || href === 'home'){
+        
+        // очистка змінної у хлібних крихтах
+        devices_parent = null;
+    }
     
     // render #output
     render(href);
+
+    console.log(devices_parent)
 
 });
 
@@ -347,20 +356,14 @@ function route(href,paths,titles){
     
 }
 
-// TODO: add parent_id = null (4 рівень)
-function render(href = null, id = null, nerwork_device_id = null){
+
+function render(href = null, id = null, network_device_id = null){
 
     // href -- data-href (лінк на сторінку)
     // id -- data-id device (айдішка девайса)
-    // nerwork_device_id -- data-nerwork_device_id (айдішка парента для ону)
-    // parent_id -- айдішка ону
+    // network_device_id -- data-network_device_id (айдішка парента для ону)
 
-
-    // add if(parent_id)
-
-    if(nerwork_device_id !== null){
-
-        // console.log(parent_id)
+    if(network_device_id !== null){
 
         fetch(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/children`, {
             method: "GET",
@@ -389,19 +392,23 @@ function render(href = null, id = null, nerwork_device_id = null){
                 // temp
                 const item = devices.data[i];
 
-                console.log(item)    
+                // console.log(item)    
 
-
-                // data-parent_id="${item.network_device_id}" 
                 // data-titles data-paths неправильний шлях (не повний)
                 data += `
                     <div 
+                        class="output-item"
                         data-href="${item.name}" 
                         data-paths="home;devices;${item.name}" 
-                        data-titles="Початок;Обладнання;${item.name}" 
+                        data-titles="Початок;Обладнання;${item.parent_id};${item.parent_id};${item.name}" 
                         
                         data-id="${item.id}">
-                        ${item.name}
+
+                            <h1>${item.name}</h1>
+                            <p>mac: <span>${item.mac}</span></p>
+                            <p>updated: <span>${item.updated_at.replace('.000000Z','')}</span></p>
+                            <p>(debug, parent_id): ${item.parent_id}</p>
+
                     </div>`;
             }
             
@@ -441,21 +448,21 @@ function render(href = null, id = null, nerwork_device_id = null){
                 // temp
                 const item = devices.data[i];
 
-                console.log(item)
+                console.log(devices_parent, item)
 
                 // неправильний шлях (не повний)
                 data += `
                     <div 
+                        class="output-item"
                         data-href="${item.name}" 
                         data-paths="home;devices;${item.name}" 
                         data-titles="Початок;Обладнання;${item.name}"  
-                        data-nerwork_device_id="${item.network_device_id}"
+                        data-network_device_id="${item.network_device_id}"
                         data-id="${item.id}">
-                        ${item.name}
+                            ${item.name}
                     </div>`;
             }
             
-            // output.innerHTML = header + data + footer;
             output.innerHTML = data;
 
             // add modificator
@@ -504,18 +511,22 @@ function render(href = null, id = null, nerwork_device_id = null){
                         // temp
                         const item = devices.data[i];
     
-                        console.log(item)
+                        // console.log(item)
 
                         // 3 тестових девайса  
     
                         data += `
                             <div 
+                                class="output-item"
                                 data-href="${item.name}" 
                                 data-paths="home;devices;${item.name}" 
                                 data-titles="Початок;Обладнання;${item.name}" 
                                 data-id="${item.id}">
                                     ${item.name} <br> (id: ${item.id})
                                 </div>`;
+
+                        // devices_parent = `${item.name}`;
+                        // console.log(devices_parent)
                     }
                     
                     // output.innerHTML = header + data + footer;
@@ -539,6 +550,11 @@ function render(href = null, id = null, nerwork_device_id = null){
             case 'logout':
                 window.location.href = "./login-panel.html";
                 localStorage.removeItem('access_token');
+                break;
+
+            // Заглушка
+            case 'empty':
+                console.log('Заглушка. Пустий пункт меню');
                 break;
     
             // id empty

@@ -20,7 +20,6 @@
     background: var(--bg-block);
     color: var(--color-block);
     box-shadow: var(--shadow-block);
-
 }
 
 #dark-mode #admin-panel header
@@ -31,8 +30,27 @@
 
 #admin-panel.toggle header
 {
-    left: 40px;
-    width: calc(100% - 40px);
+    left: 60px;
+    width: calc(100% - 60px);
+}
+
+@media(max-width:776px)
+{
+    #admin-panel header
+    {
+        left: 60px;
+        width: calc(100% - 60px);
+    }  
+}
+
+@media(max-width:550px)
+{
+    #admin-panel.toggle header,
+    #admin-panel header
+    {
+        left: 0;
+        width: 100%;
+    }
 }
 
 /* toggle sidebar */
@@ -43,10 +61,34 @@
     cursor: pointer;
 }
 
-/* search form */
+#search > svg
+{
+    display: none;
+}
+
+@media(max-width:776px)
+{
+    #search > svg
+    {
+        display: block;
+        width: 24px;
+        height: 24px;
+        margin-right: auto;
+        cursor: pointer;
+    }    
+}
+
 #search form
 {
     display: flex;
+}
+
+@media(max-width:776px)
+{
+    #search form
+    {
+        display: none;
+    }
 }
 
 #search input
@@ -65,7 +107,7 @@
     position: relative;
 }
 
-#search svg
+#search form svg
 {
     position: absolute;
     top: calc(50% - 10px);

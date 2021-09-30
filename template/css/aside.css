@@ -14,6 +14,30 @@
     width: 60px;
 }
 
+@media(max-width:776px)
+{
+    #admin-panel aside
+    {
+        width: 60px;
+    }    
+}
+
+@media(max-width:550px)
+{
+    #admin-panel aside
+    {
+        height: calc(100vh - 71px);
+        margin-top: 71px;
+        position: relative;
+    }
+    
+/*     #admin-panel.toggle aside
+    {
+        position: absolute;
+        width: 260px;
+    } */
+}
+
 #admin-panel aside h1
 {
     height: 70px;
@@ -29,21 +53,39 @@
     justify-content: center;
 }
 
+@media(max-width:550px)
+{
+    #admin-panel aside h1
+    {
+        display: none;
+    }
+}
+
 #admin-panel aside svg
 {
     width: 24px;
     height: 24px;
 }
 
+/* назва блоку (адмін-панель) */
 #admin-panel aside h1 span
 {
     display: inline-block;
     margin-left: 5px;
 }
 
+/* ховаємо назву, лишаємо іконку */
 #admin-panel.toggle aside h1 span
 {
     display: none;
+}
+
+@media(max-width:776px)
+{
+    #admin-panel aside h1 span
+    {
+        display: none;
+    }    
 }
 
 #scroll
@@ -53,10 +95,43 @@
     flex-flow: column;
 }
 
+@media(max-width:550px)
+{
+    #admin-panel.toggle #scroll
+    {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 260px;
+        background: var(--gray-dark);
+    }
+}
+
 #scroll ul
 {
     margin: 20px 30px;
     display: block;
+}
+
+@media(max-width:776px)
+{
+    #scroll ul
+    {
+        margin: 20px 5px;
+    }    
+}
+
+#admin-panel.toggle #scroll ul
+{
+    margin: 20px 5px;
+}
+
+@media(max-width:550px)
+{
+    #admin-panel.toggle #scroll ul
+    {
+        margin: 20px 30px;
+    }    
 }
 
 #scroll ul ul
@@ -64,9 +139,25 @@
     margin: 0 0 0 25px;
 }
 
+@media(max-width:550px)
+{
+    #admin-panel.toggle #scroll ul ul
+    {
+        margin: 0 0 0 25px;
+    }
+}
+
 #scroll ul ul ul
 {
-    margin: 0 0 0 15px;
+    margin: 0 0 0 15px!important;
+}
+
+@media(max-width:550px)
+{
+    #admin-panel.toggle #scroll ul ul ul
+    {
+        margin: 0 0 0 15px!important;
+    }
 }
 
 #scroll li
@@ -74,16 +165,38 @@
     display: block;
 }
 
+/* пункт меню (лінк) */
 #scroll li p
 {
     font-size: 15px;
     padding: 8px 0;
     color: var(--color-nav);
-    text-decoration: none;
     display: flex;
     align-items: center;
+    gap: 10px;
     transition: .5s;
     cursor: pointer;
+}
+
+#admin-panel.toggle #scroll li p
+{
+    justify-content: center;
+}
+
+@media(max-width:550px)
+{
+    #admin-panel.toggle #scroll li p
+    {
+        justify-content: inherit;
+    }    
+}
+
+@media(max-width:776px)
+{
+    #scroll li p
+    {
+        justify-content: center;
+    }
 }
 
 #scroll li p.active
@@ -100,9 +213,25 @@
 #scroll p svg
 {
     width: 14px;
-    margin-right: 10px;
+    height: 14px;
 }
 
+#admin-panel.toggle #scroll p svg
+{
+    width: 34px;
+    height: 34px;
+}
+
+@media(max-width:550px)
+{
+    #admin-panel.toggle #scroll p svg
+    {
+        width: 14px;
+        height: 14px;
+    }
+}
+
+/* назва пункта меню */
 #scroll li span
 {
     display: block;
@@ -111,4 +240,30 @@
 #scroll li span.toggle
 {
     display: none;
+}
+
+@media(max-width:776px)
+{
+    #scroll li span
+    {
+        display: none;
+    }    
+}
+
+@media(max-width:550px)
+{
+    #admin-panel.toggle #scroll li span
+    {
+        display: block;
+    }
+}
+
+/* іконка панелі */
+@media(max-width:776px)
+{
+    #admin-panel aside svg
+    {
+        width: 34px;
+        height: 34px;
+    }
 }
