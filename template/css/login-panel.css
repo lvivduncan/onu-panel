@@ -16,6 +16,8 @@
     width: 415px;
     border-radius: 3px;
     overflow: hidden;
+    background: var(--bg-block);
+    color: var(--color-block);
 }
 
 @media(max-width: 460px)
