@@ -31,7 +31,7 @@
     content: '';
 }
 
-#breadcrumbs span
+/* #breadcrumbs span
 {
     display: inline-block;
 }
@@ -41,7 +41,7 @@
     content: ' < ';
     display: inline-block;
     margin-right: 10px;
-}
+} */
 
 #breadcrumbs p
 {

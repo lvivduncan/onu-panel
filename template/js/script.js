@@ -2,7 +2,15 @@
 
 const body = document.getElementsByTagName('body')[0];
 
+// хлібні крихти
 const breadcrumbs = document.getElementById('breadcrumbs');
+
+// елементи хлібних крихт (по кліку на aside/#output мають оновлюватися)
+let breadcrumbsLi;
+// let breadcrumbsLiLength = breadcrumbs.length;
+
+// check mobile
+let mobile = false;
 
 // output data
 const output = document.getElementById('output');
@@ -97,7 +105,7 @@ if(adminPanel !== null){
         }
     });
 
-/*     // if click to section -- remove (open)
+    // if click to section -- remove (open)
     adminSection.addEventListener('click', () => {
 
         adminPanel.classList.remove('toggle');
@@ -106,7 +114,7 @@ if(adminPanel !== null){
 
             spans[i].classList.remove('toggle');
         }
-    }); */
+    });
 }
 
 // check form
@@ -217,6 +225,9 @@ for(let el = 0; el < asideLength; el++){
 
         // upgrade breadcrumbs
         route(href,paths,titles);
+
+        // update list
+        breadcrumbsLi = breadcrumbs.querySelectorAll('li');
     });
 }
 
@@ -264,6 +275,9 @@ output && output.addEventListener('click', event => {
         //     render(href);
         //     // alert(href)
         // }
+
+        // update list
+        breadcrumbsLi = breadcrumbs.querySelectorAll('li');
     }
 });
 
@@ -277,6 +291,30 @@ output && output.addEventListener('click', event => {
 
 breadcrumbs && breadcrumbs.addEventListener('click', event => {
 
+    // елемент, на який клікнули
+    const current = event.target.parentNode;
+
+    // клонуємо хлібні крихти
+    const clone = [...breadcrumbsLi];    
+
+    for(let i = 0; i < breadcrumbsLi.length; i++){
+        
+        // номер елемента, на який клікнули + 1
+        const index = [...breadcrumbsLi].indexOf(current) + 1;
+
+        // видаляємо усі елементи хлібних крихт
+        breadcrumbsLi[i].remove();
+
+        // рендеримо нові хлібні крихти
+        for(let k = 0; k < index; k++){
+
+            breadcrumbs.append(clone[k]);
+        }
+
+        // if (~index) {}
+
+    }
+
     // get href aside element
     const href = event.target.dataset.href;
 
@@ -288,9 +326,6 @@ breadcrumbs && breadcrumbs.addEventListener('click', event => {
     
     // render #output
     render(href);
-
-    console.log(devices_parent)
-
 });
 
 
@@ -344,14 +379,13 @@ function route(href,paths,titles){
         // TODO: дата-атрибути зробити з повним шляхом
         for(let i = 0; i < links.length; i++){
 
-            // data-href для визначення лінку. більше ніц тут не тре
             content += `<li><p data-href="${links[i]}"> ${names[i]} </p></li>`;
         }
 
         breadcrumbs.innerHTML = content;
     } else {
         
-        breadcrumbs.innerHTML = '<span>Невідома сторінка</span>';
+        breadcrumbs.innerHTML = '<li>Невідома сторінка</li>';
     }
     
 }
@@ -399,8 +433,8 @@ function render(href = null, id = null, network_device_id = null){
                     <div 
                         class="output-item"
                         data-href="${item.name}" 
-                        data-paths="home;devices;${item.name}" 
-                        data-titles="Початок;Обладнання;${item.parent_id};${item.parent_id};${item.name}" 
+                        data-paths="home;devices;${devices_parent};${item.name}" 
+                        data-titles="Початок;Обладнання;${devices_parent};${item.name}" 
                         
                         data-id="${item.id}">
 
@@ -448,16 +482,15 @@ function render(href = null, id = null, network_device_id = null){
                 // temp
                 const item = devices.data[i];
 
-                console.log(devices_parent, item)
-
                 // неправильний шлях (не повний)
                 data += `
                     <div 
                         class="output-item"
                         data-href="${item.name}" 
-                        data-paths="home;devices;${item.name}" 
-                        data-titles="Початок;Обладнання;${item.name}"  
+                        data-paths="home;devices;${devices_parent};${item.name}" 
+                        data-titles="Початок;Обладнання;${devices_parent};${item.name}"  
                         data-network_device_id="${item.network_device_id}"
+
                         data-id="${item.id}">
                             ${item.name}
                     </div>`;
@@ -566,4 +599,9 @@ function render(href = null, id = null, network_device_id = null){
 }
 
 
-// TODO: перемінна з батьківський лінком, коли перехід до онушки
+// TODO: баг, клік на бордер (devices) закриває усі елементи
+// TODO: додати у хлібні крихти батьківський девайс
+// TODO: додати у хлібні крихти переходи (пофіксити)
+// TODO: search mobile
+// TODO: autoclose aside mobile menu
+// TODO: оптимізувати дата-атрибути

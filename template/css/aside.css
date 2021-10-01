@@ -104,6 +104,7 @@
         left: 0;
         width: 260px;
         background: var(--gray-dark);
+        border-right: 1px solid var(--bg-body);
     }
 }
 
