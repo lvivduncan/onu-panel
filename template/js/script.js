@@ -204,14 +204,19 @@ for(let el = 0; el < asideLength; el++){
     asideLink[el].addEventListener('click', function(event) {
 
         const spans = document.querySelectorAll('aside span');
-
+        
         // if this mobile divice -- toggle panel (hide)
         if(isTouchDevice()){
-            adminPanel.classList.toggle('toggle');
 
-            for(let i = 0; i < spans.length; i++){
+            // if adminPanel open (exists class .toggle) -- close
+            if(adminPanel.classList.contains('toggle')){
 
-                spans[i].classList.toggle('toggle');
+                adminPanel.classList.remove('toggle');
+
+                for(let i = 0; i < spans.length; i++){
+
+                    spans[i].classList.remove('toggle');
+                }
             }
         }
 
