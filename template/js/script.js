@@ -7,10 +7,12 @@ const breadcrumbs = document.getElementById('breadcrumbs');
 
 // елементи хлібних крихт (по кліку на aside/#output мають оновлюватися)
 let breadcrumbsLi;
-// let breadcrumbsLiLength = breadcrumbs.length;
 
-// check mobile
-let mobile = false;
+// 3 рівень вкладення -- клік на 1 елемент обладнання
+let level3 = '';
+
+// // check mobile
+// let mobile = false;
 
 // output data
 const output = document.getElementById('output');
@@ -201,6 +203,18 @@ for(let el = 0; el < asideLength; el++){
 
     asideLink[el].addEventListener('click', function(event) {
 
+        const spans = document.querySelectorAll('aside span');
+
+        // if this mobile divice -- toggle panel (hide)
+        if(isTouchDevice()){
+            adminPanel.classList.toggle('toggle');
+
+            for(let i = 0; i < spans.length; i++){
+
+                spans[i].classList.toggle('toggle');
+            }
+        }
+
         // stylization links
         for(let i = 0; i < asideLength; i++){
             
@@ -240,7 +254,26 @@ for(let el = 0; el < asideLength; el++){
 
 output && output.addEventListener('click', event => {
 
-    // TODO: зробити перевірку за іншим атрибутом!
+    // клік на заголовку, щоб розгорнути (мобільні)
+    if(isTouchDevice() && event.target.tagName === 'H1'){
+
+        const items = output.querySelectorAll('.output-item');
+        const current = event.target.parentNode;
+        
+        if(current.classList.contains('active')){
+
+            current.classList.remove('active');
+        } else if(!current.classList.contains('active')){
+            
+            for(let i = 0; i < items.length; i++){
+                
+                items[i].classList.remove('active');
+            }
+
+            current.classList.add('active');
+        }
+    }
+
     if(event.target.hasAttribute('data-href')){
 
         // get href aside element
@@ -258,23 +291,21 @@ output && output.addEventListener('click', event => {
         // if network_device_id exists
         const network_device_id = event.target.dataset.network_device_id;
 
+        // test data-level
+        const level = event.target.dataset.level;
+
         // render breadcrumbs
         route(href,paths,titles);
 
         // render #output
         if(network_device_id !== undefined) {
 
-            render(null, id, network_device_id);
+            render(null, id, network_device_id, level);
         } else if(id !== undefined) {
 
             render(null, id);
             devices_parent = href;
         } 
-        // else {
-
-        //     render(href);
-        //     // alert(href)
-        // }
 
         // update list
         breadcrumbsLi = breadcrumbs.querySelectorAll('li');
@@ -294,6 +325,15 @@ breadcrumbs && breadcrumbs.addEventListener('click', event => {
     // елемент, на який клікнули
     const current = event.target.parentNode;
 
+    // get href aside element
+    const href = event.target.dataset.href;
+
+    if(href === 'devices' || href === 'home'){
+        
+        // очистка змінної у хлібних крихтах
+        devices_parent = null;
+    }
+
     // клонуємо хлібні крихти
     const clone = [...breadcrumbsLi];    
 
@@ -312,20 +352,11 @@ breadcrumbs && breadcrumbs.addEventListener('click', event => {
         }
 
         // if (~index) {}
-
-    }
-
-    // get href aside element
-    const href = event.target.dataset.href;
-
-    if(href === 'devices' || href === 'home'){
         
-        // очистка змінної у хлібних крихтах
-        devices_parent = null;
     }
-    
-    // render #output
+
     render(href);
+
 });
 
 
@@ -393,10 +424,6 @@ function route(href,paths,titles){
 
 function render(href = null, id = null, network_device_id = null){
 
-    // href -- data-href (лінк на сторінку)
-    // id -- data-id device (айдішка девайса)
-    // network_device_id -- data-network_device_id (айдішка парента для ону)
-
     if(network_device_id !== null){
 
         fetch(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/children`, {
@@ -426,22 +453,15 @@ function render(href = null, id = null, network_device_id = null){
                 // temp
                 const item = devices.data[i];
 
-                // console.log(item)    
-
-                // data-titles data-paths неправильний шлях (не повний)
                 data += `
                     <div 
                         class="output-item"
-                        data-href="${item.name}" 
-                        data-paths="home;devices;${devices_parent};${item.name}" 
-                        data-titles="Початок;Обладнання;${devices_parent};${item.name}" 
-                        
-                        data-id="${item.id}">
+                        data-paths="home;devices;level;${item.name}" 
+                        data-titles="Початок;Обладнання;${devices_parent};${item.name}">
 
                             <h1>${item.name}</h1>
                             <p>mac: <span>${item.mac}</span></p>
                             <p>updated: <span>${item.updated_at.replace('.000000Z','')}</span></p>
-                            <p>(debug, parent_id): ${item.parent_id}</p>
 
                     </div>`;
             }
@@ -482,12 +502,22 @@ function render(href = null, id = null, network_device_id = null){
                 // temp
                 const item = devices.data[i];
 
-                // неправильний шлях (не повний)
                 data += `
                     <div 
                         class="output-item"
                         data-href="${item.name}" 
-                        data-paths="home;devices;${devices_parent};${item.name}" 
+                        data-paths="home;devices;level;${item.name}" 
+                        data-titles="Початок;Обладнання;${devices_parent};${item.name}"  
+                        data-network_device_id="${item.network_device_id}"
+                        data-id="${item.id}">
+                            ${item.name}
+                    </div>`;
+                
+                level3 += `
+                    <div 
+                        class="output-item"
+                        data-href="${item.name}" 
+                        data-paths="home;devices;level;${item.name}" 
                         data-titles="Початок;Обладнання;${devices_parent};${item.name}"  
                         data-network_device_id="${item.network_device_id}"
 
@@ -508,7 +538,7 @@ function render(href = null, id = null, network_device_id = null){
     
             // Початок 
             case 'home': 
-                output.innerHTML = '<h1>Початок</h1><p>Тут буде виводитися якась стартова інформація</p>';
+                output.innerHTML = '<h2>Початок</h2><p>Тут буде виводитися якась стартова інформація</p>';
     
                 // add modificator
                 output.className = 'one-block';
@@ -544,22 +574,17 @@ function render(href = null, id = null, network_device_id = null){
                         // temp
                         const item = devices.data[i];
     
-                        // console.log(item)
-
                         // 3 тестових девайса  
-    
+
                         data += `
                             <div 
                                 class="output-item"
                                 data-href="${item.name}" 
-                                data-paths="home;devices;${item.name}" 
+                                data-paths="home;devices;level" 
                                 data-titles="Початок;Обладнання;${item.name}" 
                                 data-id="${item.id}">
                                     ${item.name} <br> (id: ${item.id})
                                 </div>`;
-
-                        // devices_parent = `${item.name}`;
-                        // console.log(devices_parent)
                     }
                     
                     // output.innerHTML = header + data + footer;
@@ -567,13 +592,16 @@ function render(href = null, id = null, network_device_id = null){
     
                     // add modificator
                     output.className = 'grid';
+
+                    // clear
+                    level3 = '';
                 })
                 .catch(error => checkError(error));
                 break;
             
             // Налаштування
             case 'settings':
-                output.innerHTML = '<h1>Налаштування</h1>';
+                output.innerHTML = '<h2>Налаштування</h2>';
     
                 // add modificator
                 output.className = 'one-block';
@@ -585,9 +613,9 @@ function render(href = null, id = null, network_device_id = null){
                 localStorage.removeItem('access_token');
                 break;
 
-            // Заглушка
-            case 'empty':
-                console.log('Заглушка. Пустий пункт меню');
+            // test 3 level
+            case 'level':
+                output.innerHTML = level3;
                 break;
     
             // id empty
@@ -598,10 +626,19 @@ function render(href = null, id = null, network_device_id = null){
 
 }
 
+// check devices
+function isTouchDevice() {
 
-// TODO: баг, клік на бордер (devices) закриває усі елементи
-// TODO: додати у хлібні крихти батьківський девайс
-// TODO: додати у хлібні крихти переходи (пофіксити)
+    // true if not desktop
+    return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0));
+}
+
+
+
 // TODO: search mobile
 // TODO: autoclose aside mobile menu
 // TODO: оптимізувати дата-атрибути
+
+
+
+// 1-10-2021
