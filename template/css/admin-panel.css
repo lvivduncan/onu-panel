@@ -1,4 +1,4 @@
-#admin-panel
+/* #admin-panel
 {
     display: grid;
     grid-template-rows: auto 1fr;
@@ -6,7 +6,17 @@
     grid-template-areas:
         'aside header'
         'aside section';
-    /* grid-gap: 20px 0; */
-    /* background: var(--gray-light); */
+} */
+
+#admin-panel
+{
+    padding: 70px 0 0 260px;
 }
 
+@media(max-width:776px)
+{
+    #admin-panel
+    {
+        padding: 70px 0 0 60px;
+    }    
+}
