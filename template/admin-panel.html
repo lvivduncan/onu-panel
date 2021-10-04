@@ -44,7 +44,7 @@
                 <span>admin-panel</span>
             </h1>
 
-            <div id="scroll" ss-container>
+            <div id="scroll">
 
                 <ul>
                     <li><p class="active" data-href="home" data-paths="home" data-titles="Початок">
@@ -115,7 +115,15 @@
         </section>     
     </div>
     
-    <script src="js/simple-scrollbar.js"></script>
+    <!-- <script src="js/simple-scrollbar.js"></script> -->
+    <script src="js/smooth-scrollbar.js"></script>
+
+    <script>
+        var Scrollbar = window.Scrollbar;
+      
+        Scrollbar.init(document.querySelector('#scroll'));
+    </script>
+
     <script src="js/script.js"></script>
 </body>
 </html>

@@ -5,7 +5,7 @@
     height: 100%;
     position: relative;
     z-index: 1;
-    float: left;
+    /* float: left; */
 }
 
 .ss-content

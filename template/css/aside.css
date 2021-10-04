@@ -26,9 +26,12 @@
 {
     #admin-panel aside
     {
-        height: calc(100vh - 71px);
+        /* height: calc(100vh - 71px); */
         margin-top: 71px;
-        position: relative;
+        /* position: relative; */
+
+        position: fixed;
+        height: 100%;
     }
     
 /*     #admin-panel.toggle aside
@@ -90,13 +93,19 @@
 
 #scroll
 {
-    height: calc(100vh - 70px);
+    /* height: calc(100vh - 70px); */
+    height: 100%;
     display: flex;
     flex-flow: column;
 }
 
 @media(max-width:550px)
 {
+    #scroll
+    {
+        padding: 0 0 60px;
+    }
+
     #admin-panel.toggle #scroll
     {
         position: absolute;
