@@ -1,5 +1,10 @@
 
 /* main */
+#admin-panel section
+{
+    height: calc(100% - 20px);
+    /* height: 100%; */
+}
 
 /* хлібні крихти */
 #breadcrumbs

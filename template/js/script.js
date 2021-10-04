@@ -18,6 +18,14 @@ const output = document.getElementById('output');
 const passwordView = document.querySelector('#label-password .view');
 const passwordInput = document.querySelector('#label-password input');
 
+// search mobile button
+const searchMobile = document.querySelector('#search > svg');
+const searchForm = document.querySelector('#search form');
+searchMobile && searchMobile.addEventListener('click', () => {
+
+    searchForm.classList.toggle('active');
+});
+
 passwordView && passwordView.addEventListener('click', () => {
 
     passwordView.classList.toggle('active');
@@ -76,7 +84,6 @@ if(colorMode !== null){
     });
 }
 
-
 // mobile-menu (toggle sidebar)
 const adminPanel = document.getElementById('admin-panel');
 if(adminPanel !== null){
@@ -113,6 +120,9 @@ if(adminPanel !== null){
 
             spans[i].classList.remove('toggle');
         }
+
+        // close search
+        searchForm.classList.remove('active');
     });
 }
 
@@ -244,6 +254,9 @@ for(let el = 0; el < asideLength; el++){
 
         // update list
         breadcrumbsLi = breadcrumbs.querySelectorAll('li');
+
+        // close search
+        searchForm.classList.remove('active');
     });
 }
 
@@ -634,7 +647,5 @@ function isTouchDevice() {
     return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0));
 }
 
-
-// TODO: search mobile
 
 // 4-10-2021

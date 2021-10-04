@@ -2,6 +2,7 @@
 #admin-panel
 {
     padding: 70px 0 0 260px;
+    height: 100%;
 }
 
 @media(max-width:776px)
