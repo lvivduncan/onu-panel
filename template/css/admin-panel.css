@@ -1,12 +1,3 @@
-/* #admin-panel
-{
-    display: grid;
-    grid-template-rows: auto 1fr;
-    grid-template-columns: auto 1fr;
-    grid-template-areas:
-        'aside header'
-        'aside section';
-} */
 
 #admin-panel
 {
@@ -19,4 +10,9 @@
     {
         padding: 70px 0 0 60px;
     }    
+}
+
+#admin-panel.toggle
+{
+    padding: 70px 0 0 60px;
 }

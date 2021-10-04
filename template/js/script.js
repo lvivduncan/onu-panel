@@ -11,9 +11,6 @@ let breadcrumbsLi;
 // 3 рівень вкладення -- клік на 1 елемент обладнання
 let level3 = '';
 
-// // check mobile
-// let mobile = false;
-
 // output data
 const output = document.getElementById('output');
 
@@ -426,7 +423,6 @@ function route(href,paths,titles){
     
 }
 
-
 function render(href = null, id = null, network_device_id = null){
 
     if(network_device_id !== null){
@@ -639,11 +635,6 @@ function isTouchDevice() {
 }
 
 
-
 // TODO: search mobile
-// TODO: autoclose aside mobile menu
-// TODO: оптимізувати дата-атрибути
 
-
-
-// 1-10-2021
+// 4-10-2021

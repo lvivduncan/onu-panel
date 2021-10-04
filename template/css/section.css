@@ -1,12 +1,5 @@
 
 /* main */
-#admin-panel section
-{
-
-    /* grid-area: section; */
-
-    /* margin-top: 70px; */
-}
 
 /* хлібні крихти */
 #breadcrumbs
@@ -30,18 +23,6 @@
 {
     content: '';
 }
-
-/* #breadcrumbs span
-{
-    display: inline-block;
-}
-
-#breadcrumbs span::before
-{
-    content: ' < ';
-    display: inline-block;
-    margin-right: 10px;
-} */
 
 #breadcrumbs p
 {
@@ -172,39 +153,3 @@
         display: block;
     }
 }
-
-
-
-
-
-
-
-
-
-/* del? */
-/* 
-#output ul
-{
-    display: block;
-    margin: 0;
-}
-
-#output li
-{
-    display: block;
-    padding: 5px;
-    cursor: pointer;
-    border-top: 1px solid var(--light);
-}
-
-#output li:first-child
-{
-    border: none;
-}
-
-#output li strong
-{
-    display: inline-block;
-    margin-left: 5px;
-} */
-/* del? */
