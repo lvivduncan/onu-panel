@@ -16,7 +16,7 @@
     --gray-ultralight: #98a6ad;
     /* --gray-ultralight: #33393f; */
     --gray-light: #dee2e6;
-    --gray: #838c96;
+    --gray: rgb(131, 140, 150);
     /* --gray-dark: #323a43; */
         --gray-dark: #3a444e;
     /* --gray-ultradark: #2c3338; */
@@ -26,14 +26,12 @@
     --green: #106809;
     --green-light: #76e46e;
 
-    --tomato: tomato;
+    --tomato: #ff6347;
     --black: #1a1a1a;
     --purpur: #ae5cfe;
+    --yellow: #ebeb44;
 
-
-
-
-
+    /* --orange: #ffa500; */
 
     --blue: #42a5f5;
     --blue-dark: #337ab7;
@@ -53,6 +51,33 @@
     --color-breadcrumbs: #333940;
     
 }
+
+/* підсвітка тексту */
+/* .color-orange
+{
+    color: var(--orange)!important;
+} */
+/* .green
+{
+    color: var(--green-light)!important;
+}
+
+.tomato
+{
+    color: var(--tomato)!important;
+}
+
+.gray
+{
+    color: var(--gray)!important;
+}
+
+.purpur
+{
+    color: var(--purpur)!important;
+} */
+/* підсвітка тексту */
+
 
 html,
 body

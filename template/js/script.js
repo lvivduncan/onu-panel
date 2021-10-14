@@ -26,6 +26,7 @@ searchMobile && searchMobile.addEventListener('click', () => {
     searchForm.classList.toggle('active');
 });
 
+// показати/сховати пароль
 passwordView && passwordView.addEventListener('click', () => {
 
     passwordView.classList.toggle('active');
@@ -467,18 +468,64 @@ function render(href = null, id = null, network_device_id = null){
                 // temp
                 const item = devices.data[i];
 
+                // Сигнал
+                let rxpower = '';
+
+                if(item.meta_data.rxpower !== undefined){
+
+                    const r = item.meta_data.rxpower;
+
+                    // -16 -24 -- green
+                    // -24 -28 -- yellow
+                    // default -- red
+
+                    if(r < -16 && r >= -24){
+
+                        // green color
+                        rxpower = `<p class="signal color-green"><span>${r} dB</span></p>`;
+                    } else if(r < -24 && r > -28){
+
+                        // yellow
+                        rxpower = `<p class="signal color-yellow"><span>${r} dB</span></p>`;
+                    } else {
+
+                        // default
+                        rxpower = `<p class="signal"><span>${r} dB</span></p>`;
+                    }
+                }
+
+                // console.log('level 3', item)
+
                 data += `
                     <div 
                         class="output-item"
                         data-paths="home;devices;level;${item.name}" 
                         data-titles="Початок;Обладнання;${devices_parent};${item.name}">
 
-                            <h1>${item.name}</h1>
-                            <p>mac: <span>${item.mac}</span></p>
-                            <p>updated: <span>${item.updated_at.replace('.000000Z','')}</span></p>
+                            <h1 class="${checkStatus(item.status)}">${item.name}</h1>
 
+                            <div>
+                                <p><span>${item.mac}</span></p>
+
+                                <hr>
+
+                                <p>Причина дереєстрації: 
+                                    <span>${item.meta_data.deregreason !== undefined ? `${item.meta_data.deregreason}` : 'Немає даних'}</span></p>
+                                <p>Останній час дереєстрації: 
+                                    <span>${item.meta_data.deregtime !== undefined ? `${item.meta_data.deregtime}` : 'Немає даних'}</span></p>
+
+                                <hr>
+
+                                ${rxpower}
+
+                                ${item.children.length > 0 ? `<p class="port"><span>${item.children[0].name}</span></p>` : ''}                            
+                            </div>
                     </div>`;
-            }
+            } 
+
+            // <p>last_pooling_at: <span>${item.meta_data.last_pooling_at.replace('.000000Z','')}</span></p>  
+            // <p>id: <span>${item.id}</span></p>
+            // <p>${checkStatus(item.status)}</p>
             
             output.innerHTML = data;
 
@@ -515,6 +562,8 @@ function render(href = null, id = null, network_device_id = null){
 
                 // temp
                 const item = devices.data[i];
+
+                // console.log('level 2')
 
                 data += `
                     <div 
@@ -587,8 +636,6 @@ function render(href = null, id = null, network_device_id = null){
     
                         // temp
                         const item = devices.data[i];
-    
-                        // 3 тестових девайса  
 
                         data += `
                             <div 
@@ -634,10 +681,8 @@ function render(href = null, id = null, network_device_id = null){
     
             // id empty
             default: console.error('усі пункти повинні мати унікальну айдішку!');
-    
         }
     } 
-
 }
 
 // check devices
@@ -647,5 +692,20 @@ function isTouchDevice() {
     return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0));
 }
 
+// change status
+function checkStatus(s){
 
-// 4-10-2021
+    // 0 - disabled, 1 - up, 2 - down, 3 - partially down (not in use now)
+    let status;
+    switch(s){
+        case 0: status = 'gray'; break;
+        case 1: status = 'green'; break;
+        case 2: status = 'tomato'; break;
+        case 3: status = 'gray'; break;
+        default: status = 'orange';
+    }
+
+    return status;
+}
+
+// 14-10-2021
