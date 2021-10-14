@@ -494,7 +494,27 @@ function render(href = null, id = null, network_device_id = null){
                     }
                 }
 
-                // console.log('level 3', item)
+                console.log('level 3', item)
+                
+                // ethernets (0 (not) -- 4)
+                let ethernet = '';
+
+                // якщо є порт
+                if(item.children.length > 0){
+
+                    const eth = item.children;
+
+                    if(item.children.length === 1){
+
+                        ethernet = `<p class="port"><span>${eth[0].name} - status: ${eth[0].status}</span></p>`;
+                    } else {
+
+                        for(let i = 0; i < eth.length; i++){
+
+                            ethernet += `<p class="port"><span>${eth[i].name} - status: ${eth[i].status}</span></p>`;
+                        }
+                    }
+                }
 
                 data += `
                     <div 
@@ -517,8 +537,7 @@ function render(href = null, id = null, network_device_id = null){
                                 <hr>
 
                                 ${rxpower}
-
-                                ${item.children.length > 0 ? `<p class="port"><span>${item.children[0].name}</span></p>` : ''}                            
+                                ${ethernet}
                             </div>
                     </div>`;
             } 
@@ -701,7 +720,7 @@ function checkStatus(s){
         case 0: status = 'gray'; break;
         case 1: status = 'green'; break;
         case 2: status = 'tomato'; break;
-        case 3: status = 'gray'; break;
+        // case 3: status = 'gray'; break;
         default: status = 'orange';
     }
 
