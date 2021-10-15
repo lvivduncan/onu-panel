@@ -11,7 +11,6 @@
     /* remove then */
     --white: #fff;
     --light: #eef2f7;
-    /* #fafbfe */
 
     --gray-ultralight: #98a6ad;
     /* --gray-ultralight: #33393f; */
@@ -36,11 +35,15 @@
     --blue: #42a5f5;
     --blue-dark: #337ab7;
 
+    --shadow-block: 0 0 6px 3px rgb(0 0 0 / 20%);
+
+
     /* universal color */
-    --bg-block: #fff; /* --gray-dark: #3a444e; */
-    --color-block: #838c96; /* --gray: #838c96;*/
+    --bg-block: #fff;
+    --color-block: #838c96;
     --color-block-span: #000;
-    --shadow-block: 0 0 35px 0 rgb(154 161 171 / 15%);
+    /* --shadow-block: 0 0 35px 0 rgb(154 161 171 / 15%); */
+    --text-shadow: 1px 1px 1px #ccc;
     --bg-body: #fff;
     --color-body: #838c96;
 
@@ -51,33 +54,6 @@
     --color-breadcrumbs: #333940;
     
 }
-
-/* підсвітка тексту */
-/* .color-orange
-{
-    color: var(--orange)!important;
-} */
-/* .green
-{
-    color: var(--green-light)!important;
-}
-
-.tomato
-{
-    color: var(--tomato)!important;
-}
-
-.gray
-{
-    color: var(--gray)!important;
-}
-
-.purpur
-{
-    color: var(--purpur)!important;
-} */
-/* підсвітка тексту */
-
 
 html,
 body
@@ -101,7 +77,8 @@ body
     --bg-block: #3a444e;
     --color-block: #98a6ad;
     --color-block-span: #fff;
-    --shadow-block: none;
+    /* --shadow-block: 1px 1px 1px rgb(0 0 0 / 50%); */
+    --text-shadow: 1px 1px 1px #000;
 
     --bg-body: #333940;
     /* --color-body: #838c96; */
