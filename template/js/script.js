@@ -309,16 +309,12 @@ output && output.addEventListener('click', event => {
         // if network_device_id exists
         const network_device_id = event.target.dataset.network_device_id;
 
-        // test data-level
-        // const level = event.target.dataset.level;
-
         // render breadcrumbs
         route(href,paths,titles);
 
         // render #output
         if(network_device_id !== undefined) {
 
-            // render(null, id, network_device_id, level);
             render(null, id, network_device_id);
         } else if(id !== undefined) {
 
@@ -353,25 +349,26 @@ breadcrumbs && breadcrumbs.addEventListener('click', event => {
         devices_parent = null;
     }
 
-    // клонуємо хлібні крихти
-    const clone = [...breadcrumbsLi];    
+    // щоб не вивалювало помилку, якщо ліст не сформований
+    if(breadcrumbsLi !== undefined){
 
-    for(let i = 0; i < breadcrumbsLi.length; i++){
-        
-        // номер елемента, на який клікнули + 1
-        const index = [...breadcrumbsLi].indexOf(current) + 1;
+        // клонуємо хлібні крихти
+        const clone = [...breadcrumbsLi];
 
-        // видаляємо усі елементи хлібних крихт
-        breadcrumbsLi[i].remove();
+        for(let i = 0; i < breadcrumbsLi.length; i++){
+            
+            // номер елемента, на який клікнули + 1
+            const index = [...breadcrumbsLi].indexOf(current) + 1;
 
-        // рендеримо нові хлібні крихти
-        for(let k = 0; k < index; k++){
+            // видаляємо усі елементи хлібних крихт
+            breadcrumbsLi[i].remove();
 
-            breadcrumbs.append(clone[k]);
+            // рендеримо нові хлібні крихти
+            for(let k = 0; k < index; k++){
+
+                breadcrumbs.append(clone[k]);
+            }
         }
-
-        // if (~index) {}
-        
     }
 
     render(href);
@@ -453,7 +450,7 @@ function render(href = null, id = null, network_device_id = null){
     // 3 level
     if(network_device_id !== null){
 
-        console.log('id: ', id, '| network_device_id: ', network_device_id)
+        // console.log('id: ', id, '| network_device_id: ', network_device_id)
 
         // перелік з чілдренами 
         // fetch(`https://api.bill.lviv.ua/api/monitoring/devices/${network_device_id}/objects?children=1`, {
@@ -478,7 +475,10 @@ function render(href = null, id = null, network_device_id = null){
         })
         .then(devices => {
 
-            console.log('3: ', devices)
+            // console.log('3: ', devices)
+
+            // spinner
+            loading(2000);
     
             let data = '';
 
@@ -595,6 +595,9 @@ function render(href = null, id = null, network_device_id = null){
             }
         })
         .then(devices => {
+
+            // spinner
+            loading(2000);
     
             let data = '';
 
@@ -638,6 +641,9 @@ function render(href = null, id = null, network_device_id = null){
 
     // level 1    
     } else if(href !== null){
+
+        // spinner
+        loading();
 
         switch(href){
     
@@ -710,7 +716,7 @@ function render(href = null, id = null, network_device_id = null){
             
             // Налаштування
             case 'settings':
-                output.innerHTML = '<h2>Налаштування</h2>';
+                output.innerHTML = '<h2>Налаштування</h2><p>Сторінка з налаштуваннями</p>';
     
                 // add modificator
                 output.className = 'one-block';
@@ -745,17 +751,27 @@ function isTouchDevice() {
 // change status
 function checkStatus(s){
 
-    // 0 - disabled, 1 - up, 2 - down, 3 - partially down (not in use now)
     let status;
     switch(s){
-        case 0: status = 'gray'; break;
-        case 1: status = 'green'; break;
-        case 2: status = 'tomato'; break;
-        case 3: status = 'gray'; break;
+        case 0: status = 'gray'; break; // disabled
+        case 1: status = 'green'; break; // up
+        case 2: status = 'tomato'; break; // down
+        case 3: status = 'gray'; break; // partially down (not in use now)
         default: status = 'orange';
     }
 
     return status;
+}
+
+// show spiner
+function loading(time = 250){
+
+    spinner.classList.add('active');
+
+    setTimeout(() => {
+        
+        spinner.classList.remove('active');
+    }, time);
 }
 
 // 16-10-2021
