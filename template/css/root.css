@@ -39,7 +39,8 @@
 
 
     /* universal color */
-    --bg-block: #fff;
+    /* --bg-block: #fff; */
+    --bg-block: linear-gradient(135deg, var(--white) 0%, #fafafa 100%); 
     --color-block: #838c96;
     --color-block-span: #000;
     /* --shadow-block: 0 0 35px 0 rgb(154 161 171 / 15%); */

@@ -352,6 +352,8 @@ breadcrumbs && breadcrumbs.addEventListener('click', event => {
     // щоб не вивалювало помилку, якщо ліст не сформований
     if(breadcrumbsLi !== undefined){
 
+        // TODO: remove loading() if empty list
+
         // клонуємо хлібні крихти
         const clone = [...breadcrumbsLi];
 
@@ -440,7 +442,7 @@ function route(href,paths,titles){
 // TODO: add 4 level
 function render(href = null, id = null, network_device_id = null){
 
-    // 4 level:
+    // TODO: 4 level:
     // https://api.bill.lviv.ua/api/monitoring/devices/${network_device_id}/objects?children=${id}
 
 
@@ -523,21 +525,22 @@ function render(href = null, id = null, network_device_id = null){
                         data-titles="Початок;Обладнання;${devices_parent};${item.name}">
                             
                             <h1 class="${checkStatus(item.status)}">${item.name}</h1>
-                            <p><span>${item.mac}</span></p>
+                            <div>
+                                <p><span>${item.mac}</span></p>
 
-                            <!-- <i class="${checkStatus(item.status)}"></i> ${item.name} -->
+                                <!-- <i class="${checkStatus(item.status)}"></i> ${item.name} -->
 
-                            <hr>
+                                <hr>
 
-                            <p>Причина дереєстрації: 
-                                <span>${item.meta_data.deregreason !== undefined ? `${item.meta_data.deregreason}` : 'Немає даних'}</span></p>
-                            <p>Останній час дереєстрації: 
-                                <span>${item.meta_data.deregtime !== undefined ? `${item.meta_data.deregtime}` : 'Немає даних'}</span></p>
+                                <p>Причина дереєстрації: 
+                                    <span>${item.meta_data.deregreason !== undefined ? `${item.meta_data.deregreason}` : 'Немає даних'}</span></p>
+                                <p>Останній час дереєстрації: 
+                                    <span>${item.meta_data.deregtime !== undefined ? `${item.meta_data.deregtime}` : 'Немає даних'}</span></p>
 
-                            <hr>
+                                <hr>
 
-                            ${rxpower}
-                            
+                                ${rxpower}
+                            </div>
                     </div>`;
 
                 level4 += `
