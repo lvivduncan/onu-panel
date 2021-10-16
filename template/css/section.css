@@ -70,8 +70,8 @@
 }
 /* один великий блок з текстовою інформацією */
 
-/* грід на 6 / 4 / 2 блоки */
-#output.grid
+/* грід на 4 / 3 / 2 блоки */
+#output.grid-4
 {
     display: grid;
     grid-template-columns: repeat(4,1fr);
@@ -80,7 +80,7 @@
 
 @media(max-width:1200px)
 {
-    #output.grid
+    #output.grid-4
     {
         grid-template-columns: repeat(3,1fr);
     }    
@@ -88,7 +88,7 @@
 
 @media(max-width:996px)
 {
-    #output.grid
+    #output.grid-4
     {
         grid-template-columns: repeat(2,1fr);
     }    
@@ -96,14 +96,34 @@
 
 @media(max-width:776px)
 {
-    #output.grid
+    #output.grid-4
     {
         grid-template-columns: 1fr;
     }    
 }
+/* грід на 4 / 3 / 2 блоки */
+
+
+/* грід на 2 / 1 блоки */
+#output.grid-2
+{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    grid-gap: 20px;
+}
+
+@media(max-width:996px)
+{
+    #output.grid-2
+    {
+        grid-template-columns: 1fr;
+    }    
+}
+/* грід на 2 / 1 блоки */
 
 /* окремий елемент */
-#output.grid .output-item
+#output.grid-4 .output-item,
+#output.grid-2 .output-item
 {
     background: var(--bg-block);
     color: var(--color-block);
@@ -115,7 +135,7 @@
     cursor: pointer;
     overflow: hidden;
 }
-/* грід на 6 / 4 / 2 блоки */
+
 
 .output-item span
 {
@@ -123,6 +143,10 @@
     display: block;
 }
 
+#output.grid-4 .output-item strong
+{
+    color: var(--white)
+}
 
 
 /* accordion */

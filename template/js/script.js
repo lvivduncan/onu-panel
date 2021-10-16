@@ -11,7 +11,6 @@ let breadcrumbsLi;
 // 3 рівень вкладення -- клік на 1 елемент обладнання
 let level3 = '';
 
-// TODO: 4 level!!! 
 let level4 = '';
 
 // output data
@@ -273,8 +272,6 @@ for(let el = 0; el < asideLength; el++){
 
 output && output.addEventListener('click', event => {
 
-    console.log(event.target.dataset)
-
     // клік на заголовку, щоб розгорнути (мобільні)
     if(isTouchDevice() && event.target.tagName === 'H1'){
 
@@ -312,36 +309,16 @@ output && output.addEventListener('click', event => {
         // if network_device_id exists
         const network_device_id = event.target.dataset.network_device_id;
 
-        // if metric exists
-        const metric = event.target.dataset.metric;
-
-        // console.log(metric)
-
         // test data-level
         // const level = event.target.dataset.level;
-
-        console.log(
-            'href: ', href, 
-            'titles: ', titles, 
-            'paths: ', paths, 
-            'id: ', id, 
-            'network_device_id: ', network_device_id, 
-            'metric: ', metric
-        )
 
         // render breadcrumbs
         route(href,paths,titles);
 
         // render #output
-        if(metric !== undefined){
+        if(network_device_id !== undefined) {
 
-            // alert(metric)
-
-            // test -- render graphic
-            // render(null, id, network_device_id, metric);
-            render(null, null, null, null, metric);
-        } else if(network_device_id !== undefined) {
-
+            // render(null, id, network_device_id, level);
             render(null, id, network_device_id);
         } else if(id !== undefined) {
 
@@ -439,7 +416,7 @@ function checkError(err) {
     // }, 2000);
 }
 
-// render breadcrumbs
+// render breadcrumbs TODO: add 4 level
 function route(href,paths,titles){
 
     if(href !== undefined){
@@ -463,61 +440,23 @@ function route(href,paths,titles){
     
 }
 
-function render(href = null, id = null, network_device_id = null, metric = null){
+// TODO: add 4 level
+function render(href = null, id = null, network_device_id = null){
 
-    if(metric !== null){
+    // 4 level:
+    // https://api.bill.lviv.ua/api/monitoring/devices/${network_device_id}/objects?children=${id}
 
-        alert(metric);
 
-        fetch(`https://api.bill.lviv.ua/api/monitoring/objects/${+metric}/metric/rxPower`,{
-            method: "GET",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('access_token')
-            },            
-        })
-        .then(res => {
-            if (res.status === 200) {
 
-                return res.json();
-            } else {
 
-                error = res.status;
-                throw error;
-            }
-        })
-        .then(devices => {
-    
-            let data = '';
 
-            for(let i = 0; i < devices.data.length; i++){
+    // 3 level
+    if(network_device_id !== null){
 
-                // temp
-                const item = devices.data[i];
+        console.log('id: ', id, '| network_device_id: ', network_device_id)
 
-                console.log('level 4', item)
-                
-                data += `
-                    <div 
-                        class="output-item"
-                        data-paths="home;devices;level;${item.name}" 
-                        data-titles="Початок;Обладнання;${devices_parent};${item.name}">
-                        <!-- output -->
-                        ${metric}
-                        <!-- output -->
-                    </div>`;
-            } 
-            
-            output.innerHTML = data;
-
-            // add modificator
-            output.className = 'grid';
-        })
-        .catch(error => checkError(error));
-    }
-
-    else if(network_device_id !== null){
+        // перелік з чілдренами 
+        // fetch(`https://api.bill.lviv.ua/api/monitoring/devices/${network_device_id}/objects?children=1`, {
 
         fetch(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/children`, {
             method: "GET",
@@ -538,6 +477,8 @@ function render(href = null, id = null, network_device_id = null, metric = null)
             }
         })
         .then(devices => {
+
+            console.log('3: ', devices)
     
             let data = '';
 
@@ -546,7 +487,7 @@ function render(href = null, id = null, network_device_id = null, metric = null)
                 // temp
                 const item = devices.data[i];
 
-                // console.log('level 3: ', item)
+                // console.log('3: ', item)
 
                 // check status for enabled laser and ethernet
                 const parentStatus = item.status;
@@ -573,99 +514,68 @@ function render(href = null, id = null, network_device_id = null, metric = null)
                     }
                 }
 
-                // console.log('level 3', item)
+                // {ethernet} -- видалено зі запиту!
                 
-                // ethernets (from 0 (not) to 4 (maximum))
-                let ethernet = '';
-
-                // якщо є порт
-                if(item.children.length > 0){
-
-                    const eth = item.children;
-
-                    if(item.children.length === 1){
-
-                        ethernet = `<p class="port status-${eth[0].status} parent-status-${parentStatus}"><span>${eth[0].name}</span></p>`;
-                    } else if(item.children.length <= 4){
-
-                        for(let i = 0; i < eth.length; i++){
-
-                            ethernet += `<p class="port status-${eth[i].status} parent-status-${parentStatus}"><span>${eth[i].name}</span></p>`;
-                        }
-                    } else {
-
-                        // if more than 4 (bug)
-                        for(let i = 0; i < 4; i++){
-
-                            ethernet += `<p class="port status-${eth[i].status} parent-status-${parentStatus}"><span>${eth[i].name}</span></p>`;
-                        }
-                        // ховати глючну онушку (якщо більше 4 виводе)
-                        ethernet += '<p>(щось незрозуміле з онушкою)</p>';
-                    }
-                }
-
                 data += `
                     <div 
                         class="output-item"
                         data-paths="home;devices;level;${item.name}" 
                         data-titles="Початок;Обладнання;${devices_parent};${item.name}">
+                            
+                            <h1 class="${checkStatus(item.status)}">${item.name}</h1>
+                            <p><span>${item.mac}</span></p>
 
-                            <h1 class="${checkStatus(item.status)}" data-metric="${item.id}">${item.name}</h1>
+                            <!-- <i class="${checkStatus(item.status)}"></i> ${item.name} -->
 
-                            <div>
-                                <p><span>${item.mac}</span></p>
+                            <hr>
 
-                                <hr>
+                            <p>Причина дереєстрації: 
+                                <span>${item.meta_data.deregreason !== undefined ? `${item.meta_data.deregreason}` : 'Немає даних'}</span></p>
+                            <p>Останній час дереєстрації: 
+                                <span>${item.meta_data.deregtime !== undefined ? `${item.meta_data.deregtime}` : 'Немає даних'}</span></p>
 
-                                <p>Причина дереєстрації: 
-                                    <span>${item.meta_data.deregreason !== undefined ? `${item.meta_data.deregreason}` : 'Немає даних'}</span></p>
-                                <p>Останній час дереєстрації: 
-                                    <span>${item.meta_data.deregtime !== undefined ? `${item.meta_data.deregtime}` : 'Немає даних'}</span></p>
+                            <hr>
 
-                                <hr>
-
-                                ${rxpower}
-                                ${ethernet}
-                            </div>
+                            ${rxpower}
+                            
                     </div>`;
 
-                // test (if save data for breadcrumbs)
                 level4 += `
                     <div 
                         class="output-item"
                         data-paths="home;devices;level;${item.name}" 
                         data-titles="Початок;Обладнання;${devices_parent};${item.name}">
+                            
+                            <h1 class="${checkStatus(item.status)}">${item.name}</h1>
+                            <p><span>${item.mac}</span></p>
 
-                            <h1 class="${checkStatus(item.status)}" data-metric="${item.id}">${item.name}</h1>
+                            <!-- <i class="${checkStatus(item.status)}"></i> ${item.name} -->
 
-                            <div>
-                                <p><span>${item.mac}</span></p>
+                            <hr>
 
-                                <hr>
+                            <p>Причина дереєстрації: 
+                                <span>${item.meta_data.deregreason !== undefined ? `${item.meta_data.deregreason}` : 'Немає даних'}</span></p>
+                            <p>Останній час дереєстрації: 
+                                <span>${item.meta_data.deregtime !== undefined ? `${item.meta_data.deregtime}` : 'Немає даних'}</span></p>
 
-                                <p>Причина дереєстрації: 
-                                    <span>${item.meta_data.deregreason !== undefined ? `${item.meta_data.deregreason}` : 'Немає даних'}</span></p>
-                                <p>Останній час дереєстрації: 
-                                    <span>${item.meta_data.deregtime !== undefined ? `${item.meta_data.deregtime}` : 'Немає даних'}</span></p>
+                            <hr>
 
-                                <hr>
-
-                                ${rxpower}
-                                ${ethernet}
-                            </div>
-                    </div>
-                `;
+                            ${rxpower}
+                            
+                    </div>`;
             } 
             
             output.innerHTML = data;
 
             // add modificator
-            output.className = 'grid';
+            output.className = 'grid-4';
         })
         .catch(error => checkError(error));
 
+    // 2 level
     } else if(id !== null){
 
+        // перелік без чілдренів (GPON0/1 GPON0/2 GPON0/3 ...)
         fetch(`https://api.bill.lviv.ua/api/monitoring/devices/${id}/objects`, {
             method: "GET",
             headers: {
@@ -693,7 +603,7 @@ function render(href = null, id = null, network_device_id = null, metric = null)
                 // temp
                 const item = devices.data[i];
 
-                // console.log('level 2: ', item)
+                // console.log('2: ', item)              
 
                 data += `
                     <div 
@@ -713,6 +623,7 @@ function render(href = null, id = null, network_device_id = null, metric = null)
                         data-paths="home;devices;level;${item.name}" 
                         data-titles="Початок;Обладнання;${devices_parent};${item.name}"  
                         data-network_device_id="${item.network_device_id}"
+
                         data-id="${item.id}">
                             <i class="${checkStatus(item.status)}"></i> ${item.name}
                     </div>`;
@@ -721,9 +632,11 @@ function render(href = null, id = null, network_device_id = null, metric = null)
             output.innerHTML = data;
 
             // add modificator
-            output.className = 'grid';
+            output.className = 'grid-4';
         })
         .catch(error => checkError(error));
+
+    // level 1    
     } else if(href !== null){
 
         switch(href){
@@ -766,7 +679,9 @@ function render(href = null, id = null, network_device_id = null, metric = null)
                         // temp
                         const item = devices.data[i];
 
-                        // console.log('level 1: ', item)
+                        // console.log('1 :', item)
+    
+                        // status -- 0,1,2
 
                         data += `
                             <div 
@@ -777,16 +692,18 @@ function render(href = null, id = null, network_device_id = null, metric = null)
                                 data-id="${item.id}">
                                     <i class="${checkStatus(item.status)}"></i> ${item.name} <br> (id: ${item.id})
                                 </div>`;
-                    } // <h1 class="${checkStatus(item.status)}">${item.name}</h1>
+                    }
                     
                     // output.innerHTML = header + data + footer;
                     output.innerHTML = data;
     
                     // add modificator
-                    output.className = 'grid';
+                    output.className = 'grid-4';
 
                     // clear
                     level3 = '';
+
+                    // TODO: clear level4?
                 })
                 .catch(error => checkError(error));
                 break;
@@ -812,8 +729,10 @@ function render(href = null, id = null, network_device_id = null, metric = null)
     
             // id empty
             default: console.error('усі пункти повинні мати унікальну айдішку!');
+    
         }
     } 
+
 }
 
 // check devices
@@ -832,11 +751,11 @@ function checkStatus(s){
         case 0: status = 'gray'; break;
         case 1: status = 'green'; break;
         case 2: status = 'tomato'; break;
-        // case 3: status = 'gray'; break;
+        case 3: status = 'gray'; break;
         default: status = 'orange';
     }
 
     return status;
 }
 
-// 15-10-2021
+// 16-10-2021
