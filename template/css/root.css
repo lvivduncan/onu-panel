@@ -53,7 +53,9 @@
     --color-nav-active: #dee2e6;
 
     --color-breadcrumbs: #333940;
-    
+
+/*     --start: linear-gradient(0deg, var(--white) 0%, #fafafa 100%); 
+    --finish: linear-gradient(0deg, var(--white) 0%, #000 100%); */
 }
 
 html,
@@ -86,6 +88,11 @@ body
 
     
     --color-breadcrumbs: #fff;
+
+
+    /* стилізувати лінійку завантаження */
+/*     --start: linear-gradient(0deg, var(--white) 0%, #fafafa 100%); 
+    --finish: #000; */
 }
 
 

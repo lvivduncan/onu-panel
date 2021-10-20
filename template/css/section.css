@@ -177,6 +177,29 @@
 }
 /* грід на 2 / 1 блоки */
 
+
+
+
+/* обгортка для цілого блоку, щоб лапати клік */
+.output-item.output-item-wrapper
+{
+    position: relative;
+}
+
+.output-item.output-item-wrapper::before
+{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+
+
+
 /* окремий елемент */
 #output.grid-4 .output-item,
 #output.grid-2 .output-item
@@ -230,31 +253,53 @@
 .output-item i
 {
     display: inline-block;
-    width: 12px;
-    height: 12px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
+    margin-right: 5px;
 }
 
 .output-item i.gray
 {
     background: var(--gray-light);
+    filter: blur(1.5px);
 }
 
 .output-item i.tomato
 {
     background: var(--tomato);
+    filter: blur(1.5px);
 }
 
 .output-item i.green
 {
     background: var(--green-light);
+    filter: blur(1.5px);
 }
 
 .output-item i.purpur
 {
     background: var(--purpur);
+    filter: blur(3px);
 }
 /* статуси у вигляді маленької лампочки */
+
+
+
+/* вирівнювання заголовку */
+.flex
+{
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+}
+
+.flex .to-right{
+    margin-left: auto;
+}
+
+
+
 
 
 /* статуси онушки (велика лампочка): */
@@ -358,7 +403,7 @@
     align-items: center;
     justify-content: space-between;
     margin: 0 0 10px;
-    color: var(--tomato);
+    /* color: var(--tomato); */
 }
 
 /* default -- red */
@@ -374,7 +419,7 @@
 /* green */
 .output-item p.signal.color-green span
 {
-    color: var(--green-light);
+    /* color: var(--green-light); */
 }
 
 .output-item p.signal.color-green span::before
@@ -385,7 +430,7 @@
 /* yellow */
 .output-item p.signal.color-yellow span
 {
-    color: var(--yellow);
+    /* color: var(--yellow); */
 }
 
 .output-item p.signal.color-yellow span::before
@@ -401,7 +446,7 @@
 /* onu not active */
 .output-item p.parent-status-2 span
 {
-    color: var(--gray-light)!important;
+    /* color: var(--gray-light)!important; */
 }
 
 .output-item p.port.parent-status-2 span::before

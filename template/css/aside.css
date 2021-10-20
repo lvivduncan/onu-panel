@@ -66,6 +66,99 @@
     height: 24px;
 }
 
+/* loader */
+/*
+лодер по дефолту відображається у сайдбарі над назвою "адмін-панель"
+*/
+
+#loader
+{
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: var(--bg-block);
+}
+
+#loader.active
+{
+    display: block;
+}
+
+@media(max-width:776px)
+{
+    #loader.active
+    {
+        height: 70px;
+    }
+}
+
+@media(max-width:540px)
+{
+    #loader.active
+    {
+        position: fixed;
+        bottom: 30px;
+        left: 30px;
+    }
+}
+
+#loader.active::before
+{
+    content: 'Завантаження';
+    display: block;
+    color: var(--tomato);
+    font-size: 16px;
+    animation: loading 1s linear infinite;
+}
+
+@media(max-width:776px)
+{
+    
+    #loader.active::before
+    {
+        content: '';
+        width: 16px;
+        height: 16px;
+
+        border: 2px solid var(--color-block);
+        border-top: 2px solid red;
+        border-radius: 50%;
+
+        position: absolute;
+        top: calc(50% - 8px);
+        left: calc(50% - 8px);
+    }
+}
+
+@keyframes loading
+{
+    0%
+    {
+        opacity: 0;
+    }
+    100%
+    {
+        opacity: 1;
+    }
+}
+
+@media(max-width:776px)
+{
+    @keyframes loading
+    {
+        to
+        {
+            transform: rotate(360deg);
+        }
+    }    
+}
+
+
+
+
 /* назва блоку (адмін-панель) */
 #admin-panel aside h1 span
 {
