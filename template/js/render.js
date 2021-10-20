@@ -2,9 +2,12 @@
 
 // TODO: пропонувати у налаштуваннях юзати кеш (локалСторедж)
 
+// крихти
+const breadcrumbs = document.getElementById('breadcrumbs');
 
 // блок виводу основної інформації для адміністраторів
-// const output = document.getElementById('output');
+const output = document.getElementById('output');
+
 
 // глобальний масив з об'єктами, в який пушимо значення при переході в глибину
 // видаляємо значення при кліку по елементу хлібних крихт
@@ -196,7 +199,7 @@ for(let el = 0; el < asideLength; el++){
 }
 
 // клік на елемент в аутпуті
-output.addEventListener('click', event => {
+output && output.addEventListener('click', event => {
 
     // клік має бути на елементі, а не на цілому блоці
     if(event.target.classList.contains('output-item')){
@@ -424,6 +427,7 @@ output.addEventListener('click', event => {
                 // console.log('rxPower: ', devices)
 
                 // TODO: графік оновлюється не одразу, спершу висирає статистику у вигляді тексту!
+                // тому що записуються спершу дані в глобал, а потім смикаються звідти 
 
                 // назва сторінки, де знаходимося!
                 const name = event.target.dataset.name;
@@ -474,8 +478,9 @@ output.addEventListener('click', event => {
 
                 // костилі для тесту:
                 output.innerHTML = '';
-                output.className = 'one-block';
-                output.style.background = '#fffff0';
+
+                // output.classList.add('one-block');
+                // output.classList.add('bg-white');
 
                 const chart = new ApexCharts(document.querySelector("#output"), options);
                 chart.render();
@@ -483,9 +488,9 @@ output.addEventListener('click', event => {
                 // оновлюємо конкретний елемент масива global[level]
                 global[4] = {
                     name,
-                    cls: 'one-block',
+                    cls: 'one-block bg-white',
                     level: '4',
-                    data // тут немає даних! дані мають бути у вигляді графіка! 
+                    data // тут немає правильних даних! дані мають бути у вигляді графіка! 
                 }
 
                 // виводимо на сторінці
@@ -544,10 +549,10 @@ breadcrumbs && breadcrumbs.addEventListener('click', event => {
 function renderBreadcrumbs(){
 
     const length = global.length;
-    const breadcrumbs = document.getElementById('breadcrumbs');
+    // const breadcrumbs = document.getElementById('breadcrumbs');
 
     // clear
-    breadcrumbs.innerHTML = '';
+    breadcrumbs && (breadcrumbs.innerHTML = '');
 
     let tmp = '';
 
@@ -556,7 +561,7 @@ function renderBreadcrumbs(){
         tmp += `<li><p data-level="${global[i].level}">${global[i].name}</p></li>`;
     }
 
-    breadcrumbs.innerHTML = tmp;
+    breadcrumbs && (breadcrumbs.innerHTML = tmp);
 }
 
 // відмальовує контент на сторінці, використовуючи останній елемент глобала
@@ -567,8 +572,8 @@ function renderOutput(){
         // останній елемент масива глобал
         const last = global[global.length-1];
     
-        output.innerHTML = last.data;
-        output.className = last.cls;
+        output && (output.innerHTML = last.data);
+        output && (output.className = last.cls);
     } else {
 
         output.innerHTML = '<h1>Вихід зі системи</h1><p>TODO: переадресація</p>';
