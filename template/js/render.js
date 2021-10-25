@@ -1,6 +1,8 @@
 // 24-09-2021
 
 // TODO: пропонувати у налаштуваннях юзати кеш (локалСторедж)
+// TODO: generate urls
+// TODO: charts -- add global function()?
 
 // крихти
 const breadcrumbs = document.getElementById('breadcrumbs');
@@ -13,6 +15,9 @@ const output = document.getElementById('output');
 // видаляємо значення при кліку по елементу хлібних крихт
 // рендер хлібних крихт і контенту на сторінці по кожній зміні
 const global = [];
+
+// TODO: додати лінк на поточну сторінку global
+// TODO: додати SEO-LINK (get-параметри)
 
 // початкові дані (при вході в адмінку)
 const origin = {
@@ -201,6 +206,8 @@ for(let el = 0; el < asideLength; el++){
 // клік на елемент в аутпуті
 output && output.addEventListener('click', event => {
 
+    // console.log(global)
+
     // клік має бути на елементі, а не на цілому блоці
     if(event.target.classList.contains('output-item')){
 
@@ -209,6 +216,9 @@ output && output.addEventListener('click', event => {
 
         // айді поточного блоку (ітема)
         const id = event.target.dataset.id;
+
+        // test -- clear chart!!!
+        // let chart = '';
 
         switch(level){
 
@@ -284,6 +294,9 @@ output && output.addEventListener('click', event => {
                         level: '2',
                         data
                     }
+
+                    // test -- if exsists
+                    // chart && chart.destroy();
 
                     // виводимо на сторінці
                     renderOutput();
@@ -424,80 +437,49 @@ output && output.addEventListener('click', event => {
             })
             .then(devices => {
 
-                // console.log('rxPower: ', devices)
-
                 // TODO: графік оновлюється не одразу, спершу висирає статистику у вигляді тексту!
-                // тому що записуються спершу дані в глобал, а потім смикаються звідти 
 
                 // назва сторінки, де знаходимося!
                 const name = event.target.dataset.name;
 
-                // дані зі запиту, які мають бути виведені у графіку
-                const data = [];
-                const categories = [];
-                
-                for(const item in devices){
-                    
-                    data.push(devices[item]);
-                    categories.push(item);
-                }
-
-                // підключити графіки
-                const options = {
-                    series: [{
-                        name: "rxPower",
-                        data
-                    }],
-                    chart: {
-                        height: 350,
-                        type: 'line',
-                        zoom: {
-                        enabled: false
-                    }
-                    },
-                    dataLabels: {
-                        enabled: false
-                    },
-                    stroke: {
-                        curve: 'straight'
-                    },
-                    title: {
-                        text: 'Заголовок ще не придумав',
-                        align: 'left'
-                    },
-                    grid: {
-                        row: {
-                            colors: ['#f3f3f3', 'transparent'],
-                        opacity: 0.5
-                    },
-                    },
-                    xaxis: {
-                        categories
-                    }
-                };
-
                 // костилі для тесту:
                 output.innerHTML = '';
 
-                // output.classList.add('one-block');
-                // output.classList.add('bg-white');
+                // дані зі запиту, які мають бути виведені у графіку
+                const charts = [];
+                const categories = [];
+                
+                // const item in devices
+                for(const item in devices){
+                    
+                    charts.push(devices[item]);
+                    categories.push(item);
+                }
 
-                const chart = new ApexCharts(document.querySelector("#output"), options);
-                chart.render();
+                // console.log(charts,categories)
+
+                // виводимо на сторінці
+                // вкидаємо масив значень
+                renderCharts(charts,categories);
+
+                // виводимо на сторінці
+                // renderOutput();
+
+                // render breadcrumbs
+                renderBreadcrumbs();
+
+                // const dataForGlobal = `${JSON.stringify(options)}`;
 
                 // оновлюємо конкретний елемент масива global[level]
+                // TODO: уже не потрібно? 
+                // TODO: немає назви для хлібних крихт
+                // TODO: перевірка на пусте значення 
                 global[4] = {
                     name,
                     cls: 'one-block bg-white',
                     level: '4',
-                    data // тут немає правильних даних! дані мають бути у вигляді графіка! 
+                    data: '-empty-' // перевірити
                 }
-
-                // виводимо на сторінці
-                renderOutput();
-
-                // render breadcrumbs
-                renderBreadcrumbs();  
 
                 hideLoader();
                 
@@ -543,7 +525,48 @@ breadcrumbs && breadcrumbs.addEventListener('click', event => {
 
 
 
+// test -- render charts.js
+// renderOutput() не використовується, бо це останній крок
+// ортимує масив значень і рендериться в аутпуті
+function renderCharts(charts,categories){
 
+    // малюємо графік в аутпуті
+    // TODO: може бути, що графіків кілька
+
+    output.innerHTML = `<canvas id="myChart" width="800" height="400"></canvas>`;
+    output.className = 'one-block bg-white';
+
+    const ctx = document.getElementById('myChart');
+
+    const myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: categories,
+            datasets: [{
+                label: 'Якась назва графіка',
+                data: charts,
+                borderWidth: 1,
+                borderColor: 'red'
+            }]
+        },
+/*         options: {
+            plugins: {
+              zoom: {
+                zoom: {
+                  wheel: {
+                    enabled: true,
+                  },
+                  pinch: {
+                    enabled: true
+                  },
+                  mode: 'xy',
+                }
+              }
+            }
+        } */
+    });
+
+}
 
 // відмальовує хлібні крихти
 function renderBreadcrumbs(){
@@ -647,7 +670,7 @@ function hideLoader(){
     loader.className = '';
 }
 
-// 20-10-2021
+// 25-10-2021
 
 
 /* 
@@ -769,3 +792,44 @@ fetch(`https://api.bill.lviv.ua/api/monitoring/objects/257/metric/rxPower`, {
 })
 .catch(error => checkError(error));
  */
+
+
+// charts-test
+
+
+/* 
+const ctx = document.getElementById('charts-test');
+const myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+            label: '# of Votes',
+            data: [12, 19, 3, 5, 2, 3],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+}); */
