@@ -2,7 +2,10 @@
 
 // TODO: пропонувати у налаштуваннях юзати кеш (локалСторедж)
 // TODO: generate urls
-// TODO: charts -- add global function()?
+// TODO: add zoom 
+// TODO: перевірити крихти на кроці, коли малюється графік
+// TODO: додати назву ону в графік
+
 
 // крихти
 const breadcrumbs = document.getElementById('breadcrumbs');
@@ -429,13 +432,6 @@ output && output.addEventListener('click', event => {
                 }
             })
             .then(devices => {
-
-                // console.log(devices, id)
-
-                // перед використанням графіків, мусово очистити аутпут
-                // output.innerHTML = '';
-
-                // renderCharts(devices, name);
                 
                 // вкидаємо масив значень + назву ону, виводимо
                 renderCharts(devices, name, 'LTS', id);
@@ -450,9 +446,6 @@ output && output.addEventListener('click', event => {
                     level: '4',
                     data: '' // -empty-
                 }
-
-                // render output disbled; only render breadcrumbs
-                // renderBreadcrumbs();  
 
                 hideLoader();
                 
@@ -519,6 +512,14 @@ output && output.addEventListener('click', event => {
                     // render breadcrumbs
                     renderBreadcrumbs();
 
+                    // edit
+                    global[4] = {
+                        name,
+                        cls: 'one-block bg-white',
+                        level: '4',
+                        data: '' // -empty-
+                    }
+
                     hideLoader();
 
                 })
@@ -551,7 +552,15 @@ output && output.addEventListener('click', event => {
                 })
                 .then(devices => {
 
-                    renderCharts(devices, name, 'llll', id);
+                    renderCharts(devices, name, 'l', id);
+
+                    // edit
+                    global[4] = {
+                        name,
+                        cls: 'one-block bg-white',
+                        level: '4',
+                        data: '' // -empty-
+                    }
 
                     hideLoader();
 
@@ -585,7 +594,15 @@ output && output.addEventListener('click', event => {
                 })
                 .then(devices => {
                     
-                    renderCharts(devices, name, 'llll', id);
+                    renderCharts(devices, name, 'l', id);
+
+                    // edit
+                    global[4] = {
+                        name,
+                        cls: 'one-block bg-white',
+                        level: '4',
+                        data: '' // -empty-
+                    }
 
                     hideLoader();
 
@@ -619,7 +636,15 @@ output && output.addEventListener('click', event => {
                 })
                 .then(devices => {
                     
-                    renderCharts(devices, name, 'llll', id);
+                    renderCharts(devices, name, 'l', id);
+
+                    // edit
+                    global[4] = {
+                        name,
+                        cls: 'one-block bg-white',
+                        level: '4',
+                        data: '' // -empty-
+                    }
 
                     hideLoader();
 
