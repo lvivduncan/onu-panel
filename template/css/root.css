@@ -86,13 +86,7 @@ body
     --bg-body: #333940;
     /* --color-body: #838c96; */
 
-    
     --color-breadcrumbs: #fff;
-
-
-    /* стилізувати лінійку завантаження */
-/*     --start: linear-gradient(0deg, var(--white) 0%, #fafafa 100%); 
-    --finish: #000; */
 }
 
 

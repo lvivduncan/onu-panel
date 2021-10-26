@@ -206,6 +206,7 @@ for(let el = 0; el < asideLength; el++){
 // клік на елемент в аутпуті
 output && output.addEventListener('click', event => {
 
+    // debug
     // console.log(global)
 
     // клік має бути на елементі, а не на цілому блоці
@@ -217,8 +218,8 @@ output && output.addEventListener('click', event => {
         // айді поточного блоку (ітема)
         const id = event.target.dataset.id;
 
-        // test -- clear chart!!!
-        // let chart = '';
+        // назва сторінки, де знаходимося!
+        const name = event.target.dataset.name
 
         switch(level){
 
@@ -262,7 +263,7 @@ output && output.addEventListener('click', event => {
                 .then(devices => {
                     
                     // назва сторінки, де знаходимося!
-                    const name = event.target.dataset.name;
+                    // const name = event.target.dataset.name;
 
                     let data = '';
         
@@ -294,9 +295,6 @@ output && output.addEventListener('click', event => {
                         level: '2',
                         data
                     }
-
-                    // test -- if exsists
-                    // chart && chart.destroy();
 
                     // виводимо на сторінці
                     renderOutput();
@@ -332,9 +330,6 @@ output && output.addEventListener('click', event => {
                 })
                 .then(devices => {
                     
-                    // назва сторінки, де знаходимося!
-                    const name = event.target.dataset.name;
-
                     let data = '';
         
                     for(let i = 0; i < devices.data.length; i++){
@@ -366,9 +361,7 @@ output && output.addEventListener('click', event => {
                             }
                         }
         
-                        // TODO: ховати левел в неактивних, щоб не було переходу? 
-
-                        // ${item.status == '1' ? 'data-level="3"' : ''}> -- виводимо левел тільки тоді, коли є вона активна
+                        // виводимо левел тільки тоді, коли є вона активна
                         data += `
                             <div 
                                 class="output-item output-item-wrapper"
@@ -437,49 +430,29 @@ output && output.addEventListener('click', event => {
             })
             .then(devices => {
 
-                // TODO: графік оновлюється не одразу, спершу висирає статистику у вигляді тексту!
+                // console.log(devices, id)
 
-                // назва сторінки, де знаходимося!
-                const name = event.target.dataset.name;
+                // перед використанням графіків, мусово очистити аутпут
+                // output.innerHTML = '';
 
-                // костилі для тесту:
-                output.innerHTML = '';
-
-                // дані зі запиту, які мають бути виведені у графіку
-                const charts = [];
-                const categories = [];
+                // renderCharts(devices, name);
                 
-                // const item in devices
-                for(const item in devices){
-                    
-                    charts.push(devices[item]);
-                    categories.push(item);
-                }
-
-                // console.log(charts,categories)
-
-                // виводимо на сторінці
-                // вкидаємо масив значень
-                renderCharts(charts,categories);
-
-                // виводимо на сторінці
-                // renderOutput();
+                // вкидаємо масив значень + назву ону, виводимо
+                renderCharts(devices, name, 'LTS', id);
 
                 // render breadcrumbs
                 renderBreadcrumbs();
 
-                // const dataForGlobal = `${JSON.stringify(options)}`;
-
                 // оновлюємо конкретний елемент масива global[level]
-                // TODO: уже не потрібно? 
-                // TODO: немає назви для хлібних крихт
-                // TODO: перевірка на пусте значення 
                 global[4] = {
                     name,
                     cls: 'one-block bg-white',
                     level: '4',
-                    data: '-empty-' // перевірити
+                    data: '' // -empty-
                 }
+
+                // render output disbled; only render breadcrumbs
+                // renderBreadcrumbs();  
 
                 hideLoader();
                 
@@ -490,6 +463,174 @@ output && output.addEventListener('click', event => {
 
             // else
             default: '';
+        }
+    } else if(event.target.classList.contains('charts-item')){ // якщо клік на кнопці рендерингу графіка
+
+        // дата-атрибут за який період показувати дані
+        const date = event.target.dataset.date;
+
+        // айді поточного блоку (ітема)
+        const id = event.target.dataset.id;
+
+        // назва сторінки, де знаходимося!
+        const name = event.target.dataset.name
+
+        // різні дати для обробки
+        const d = new Date();
+        const day = d.getDay();
+        const month = d.getMonth();
+        // TODO: перевірити на останній/попередній місяць у році
+        const previousMonth = d.getMonth() - 1;
+        // TODO: перевірити
+        const quarter = d.getMonth() - 3;
+        const year = d.getFullYear();
+        // TODO: перевірити
+        const previousYear = d.getFullYear() - 1;
+
+        switch(date){
+
+            // нинішня статистика
+            case 'day': 
+
+                showLoader();
+            
+                fetch(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/metric/rxPower`, {
+                    method: "GET",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+                    },
+                })
+                .then(res => {
+                    if (res.status === 200) {
+        
+                        return res.json();
+                    } else {
+        
+                        error = res.status;
+                        throw error;
+                    }
+                })
+                .then(devices => {
+                    
+                    renderCharts(devices, name, 'LTS', id);
+
+                    // render breadcrumbs
+                    renderBreadcrumbs();
+
+                    hideLoader();
+
+                })
+                .catch(error => checkError(error));
+
+                break;
+
+            // за місяць (до нині)
+            case 'month': 
+
+                showLoader();
+                
+                fetch(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/metric/rxPower?startDt=${year}-${previousMonth}-${day}T00%3A00%3A00`, {
+                    method: "GET",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+                    },
+                })
+                .then(res => {
+                    if (res.status === 200) {
+        
+                        return res.json();
+                    } else {
+        
+                        error = res.status;
+                        throw error;
+                    }
+                })
+                .then(devices => {
+
+                    renderCharts(devices, name, 'llll', id);
+
+                    hideLoader();
+
+                })
+                .catch(error => checkError(error));
+
+                break;
+
+            // за квартал
+            case 'quarter':
+            
+                showLoader();
+                
+                fetch(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/metric/rxPower?startDt=${year}-${quarter}-${day}T00%3A00%3A00`, {
+                    method: "GET",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+                    },
+                })
+                .then(res => {
+                    if (res.status === 200) {
+        
+                        return res.json();
+                    } else {
+        
+                        error = res.status;
+                        throw error;
+                    }
+                })
+                .then(devices => {
+                    
+                    renderCharts(devices, name, 'llll', id);
+
+                    hideLoader();
+
+                })
+                .catch(error => checkError(error));
+            
+                break;
+
+            // за рік
+            case 'year':
+
+                showLoader();
+                
+                fetch(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/metric/rxPower?startDt=${previousYear}-${month}-${day}T00%3A00%3A00`, {
+                    method: "GET",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+                    },
+                })
+                .then(res => {
+                    if (res.status === 200) {
+        
+                        return res.json();
+                    } else {
+        
+                        error = res.status;
+                        throw error;
+                    }
+                })
+                .then(devices => {
+                    
+                    renderCharts(devices, name, 'llll', id);
+
+                    hideLoader();
+
+                })
+                .catch(error => checkError(error));
+            
+            break;
+
+            // це не тре
+            default: '';
+
         }
     }
 });
@@ -523,49 +664,83 @@ breadcrumbs && breadcrumbs.addEventListener('click', event => {
 
 
 
+function randomString(length = 7) {
+    let result = '';
+    const characters = 'abcdefghijklmnopqrstuvwxyz';
+    const charactersLength = characters.length;
+
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+}
 
 
-// test -- render charts.js
-// renderOutput() не використовується, бо це останній крок
-// ортимує масив значень і рендериться в аутпуті
-function renderCharts(charts,categories){
+// TODO: графіків буде кілька
 
-    // малюємо графік в аутпуті
-    // TODO: може бути, що графіків кілька
+/**
+ * @param {*} devices -- дані, які приходять і будуть оброблятися 
+ * @param {*} label -- назва девайса
+ * @param {*} dateFormat -- тип дати || 'LT' -- година/хвилина || 'LTS' -- година/хвилина/секунда || 'llll' -- вт. 26 жовт 2021 р., 11:59
+ * @param {*} id
+ */
+function renderCharts(devices = 0, label = 'noname', dateFormat = 'LT', id){
 
-    output.innerHTML = `<canvas id="myChart" width="800" height="400"></canvas>`;
+    // якщо айдішка загубилася -- все решта не має сенсу
+    if(id === undefined){
+        return;
+    }
+
+    // дані зі запиту, які мають бути виведені у графіку
+    const data = []; 
+    const labels = []; 
+    
+    for(const item in devices){
+        
+        // параметр
+        data.push(devices[item]);
+
+        // час
+        labels.push(moment(item).format(dateFormat));
+    }  
+
+    // генеруємо унікальну айдішку для графіка
+    const chartName = randomString();
+
+    // const canvas = document.createElement('canvas');
+    // canvas.id = chartName;
+    // output.append(canvas);
+
+    // output.innerHTML = '';
+
+    output.innerHTML = `
+        <div id="charts-select">
+            <div data-date="day" data-id="${id}" class="charts-item">Нині</div>
+            <div data-date="month" data-id="${id}" class="charts-item">За місяць</div>
+            <div data-date="quarter" data-id="${id}" class="charts-item">За квартал</div>
+            <div data-date="year" data-id="${id}" class="charts-item">За рік</div>
+        </div>
+        <canvas id="${chartName}"></canvas>
+    `;
+
     output.className = 'one-block bg-white';
 
-    const ctx = document.getElementById('myChart');
+    const ctx = document.getElementById(chartName);
 
-    const myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: categories,
-            datasets: [{
-                label: 'Якась назва графіка',
-                data: charts,
-                borderWidth: 1,
-                borderColor: 'red'
-            }]
-        },
-/*         options: {
-            plugins: {
-              zoom: {
-                zoom: {
-                  wheel: {
-                    enabled: true,
-                  },
-                  pinch: {
-                    enabled: true
-                  },
-                  mode: 'xy',
-                }
-              }
-            }
-        } */
-    });
-
+    const myChart = new Chart(ctx, 
+        {
+            type: 'line', // 'doughnut', 'bar', 'radar', 'bubble', 'scatter', 'pie', 'polarArea'
+            data: {
+                labels,
+                datasets: [{
+                    label,
+                    data,
+                    borderWidth: 1,
+                    borderColor: 'red'
+                }]
+            },
+        }
+    );
 }
 
 // відмальовує хлібні крихти
@@ -670,166 +845,109 @@ function hideLoader(){
     loader.className = '';
 }
 
-// 25-10-2021
+// 26-10-2021
 
+
+
+// просто зара в мілісекундах
+// const now = Date.now();
+// let date = new Date();
+
+// console.log(
+//     moment(now).format('MMMM Do YYYY, h:mm:ss a'), '\n',
+//     moment().format('MMMM Do YYYY, h:mm:ss a'), '\n',
+//     moment().format('dddd'), '\n',
+//     moment().format("MMM Do YY"), '\n',
+//     moment().format('YYYY [escaped] YYYY'), '\n',
+//     moment().format(), '\n',
+//     date.getMonth()
+// )
+
+
+// https://api.bill.lviv.ua/api/monitoring/objects/257/metric/rxPower?startDt=2021-09-01T00%3A00%3A00Z
+
+
+// fetch(`https://api.bill.lviv.ua/api/monitoring/objects/257/metric/rxPower?startDt=2021-09-14T10%3A43%3A12Z&endDt=2021-10-20T10%3A43%3A12Z`, {
+//     method: "GET",
+//     headers: {
+//         'Accept': 'application/json',
+//         'Content-Type': 'application/json',
+//         'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+//     },
+// })
+// .then(res => {
+//     if (res.status === 200) {
+
+//         return res.json();
+//     } else {
+
+//         error = res.status;
+//         throw error;
+//     }
+// })
+// .then(devices => {
+
+//     console.log(devices)
+    
+// })
+// .catch(error => checkError(error));
 
 /* 
-// devices/1 -- айді кореневого свіча
+// https://api.bill.lviv.ua/api/monitoring/objects/257/metric/rxPower?startDt=2021-10-14T10%3A43%3A12Z&endDt=2021-10-20T10%3A43%3A12Z
 
-// стисла інфа
-fetch(`https://api.bill.lviv.ua/api/monitoring/devices/1/objects`, {
-    method: "GET",
-    headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
-    },
-})
-.then(res => {
-    if (res.status === 200) {
+const start = 10;
+const finish = 10;
 
-        return res.json();
-    } else {
 
-        error = res.status;
-        throw error;
-    }
-})
-.then(devices => {
 
-    console.log('children=1: ', devices)
-    
-})
-.catch(error => checkError(error));
+let date = new Date();
 
- */
+console.log(
+    date.getFullYear(), ' - ', 
+    date.getMonth(), ' - ', 
+    date.getDate(), ' - ', 
+    date.getHours(), ' - ', 
+    date.getMinutes(), ' - ', 
+    date.getSeconds(), ' - ', 
+    date.getMilliseconds()
+)
 
-/* 
-// розлога інфа з чілдренами
-fetch(`https://api.bill.lviv.ua/api/monitoring/devices/1/objects?children=1`, {
-    method: "GET",
-    headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
-    },
-})
-.then(res => {
-    if (res.status === 200) {
-
-        return res.json();
-    } else {
-
-        error = res.status;
-        throw error;
-    }
-})
-.then(devices => {
-
-    console.log('children=1: ', devices)
-    
-})
-.catch(error => checkError(error));
- */
-
-/* 
-// Get network devices object children list
-// чілдрени "GPON0/1"
-fetch(`https://api.bill.lviv.ua/api/monitoring/objects/253/children`, {
-    method: "GET",
-    headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
-    },
-})
-.then(res => {
-    if (res.status === 200) {
-
-        return res.json();
-    } else {
-
-        error = res.status;
-        throw error;
-    }
-})
-.then(devices => {
-
-    console.log('чілдрени "GPON0/1" id 253: ', devices)
-    
-})
-.catch(error => checkError(error));
+console.log(
+    date.setFullYear(2021),
+    date.setMonth(9),
+    // date.setDate(date),
+    // date.setHours(00),
+    // date.setMinutes(00),
+    // date.setSeconds(00),
+    // date.setMilliseconds(0),
+    date.setTime(0)
+)
  */
 
 
+//     https://api.bill.lviv.ua/api/monitoring/objects/257/meta
 
+// fetch(`https://api.bill.lviv.ua/api/monitoring/objects/257/meta`, {
+//     method: "GET",
+//     headers: {
+//         'Accept': 'application/json',
+//         'Content-Type': 'application/json',
+//         'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+//     },
+// })
+// .then(res => {
+//     if (res.status === 200) {
 
+//         return res.json();
+//     } else {
 
-/* 
-// metrics
-fetch(`https://api.bill.lviv.ua/api/monitoring/objects/257/metric/rxPower`, {
-    method: "GET",
-    headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
-    },
-})
-.then(res => {
-    if (res.status === 200) {
+//         error = res.status;
+//         throw error;
+//     }
+// })
+// .then(devices => {
 
-        return res.json();
-    } else {
-
-        error = res.status;
-        throw error;
-    }
-})
-.then(devices => {
-
-    console.log('rxPower: ', devices)
+//     console.log(devices)
     
-})
-.catch(error => checkError(error));
- */
-
-
-// charts-test
-
-
-/* 
-const ctx = document.getElementById('charts-test');
-const myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            y: {
-                beginAtZero: true
-            }
-        }
-    }
-}); */
+// })
+// .catch(error => checkError(error));

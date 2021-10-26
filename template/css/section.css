@@ -253,6 +253,32 @@
     border-radius: 50%;
 }
 
+/* canvas */
+#output canvas
+{
+    margin: 5px 0;
+}
+
+/* кнопки вибору графіків */
+#charts-select
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+}
+
+/* кнопка */
+#charts-select div
+{
+    cursor: pointer;
+    padding: 0px 10px;
+    color: var(--white);
+    background: var(--blue);
+    border-radius: 5px;
+}
+
+
 
 
 /* статуси у вигляді маленької лампочки */
