@@ -124,8 +124,8 @@ if(adminPanel !== null){
 
     let error;
 
-    form && form.addEventListener('submit', e => {
-        e.preventDefault();
+    form && form.addEventListener('submit', event => {
+        event.preventDefault();
 
         fetch('https://api.bill.lviv.ua/api/auth', {
             headers: {
@@ -140,6 +140,11 @@ if(adminPanel !== null){
 
                 return res.json();
             } else {
+
+                setTimeout(() => {
+
+                    window.location.href = "./login-panel.html";
+                }, 2000);
 
                 error = res.status;
                 throw error;

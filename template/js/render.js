@@ -770,25 +770,25 @@ function renderCharts(devices = 0, label = 'noname', dateFormat = 'LT', id){
             },
 
             options: {
+                // maintainAspectRatio: false,
+
                 plugins: {
-
-
 
                   zoom: {
                     zoom: {
-                      wheel: {
-                        enabled: true,
-                      },
-                      pinch: {
-                        enabled: true
-                      },
-                      mode: 'xy',
-                    },
-                    pan: {
-                        enabled: true,
-                        mode: 'xy',                        
+                        wheel: {
+                            enabled: true,
+                        },
+                        pinch: {
+                            enabled: true
+                        },
+                        mode: 'xy',
+                        },
+                        pan: {
+                            enabled: true,
+                            mode: 'xy',                        
+                        }
                     }
-                  }
                 }
             }    
         }
