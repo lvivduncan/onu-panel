@@ -764,6 +764,22 @@ function renderCharts(devices = 0, label = 'noname', dateFormat = 'LT', id){
                     borderColor: 'red'
                 }]
             },
+
+            options: {
+                plugins: {
+                  zoom: {
+                    zoom: {
+                      wheel: {
+                        enabled: true,
+                      },
+                      pinch: {
+                        enabled: true
+                      },
+                      mode: 'xy',
+                    }
+                  }
+                }
+            }    
         }
     );
 }
