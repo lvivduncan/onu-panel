@@ -85,6 +85,10 @@ for(let el = 0; el < asideLength; el++){
                 // очищаємо глобал і виходимо зі системи
                 global.length = 0;
 
+                window.location.href = 'login-panel.html';
+                localStorage.clear();
+
+
                 // виводимо на сторінці
                 renderOutput();
 
