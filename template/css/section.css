@@ -129,6 +129,8 @@
 #output.one-block.bg-white
 {
     background: #fffff0;
+
+    padding: 5px 20px 20px;
 }
 
 
@@ -266,7 +268,7 @@
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    padding: 5px;
+    /* padding: 5px; */
 }
 
 /* кнопка */
