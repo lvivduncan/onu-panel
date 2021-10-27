@@ -143,7 +143,7 @@ if(adminPanel !== null){
 
                 setTimeout(() => {
 
-                    window.location.href = "./login-panel.html";
+                    window.location.href = "";
                 }, 2000);
 
                 error = res.status;
