@@ -3,7 +3,7 @@
 // TODO: пропонувати у налаштуваннях юзати кеш (локалСторедж)
 // TODO: generate urls
 // TODO: add zoom 
-// TODO: перевірити крихти на кроці, коли малюється графік
+// TODO: перевірити крихти на кроці, коли малюється графік (не показує назву!)
 // TODO: додати назву ону в графік
 
 
@@ -513,7 +513,7 @@ output && output.addEventListener('click', event => {
                     renderBreadcrumbs();
 
                     // edit
-                    global[4] = {
+                    global[5] = {
                         name,
                         cls: 'one-block bg-white',
                         level: '4',
@@ -555,7 +555,7 @@ output && output.addEventListener('click', event => {
                     renderCharts(devices, name, 'l', id);
 
                     // edit
-                    global[4] = {
+                    global[5] = {
                         name,
                         cls: 'one-block bg-white',
                         level: '4',
@@ -569,7 +569,7 @@ output && output.addEventListener('click', event => {
 
                 break;
 
-            // за квартал
+            // за квартал (до нині)
             case 'quarter':
             
                 showLoader();
@@ -597,7 +597,7 @@ output && output.addEventListener('click', event => {
                     renderCharts(devices, name, 'l', id);
 
                     // edit
-                    global[4] = {
+                    global[5] = {
                         name,
                         cls: 'one-block bg-white',
                         level: '4',
@@ -611,7 +611,7 @@ output && output.addEventListener('click', event => {
             
                 break;
 
-            // за рік
+            // за рік (до нині)
             case 'year':
 
                 showLoader();
@@ -639,7 +639,7 @@ output && output.addEventListener('click', event => {
                     renderCharts(devices, name, 'l', id);
 
                     // edit
-                    global[4] = {
+                    global[5] = {
                         name,
                         cls: 'one-block bg-white',
                         level: '4',
@@ -741,9 +741,9 @@ function renderCharts(devices = 0, label = 'noname', dateFormat = 'LT', id){
     output.innerHTML = `
         <div id="charts-select">
             <div data-date="day" data-id="${id}" class="charts-item">Нині</div>
-            <div data-date="month" data-id="${id}" class="charts-item">За місяць</div>
-            <div data-date="quarter" data-id="${id}" class="charts-item">За квартал</div>
-            <div data-date="year" data-id="${id}" class="charts-item">За рік</div>
+            <div data-date="month" data-id="${id}" class="charts-item">Місяць</div>
+            <div data-date="quarter" data-id="${id}" class="charts-item">Квартал</div>
+            <div data-date="year" data-id="${id}" class="charts-item">Рік</div>
         </div>
         <canvas id="${chartName}"></canvas>
     `;
@@ -870,109 +870,5 @@ function hideLoader(){
     loader.className = '';
 }
 
-// 26-10-2021
+// 27-10-2021
 
-
-
-// просто зара в мілісекундах
-// const now = Date.now();
-// let date = new Date();
-
-// console.log(
-//     moment(now).format('MMMM Do YYYY, h:mm:ss a'), '\n',
-//     moment().format('MMMM Do YYYY, h:mm:ss a'), '\n',
-//     moment().format('dddd'), '\n',
-//     moment().format("MMM Do YY"), '\n',
-//     moment().format('YYYY [escaped] YYYY'), '\n',
-//     moment().format(), '\n',
-//     date.getMonth()
-// )
-
-
-// https://api.bill.lviv.ua/api/monitoring/objects/257/metric/rxPower?startDt=2021-09-01T00%3A00%3A00Z
-
-
-// fetch(`https://api.bill.lviv.ua/api/monitoring/objects/257/metric/rxPower?startDt=2021-09-14T10%3A43%3A12Z&endDt=2021-10-20T10%3A43%3A12Z`, {
-//     method: "GET",
-//     headers: {
-//         'Accept': 'application/json',
-//         'Content-Type': 'application/json',
-//         'Authorization': 'Bearer ' + localStorage.getItem('access_token')
-//     },
-// })
-// .then(res => {
-//     if (res.status === 200) {
-
-//         return res.json();
-//     } else {
-
-//         error = res.status;
-//         throw error;
-//     }
-// })
-// .then(devices => {
-
-//     console.log(devices)
-    
-// })
-// .catch(error => checkError(error));
-
-/* 
-// https://api.bill.lviv.ua/api/monitoring/objects/257/metric/rxPower?startDt=2021-10-14T10%3A43%3A12Z&endDt=2021-10-20T10%3A43%3A12Z
-
-const start = 10;
-const finish = 10;
-
-
-
-let date = new Date();
-
-console.log(
-    date.getFullYear(), ' - ', 
-    date.getMonth(), ' - ', 
-    date.getDate(), ' - ', 
-    date.getHours(), ' - ', 
-    date.getMinutes(), ' - ', 
-    date.getSeconds(), ' - ', 
-    date.getMilliseconds()
-)
-
-console.log(
-    date.setFullYear(2021),
-    date.setMonth(9),
-    // date.setDate(date),
-    // date.setHours(00),
-    // date.setMinutes(00),
-    // date.setSeconds(00),
-    // date.setMilliseconds(0),
-    date.setTime(0)
-)
- */
-
-
-//     https://api.bill.lviv.ua/api/monitoring/objects/257/meta
-
-// fetch(`https://api.bill.lviv.ua/api/monitoring/objects/257/meta`, {
-//     method: "GET",
-//     headers: {
-//         'Accept': 'application/json',
-//         'Content-Type': 'application/json',
-//         'Authorization': 'Bearer ' + localStorage.getItem('access_token')
-//     },
-// })
-// .then(res => {
-//     if (res.status === 200) {
-
-//         return res.json();
-//     } else {
-
-//         error = res.status;
-//         throw error;
-//     }
-// })
-// .then(devices => {
-
-//     console.log(devices)
-    
-// })
-// .catch(error => checkError(error));
