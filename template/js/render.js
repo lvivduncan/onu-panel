@@ -771,6 +771,9 @@ function renderCharts(devices = 0, label = 'noname', dateFormat = 'LT', id){
 
             options: {
                 plugins: {
+
+
+
                   zoom: {
                     zoom: {
                       wheel: {
@@ -780,6 +783,10 @@ function renderCharts(devices = 0, label = 'noname', dateFormat = 'LT', id){
                         enabled: true
                       },
                       mode: 'xy',
+                    },
+                    pan: {
+                        enabled: true,
+                        mode: 'xy',                        
                     }
                   }
                 }

@@ -1,6 +1,8 @@
 // 19-10-2021
 // tmp -- щоб коду не було забагато, потім об'єднати
 
+// TODO: неправильний пароль -- релод
+
 const body = document.getElementsByTagName('body')[0];
 
 // view/hide password input
@@ -157,29 +159,5 @@ if(adminPanel !== null){
         .catch(error => checkError(error));
 
     });
-/* 
-    document.getElementById('get-user-data') && document.getElementById('get-user-data').addEventListener('click', e => {
-        e.preventDefault();
 
-        fetch('https://api.bill.lviv.ua/api/auth', {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('access_token')
-            },
-            method: "GET",
-        })
-            .then(res => {
-                if (res.status === 200)
-                    return res.json();
-                else console.error('Error fetch data; http status code = ' + res.status);
-            })
-            .then(data => {
-
-                console.log('User data ' + data);
-                document.getElementById('user_data').innerText = JSON.stringify(data);
-            })
-            .catch(error => console.error(error));
-    });
-     */
 }
