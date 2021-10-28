@@ -758,16 +758,7 @@ function renderCharts(devices = 0, label = 'noname', dateFormat = 'LT', id){
     // генеруємо унікальну айдішку для графіка
     const chartName = randomString();
 
-/*
-<div id="charts-select">
-    <div data-date="day" data-id="${id}" class="charts-item">Нині</div>
-    <div data-date="month" data-id="${id}" class="charts-item">Місяць</div>
-    <div data-date="quarter" data-id="${id}" class="charts-item">Квартал</div>
-    <div data-date="year" data-id="${id}" class="charts-item">Рік</div>
-</div>
-*/
-
-{/* <input type="text" id="datetimerange" size="40" style="text-align:center"> */}
+    // <input type="text" id="datetimerange" size="40" style="text-align:center">
     output.innerHTML = `
 
     <div id="charts-select">
