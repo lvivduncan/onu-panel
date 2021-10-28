@@ -48,6 +48,7 @@ for(let el = 0; el < asideLength; el++){
 
     asideLink[el].addEventListener('click', function(event) {
         
+        /*
         // if this mobile divice -- toggle panel (hide)
         if(isTouchDevice()){
 
@@ -62,6 +63,7 @@ for(let el = 0; el < asideLength; el++){
                 }
             }
         }
+        */
 
         // stylization links
         for(let i = 0; i < asideLength; i++){
@@ -198,7 +200,27 @@ for(let el = 0; el < asideLength; el++){
 
                     // render breadcrumbs
                     renderBreadcrumbs();   
+                } else if(name === 'Акаунт'){
+
+                    // знищувати наступні елементи масива!
+                    global.length = 2;
+
+                    // оновлюємо конкретний елемент масива global[level]
+                    global[1] = {
+                        name: 'Акаунт',
+                        cls: 'one-block',
+                        level: '1',
+                        data: '<h1>Акаунт</h1><p>Тут буде виводитися якась інформація щодо налаштувань акаунта</p>',
+                    }
+
+                    // виводимо на сторінці
+                    renderOutput();
+
+                    // render breadcrumbs
+                    renderBreadcrumbs();   
+
                 }
+
                 break;
 
             default: console.log('Порожній пункт');
@@ -765,14 +787,19 @@ function renderCharts(devices = 0, label = 'noname', dateFormat = 'LT', id){
                     label,
                     data,
                     borderWidth: 1,
-                    borderColor: 'red'
+                    borderColor: 'black',
+                    pointRadius: 0
                 }]
             },
 
             options: {
-                // maintainAspectRatio: false,
 
                 plugins: {
+
+                    // сховав назву з графіка
+                    legend: {
+                        display: false
+                    },
 
                   zoom: {
                     zoom: {

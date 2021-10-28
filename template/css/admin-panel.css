@@ -1,7 +1,7 @@
 
 #admin-panel
 {
-    padding: 70px 0 0 260px;
+    padding: 70px 0 0 0;
     height: 100%;
 }
 
@@ -9,11 +9,17 @@
 {
     #admin-panel
     {
-        padding: 70px 0 0 60px;
+        padding: 70px 0 0 0;
     }    
 }
 
 #admin-panel.toggle
 {
-    padding: 70px 0 0 60px;
+    padding: 70px 0 0 0;
+}
+
+#admin-panel.toggle section
+{
+    width: 100%;
+    left: 0;
 }

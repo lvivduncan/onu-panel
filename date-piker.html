@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/alumuko/vanilla-datetimerange-picker@latest/extra/vanilla-datetimerange-picker-dark.css">
+        <title>vanilla-datetimerange-picker simple example.</title>
+        <style>
+            body {
+                color: white;
+                background-color: rgb(59, 55, 55);
+            }
+        </style>
+    </head>
+    <body>
+
+        <div>
+            <input type="text" id="datetimerange" size="40" style="text-align:center">
+        </div>
+        <div id="output"></div>
+
+        <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/alumuko/vanilla-datetimerange-picker@latest/dist/vanilla-datetimerange-picker.js"></script>
+        <script>
+
+        // window.addEventListener("load", function (event) {
+
+            new DateRangePicker('datetimerange',
+                {
+                    timePicker: true,
+                    opens: 'left',
+                    ranges: {
+                        'Нині': [moment().startOf('day'), moment().endOf('day')],
+                        'Вчора': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
+                        'Тиждень': [moment().subtract(6, 'days').startOf('day'), moment().endOf('day')],
+                        'Місяць': [moment().startOf('month').startOf('day'), moment().endOf('month').endOf('day')],
+                        'Квартал': [moment().subtract(3, 'month').startOf('day'), moment().endOf('month').endOf('day')],
+                        'Рік': [moment().subtract(1, 'year').startOf('day'), moment().endOf('month').endOf('day')],
+                    },
+                    locale: {
+                        format: "YYYY-MM-DD HH:mm:ss",
+                    }
+                },
+                function (start, end) {
+                    document.getElementById('output').innerHTML = start.format() + " - " + end.format();
+                })
+
+        // });
+
+        </script>
+    </body>
+</html>

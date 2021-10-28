@@ -6,9 +6,9 @@
 
     position: fixed;
     top: 0;
-    left: 260px;
+    left: 280px;
     z-index: 1;
-    width: calc(100% - 260px);
+    width: calc(100% - 280px);
     height: 70px;
     padding: 0 20px;
     display: flex;
@@ -18,6 +18,8 @@
     background: var(--bg-block);
     color: var(--color-block);
     box-shadow: var(--shadow-block);
+
+    transition: .5s;
 }
 
 #dark-mode #admin-panel header
@@ -28,16 +30,20 @@
 
 #admin-panel.toggle header
 {
-    left: 60px;
-    width: calc(100% - 60px);
+    /* left: 60px; */
+    /* width: calc(100% - 60px); */
+    left: 0;
+    width: 100%;
 }
 
 @media(max-width:776px)
 {
     #admin-panel header
     {
-        left: 60px;
-        width: calc(100% - 60px);
+        /* left: 60px; */
+        /* width: calc(100% - 60px); */
+        width: 100%;
+        left: 0;
     }  
 }
 
@@ -46,19 +52,13 @@
     #admin-panel.toggle header,
     #admin-panel header
     {
-        left: 0;
-        width: 100%;
+        /* left: 0; */
+        /* width: 100%; */
     }
 }
 
-/* toggle sidebar */
-#menu-button
-{
-    width: 24px;
-    height: 24px;
-    cursor: pointer;
-}
 
+/* 
 #search > svg
 {
     display: none;
@@ -74,7 +74,7 @@
         margin-right: auto;
         cursor: pointer;
     }    
-}
+} */
 
 #search form
 {
@@ -85,7 +85,7 @@
 {
     #search form
     {
-        display: none;
+        /* display: none; */
     }
 }
 

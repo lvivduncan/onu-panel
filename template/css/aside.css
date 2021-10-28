@@ -8,33 +8,33 @@
     position: fixed;
     top: 0;
     left: 0;
+    z-index: 2;
+    transition: .5s;
+
+    transform: translateX(0);
+    box-shadow: var(--shadow-block);
 }
 
 #admin-panel.toggle aside
 {
-    width: 60px;
+    transform: translateX(-260px);
+    box-shadow: none;
 }
 
 @media(max-width:776px)
 {
     #admin-panel aside
     {
-        width: 60px;
+        transform: translateX(-260px);
+        box-shadow: none;
     } 
 
     #admin-panel.toggle aside
     {
-        width: 260px;
+        transform: translateX(0);
+        box-shadow: var(--shadow-block);
         z-index: 1;
     }       
-}
-
-@media(max-width:550px)
-{
-    #admin-panel aside
-    {
-        top: 71px;
-    }
 }
 
 #admin-panel aside h1
@@ -52,14 +52,6 @@
     justify-content: center;
 }
 
-@media(max-width:550px)
-{
-    #admin-panel aside h1
-    {
-        display: none;
-    }
-}
-
 #admin-panel aside svg
 {
     width: 24px;
@@ -68,7 +60,7 @@
 
 /* loader */
 /*
-лодер по дефолту відображається у сайдбарі над назвою "адмін-панель"
+лодер по дефолту відображається у сайдбарі над кнопкою згортання/розгортання
 */
 
 #loader
@@ -87,77 +79,30 @@
     display: block;
 }
 
-@media(max-width:776px)
-{
-    #loader.active
-    {
-        height: 70px;
-    }
-}
-
-@media(max-width:540px)
-{
-    #loader.active
-    {
-        position: fixed;
-        bottom: 30px;
-        left: 30px;
-    }
-}
-
 #loader.active::before
 {
-    content: 'Завантаження';
-    display: block;
-    color: var(--tomato);
-    font-size: 16px;
+    content: '';
+    width: 16px;
+    height: 16px;
+
+    border: 2px solid var(--white);
+    border-top: 2px solid var(--tomato);
+    border-radius: 50%;
+
+    position: absolute;
+    top: calc(50% - 8px);
+    left: calc(50% - 8px);
+
     animation: loading 1s linear infinite;
-}
-
-@media(max-width:776px)
-{
-    
-    #loader.active::before
-    {
-        content: '';
-        width: 16px;
-        height: 16px;
-
-        border: 2px solid var(--color-block);
-        border-top: 2px solid red;
-        border-radius: 50%;
-
-        position: absolute;
-        top: calc(50% - 8px);
-        left: calc(50% - 8px);
-    }
 }
 
 @keyframes loading
 {
-    0%
-    {
-        opacity: 0;
-    }
     100%
     {
-        opacity: 1;
+        transform: rotate(360deg);
     }
 }
-
-@media(max-width:776px)
-{
-    @keyframes loading
-    {
-        to
-        {
-            transform: rotate(360deg);
-        }
-    }    
-}
-
-
-
 
 /* назва блоку (адмін-панель) */
 #admin-panel aside h1 span
@@ -166,23 +111,18 @@
     margin-left: 5px;
 }
 
-/* ховаємо назву, лишаємо іконку */
-#admin-panel.toggle aside h1 span
-{
-    display: none;
-}
-
-@media(max-width:776px)
-{
-    #admin-panel aside h1 span
-    {
-        display: none;
-    }    
-}
-
 #scroll
 {
-    height: 100%;
+    height: calc(100% - 70px);
+}
+
+/* прокрутка */
+@media(max-width:776px)
+{
+    #scroll
+    {
+        overflow-y: scroll;
+    }
 }
 
 @media(max-width:550px)
@@ -192,10 +132,10 @@
         padding: 0 0 80px;
     }
 
-    #admin-panel.toggle #scroll
+/*     #admin-panel.toggle #scroll
     {
         border-right: 1px solid var(--bg-body);
-    }
+    } */
 }
 
 #scroll ul
@@ -269,24 +209,6 @@
     cursor: pointer;
 }
 
-#admin-panel.toggle #scroll li p
-{
-    justify-content: center;
-}
-
-@media(max-width:776px)
-{
-    #admin-panel.toggle #scroll li p
-    {
-        justify-content: inherit;
-    }    
-
-    #scroll li p
-    {
-        justify-content: center;
-    }
-}
-
 #scroll li p.active
 {
     color: var(--color-nav-active);
@@ -304,47 +226,28 @@
     height: 14px;
 }
 
-#admin-panel.toggle #scroll p svg
-{
-    width: 34px;
-    height: 34px;
-}
-
-@media(max-width:776px)
-{
-    #admin-panel.toggle #scroll p svg
-    {
-        width: 14px;
-        height: 14px;
-    }
-}
-
 /* назва пункта меню */
 #scroll li span
 {
     display: block;
 }
 
-#scroll li span.toggle
+/* toggle sidebar */
+#menu-button
 {
-    display: none;
-}
+    width: 34px;
+    height: 34px;
+    cursor: pointer;
+    position: absolute;
+    bottom: 10px;
+    right: -32px;
+    background: var(--gray-dark);
+    border-left: none;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-@media(max-width:776px)
-{
-    #scroll li span
-    {
-        display: none;
-    }    
-
-    #admin-panel.toggle #scroll li span
-    {
-        display: block;
-    }
-
-    #admin-panel aside svg
-    {
-        width: 34px;
-        height: 34px;
-    }
+    box-shadow: 3px 0px 0 1px rgb(0 0 0 / 10%);
 }
