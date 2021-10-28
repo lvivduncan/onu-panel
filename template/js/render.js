@@ -758,12 +758,6 @@ function renderCharts(devices = 0, label = 'noname', dateFormat = 'LT', id){
     // генеруємо унікальну айдішку для графіка
     const chartName = randomString();
 
-    // const canvas = document.createElement('canvas');
-    // canvas.id = chartName;
-    // output.append(canvas);
-
-    // output.innerHTML = '';
-
     output.innerHTML = `
         <div id="charts-select">
             <div data-date="day" data-id="${id}" class="charts-item">Нині</div>
@@ -853,7 +847,7 @@ function renderOutput(){
         output && (output.className = last.cls);
     } else {
 
-        output.innerHTML = '<h1>Вихід зі системи</h1><p>TODO: переадресація</p>';
+        output.innerHTML = '<h1>Вихід зі системи</h1>';
         output.className = 'one-block';
     }
 
@@ -895,6 +889,7 @@ function checkError(err) {
 function checkStatus(s){
 
     let status;
+    
     switch(s){
         case 0: status = 'gray'; break; // disabled
         case 1: status = 'green'; break; // up
@@ -924,5 +919,4 @@ function hideLoader(){
     loader.className = '';
 }
 
-// 27-10-2021
-
+// 28-10-2021
