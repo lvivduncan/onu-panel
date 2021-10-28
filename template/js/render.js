@@ -437,51 +437,51 @@ output && output.addEventListener('click', event => {
 
             case '3': 
 
-            showLoader();
-            
-            fetch(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/metric/rxPower`, {
-                method: "GET",
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + localStorage.getItem('access_token')
-                },
-            })
-            .then(res => {
-                if (res.status === 200) {
-
-                    return res.json();
-                } else {
-
-                    error = res.status;
-                    throw error;
-                }
-            })
-            .then(devices => {
+                showLoader();
                 
-                // вкидаємо масив значень + назву ону, виводимо
-                renderCharts(devices, name, 'LTS', id);
+                fetch(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/metric/rxPower`, {
+                    method: "GET",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+                    },
+                })
+                .then(res => {
+                    if (res.status === 200) {
 
-                // render breadcrumbs
-                renderBreadcrumbs();
+                        return res.json();
+                    } else {
 
-                // оновлюємо конкретний елемент масива global[level]
-                global[4] = {
-                    name,
-                    cls: 'one-block bg-white',
-                    level: '4',
-                    data: '' // -empty-
-                }
+                        error = res.status;
+                        throw error;
+                    }
+                })
+                .then(devices => {
+                    
+                    // вкидаємо масив значень + назву ону, виводимо
+                    renderCharts(devices, name, 'LTS', id);
 
-                hideLoader();
-                
-            })
-            .catch(error => checkError(error));
+                    // render breadcrumbs
+                    renderBreadcrumbs();
 
-            break;
+                    // оновлюємо конкретний елемент масива global[level]
+                    global[4] = {
+                        name,
+                        cls: 'one-block bg-white',
+                        level: '4',
+                        data: '' // -empty-
+                    }
 
-            // else
-            default: '';
+                    hideLoader();
+                    
+                })
+                .catch(error => checkError(error));
+
+                break;
+
+                // else
+                default: '';
         }
     } else if(event.target.classList.contains('charts-item')){ // якщо клік на кнопці рендерингу графіка
 
@@ -758,13 +758,25 @@ function renderCharts(devices = 0, label = 'noname', dateFormat = 'LT', id){
     // генеруємо унікальну айдішку для графіка
     const chartName = randomString();
 
+/*
+<div id="charts-select">
+    <div data-date="day" data-id="${id}" class="charts-item">Нині</div>
+    <div data-date="month" data-id="${id}" class="charts-item">Місяць</div>
+    <div data-date="quarter" data-id="${id}" class="charts-item">Квартал</div>
+    <div data-date="year" data-id="${id}" class="charts-item">Рік</div>
+</div>
+*/
+
+{/* <input type="text" id="datetimerange" size="40" style="text-align:center"> */}
     output.innerHTML = `
-        <div id="charts-select">
-            <div data-date="day" data-id="${id}" class="charts-item">Нині</div>
-            <div data-date="month" data-id="${id}" class="charts-item">Місяць</div>
-            <div data-date="quarter" data-id="${id}" class="charts-item">Квартал</div>
-            <div data-date="year" data-id="${id}" class="charts-item">Рік</div>
-        </div>
+
+    <div id="charts-select">
+        <div data-date="day" data-id="${id}" class="charts-item">Нині</div>
+        <div data-date="month" data-id="${id}" class="charts-item">Місяць</div>
+        <div data-date="quarter" data-id="${id}" class="charts-item">Квартал</div>
+        <div data-date="year" data-id="${id}" class="charts-item">Рік</div>
+    </div>
+
         <canvas id="${chartName}"></canvas>
     `;
 
@@ -795,7 +807,8 @@ function renderCharts(devices = 0, label = 'noname', dateFormat = 'LT', id){
                         display: false
                     },
 
-                  zoom: {
+                // zoom, scroll and touch
+                zoom: {
                     zoom: {
                         wheel: {
                             enabled: true,
@@ -814,7 +827,44 @@ function renderCharts(devices = 0, label = 'noname', dateFormat = 'LT', id){
             }    
         }
     );
+
+
+
 }
+
+// TODO: дописати і протестувати функцію
+
+// календар для графіка
+function calendar(){
+    
+    new DateRangePicker('datetimerange', {
+            timePicker: true,
+            opens: 'left',
+            ranges: {
+                'Нині': [moment().startOf('day'), moment().endOf('day')],
+                'Вчора': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
+                'Тиждень': [moment().subtract(6, 'days').startOf('day'), moment().endOf('day')],
+                'Місяць': [moment().startOf('month').startOf('day'), moment().endOf('month').endOf('day')],
+                'Квартал': [moment().subtract(3, 'month').startOf('day'), moment().endOf('month').endOf('day')],
+                'Рік': [moment().subtract(1, 'year').startOf('day'), moment().endOf('month').endOf('day')],
+            },
+            locale: {
+                format: "YYYY-MM-DD HH:mm:ss",
+            }
+        },
+        function (start, end) {
+            // document.getElementById('output').innerHTML = start.format() + " - " + end.format();
+            // console.log(start.format() + " - " + end.format());
+            alert(console.log(start.format() + " - " + end.format()))
+
+            // отримуємо 2 значення і підставляємо у запит 
+            // TODO: include
+            
+        }
+    );
+}
+
+
 
 // відмальовує хлібні крихти
 function renderBreadcrumbs(){
@@ -889,7 +939,7 @@ function checkError(err) {
 function checkStatus(s){
 
     let status;
-    
+
     switch(s){
         case 0: status = 'gray'; break; // disabled
         case 1: status = 'green'; break; // up
