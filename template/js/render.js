@@ -483,7 +483,69 @@ output && output.addEventListener('click', event => {
                 // else
                 default: '';
         }
-    } else if(event.target.classList.contains('charts-item')){ // якщо клік на кнопці рендерингу графіка
+    } 
+    
+    
+    // TODO: клік у поле відкриє календар -- клік на позицію повинен запускати фетч!
+    // виняток: якщо клік на кастом-рендж
+    
+    // <ul>
+    //     <li data-range-key="Нині" class="">Нині</li>
+    //     <li data-range-key="Вчора" class="active">Вчора</li>
+    //     <li data-range-key="Тиждень" class="">Тиждень</li>
+    //     <li data-range-key="Місяць" class="">Місяць</li>
+    //     <li data-range-key="Квартал" class="">Квартал</li>
+    //     <li data-range-key="Рік" class="">Рік</li>
+    //     <li data-range-key="Custom Range">Custom Range</li>
+    // </ul>
+
+    // якщо клікнули у поле дейт-пікера
+    else if(event.target.id === 'datetimerange'){
+
+        // calendar();
+
+
+        let arr;
+
+        new DateRangePicker('datetimerange', {
+                timePicker: true,
+                opens: 'left',
+                ranges: {
+                    'Нині': [moment().startOf('day'), moment().endOf('day')],
+                    'Вчора': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
+                    'Тиждень': [moment().subtract(6, 'days').startOf('day'), moment().endOf('day')],
+                    'Місяць': [moment().startOf('month').startOf('day'), moment().endOf('month').endOf('day')],
+                    'Квартал': [moment().subtract(3, 'month').startOf('day'), moment().endOf('month').endOf('day')],
+                    'Рік': [moment().subtract(1, 'year').startOf('day'), moment().endOf('month').endOf('day')],
+                },
+                locale: {
+                    format: "YYYY-MM-DD HH:mm:ss",
+                }
+            },
+            function (start, end) {
+    
+                // arr = [start.format(), end.format()];
+
+                console.log(start.format(), end.format());
+            }
+        );
+
+
+
+
+
+
+
+
+
+        
+    }
+    
+/*
+
+    else if(event.target.classList.contains('charts-item')){ // якщо клік на кнопці рендерингу графіка
+
+        // console.log(calendar())
 
         // дата-атрибут за який період показувати дані
         const date = event.target.dataset.date;
@@ -684,6 +746,8 @@ output && output.addEventListener('click', event => {
 
         }
     }
+*/
+
 });
 
 // вибірка за айдішкою без її створення працює, це не хак, це фіча!
@@ -727,7 +791,6 @@ function randomString(length = 7) {
 }
 
 
-// TODO: графіків буде кілька
 
 /**
  * @param {*} devices -- дані, які приходять і будуть оброблятися 
@@ -759,14 +822,18 @@ function renderCharts(devices = 0, label = 'noname', dateFormat = 'LT', id){
     const chartName = randomString();
 
     // <input type="text" id="datetimerange" size="40" style="text-align:center">
-    output.innerHTML = `
 
-    <div id="charts-select">
-        <div data-date="day" data-id="${id}" class="charts-item">Нині</div>
-        <div data-date="month" data-id="${id}" class="charts-item">Місяць</div>
-        <div data-date="quarter" data-id="${id}" class="charts-item">Квартал</div>
-        <div data-date="year" data-id="${id}" class="charts-item">Рік</div>
-    </div>
+
+    // <div id="charts-select">
+    //     <div data-date="day" data-id="${id}" class="charts-item">Нині</div>
+    //     <div data-date="month" data-id="${id}" class="charts-item">Місяць</div>
+    //     <div data-date="quarter" data-id="${id}" class="charts-item">Квартал</div>
+    //     <div data-date="year" data-id="${id}" class="charts-item">Рік</div>
+    // </div>
+
+    // calendar();
+    output.innerHTML = `
+        <input type="text" id="datetimerange" size="40" style="text-align:center; border: 1px solid #000;" value="2021-10-29 00:00:00 - 2021-10-29 23:59:59">
 
         <canvas id="${chartName}"></canvas>
     `;
@@ -784,7 +851,7 @@ function renderCharts(devices = 0, label = 'noname', dateFormat = 'LT', id){
                     label,
                     data,
                     borderWidth: 1,
-                    borderColor: 'black',
+                    borderColor: '#337ab7',
                     pointRadius: 0
                 }]
             },
@@ -800,15 +867,15 @@ function renderCharts(devices = 0, label = 'noname', dateFormat = 'LT', id){
 
                 // zoom, scroll and touch
                 zoom: {
-                    zoom: {
-                        wheel: {
-                            enabled: true,
-                        },
-                        pinch: {
-                            enabled: true
-                        },
-                        mode: 'xy',
-                        },
+                        zoom: {
+                            wheel: {
+                                enabled: true,
+                            },
+                            pinch: {
+                                enabled: true
+                            },
+                            mode: 'xy',
+                            },
                         pan: {
                             enabled: true,
                             mode: 'xy',                        
@@ -818,9 +885,6 @@ function renderCharts(devices = 0, label = 'noname', dateFormat = 'LT', id){
             }    
         }
     );
-
-
-
 }
 
 // TODO: дописати і протестувати функцію
@@ -828,6 +892,8 @@ function renderCharts(devices = 0, label = 'noname', dateFormat = 'LT', id){
 // календар для графіка
 function calendar(){
     
+    let arr;
+
     new DateRangePicker('datetimerange', {
             timePicker: true,
             opens: 'left',
@@ -846,16 +912,21 @@ function calendar(){
         function (start, end) {
             // document.getElementById('output').innerHTML = start.format() + " - " + end.format();
             // console.log(start.format() + " - " + end.format());
-            alert(console.log(start.format() + " - " + end.format()))
+            // alert(console.log(start.format() + " - " + end.format()))
 
             // отримуємо 2 значення і підставляємо у запит 
             // TODO: include
+
+            arr = [start.format(), end.format()];
             
         }
     );
+
+    return arr;
 }
 
-
+// test
+// calendar();
 
 // відмальовує хлібні крихти
 function renderBreadcrumbs(){
