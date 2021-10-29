@@ -240,7 +240,7 @@
     cursor: pointer;
     position: absolute;
     /* bottom: 10px; */
-    top: 17px;
+    top: calc(50% - 17px);
     right: -32px;
     background: var(--gray-dark);
     border-left: none;
