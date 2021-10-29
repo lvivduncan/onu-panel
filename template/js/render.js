@@ -235,8 +235,17 @@ for(let el = 0; el < asideLength; el++){
 // клік на елемент в аутпуті
 output && output.addEventListener('click', event => {
 
-    // debug
-    // console.log(global)
+
+        // // отримуємо дата-атрибут для перевірки
+        // const level = event.target.dataset.level;
+
+        // // айді поточного блоку (ітема)
+        // const id = event.target.dataset.id;
+
+        // // назва сторінки, де знаходимося!
+        // const name = event.target.dataset.name
+
+
 
     // клік має бути на елементі, а не на цілому блоці
     if(event.target.classList.contains('output-item')){
@@ -460,7 +469,7 @@ output && output.addEventListener('click', event => {
                 .then(devices => {
                     
                     // вкидаємо масив значень + назву ону, виводимо
-                    renderCharts(devices, name, 'LTS', id);
+                    renderCharts(devices, name, 'llll', id);
 
                     // render breadcrumbs
                     renderBreadcrumbs();
@@ -485,62 +494,56 @@ output && output.addEventListener('click', event => {
         }
     } 
     
+
+    // // якщо клікнули у поле дейт-пікера
+    // else if(event.target.id === 'datetimerange'){
+
+    //     // айді поточного блоку (ітема)
+    //     const id = event.target.dataset.id;
+
+    //     // назва сторінки, де знаходимося!
+    //     const name = event.target.dataset.name
+
+    //     // const id = event.target.dataset.id;
+
+    //     // calendar(id,name);
+
+    //     // global[5] = {
+    //     //     name,
+    //     //     cls: 'one-block bg-white',
+    //     //     level: '5',
+    //     //     data: '' // -empty-
+    //     // }
+
+    //     new DateRangePicker('datetimerange', {
+    //             timePicker: true,
+    //             opens: 'left',
+    //             ranges: {
+    //                 'Нині': [moment().startOf('day'), moment().endOf('day')],
+    //                 'Вчора': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
+    //                 'Тиждень': [moment().subtract(6, 'days').startOf('day'), moment().endOf('day')],
+    //                 'Місяць': [moment().startOf('month').startOf('day'), moment().endOf('month').endOf('day')],
+    //                 'Квартал': [moment().subtract(3, 'month').startOf('day'), moment().endOf('month').endOf('day')],
+    //                 'Рік': [moment().subtract(1, 'year').startOf('day'), moment().endOf('month').endOf('day')],
+    //             },
+    //             autoUpdateInput: true,
+    //             locale: {
+    //                 format: "YYYY-MM-DD HH:mm:ss",
+    //             }
+    //         },
+    //         function (start, end) {
     
-    // TODO: клік у поле відкриє календар -- клік на позицію повинен запускати фетч!
-    // виняток: якщо клік на кастом-рендж
+    //             const prev = start.format();
+    //             const next = end.format();
+
+    //             console.log(prev, next);
+    //         }
+    //     );
     
-    // <ul>
-    //     <li data-range-key="Нині" class="">Нині</li>
-    //     <li data-range-key="Вчора" class="active">Вчора</li>
-    //     <li data-range-key="Тиждень" class="">Тиждень</li>
-    //     <li data-range-key="Місяць" class="">Місяць</li>
-    //     <li data-range-key="Квартал" class="">Квартал</li>
-    //     <li data-range-key="Рік" class="">Рік</li>
-    //     <li data-range-key="Custom Range">Custom Range</li>
-    // </ul>
-
-    // якщо клікнули у поле дейт-пікера
-    else if(event.target.id === 'datetimerange'){
-
-        // calendar();
-
-
-        let arr;
-
-        new DateRangePicker('datetimerange', {
-                timePicker: true,
-                opens: 'left',
-                ranges: {
-                    'Нині': [moment().startOf('day'), moment().endOf('day')],
-                    'Вчора': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
-                    'Тиждень': [moment().subtract(6, 'days').startOf('day'), moment().endOf('day')],
-                    'Місяць': [moment().startOf('month').startOf('day'), moment().endOf('month').endOf('day')],
-                    'Квартал': [moment().subtract(3, 'month').startOf('day'), moment().endOf('month').endOf('day')],
-                    'Рік': [moment().subtract(1, 'year').startOf('day'), moment().endOf('month').endOf('day')],
-                },
-                locale: {
-                    format: "YYYY-MM-DD HH:mm:ss",
-                }
-            },
-            function (start, end) {
     
-                // arr = [start.format(), end.format()];
-
-                console.log(start.format(), end.format());
-            }
-        );
+    // }
 
 
-
-
-
-
-
-
-
-        
-    }
-    
 /*
 
     else if(event.target.classList.contains('charts-item')){ // якщо клік на кнопці рендерингу графіка
@@ -779,256 +782,5 @@ breadcrumbs && breadcrumbs.addEventListener('click', event => {
 
 
 
-function randomString(length = 7) {
-    let result = '';
-    const characters = 'abcdefghijklmnopqrstuvwxyz';
-    const charactersLength = characters.length;
 
-    for (let i = 0; i < length; i++) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
-}
-
-
-
-/**
- * @param {*} devices -- дані, які приходять і будуть оброблятися 
- * @param {*} label -- назва девайса
- * @param {*} dateFormat -- тип дати || 'LT' -- година/хвилина || 'LTS' -- година/хвилина/секунда || 'llll' -- вт. 26 жовт 2021 р., 11:59
- * @param {*} id
- */
-function renderCharts(devices = 0, label = 'noname', dateFormat = 'LT', id){
-
-    // якщо айдішка загубилася -- все решта не має сенсу
-    if(id === undefined){
-        return;
-    }
-
-    // дані зі запиту, які мають бути виведені у графіку
-    const data = []; 
-    const labels = []; 
-    
-    for(const item in devices){
-        
-        // параметр
-        data.push(devices[item]);
-
-        // час
-        labels.push(moment(item).format(dateFormat));
-    }  
-
-    // генеруємо унікальну айдішку для графіка
-    const chartName = randomString();
-
-    // <input type="text" id="datetimerange" size="40" style="text-align:center">
-
-
-    // <div id="charts-select">
-    //     <div data-date="day" data-id="${id}" class="charts-item">Нині</div>
-    //     <div data-date="month" data-id="${id}" class="charts-item">Місяць</div>
-    //     <div data-date="quarter" data-id="${id}" class="charts-item">Квартал</div>
-    //     <div data-date="year" data-id="${id}" class="charts-item">Рік</div>
-    // </div>
-
-    // calendar();
-    output.innerHTML = `
-        <input type="text" id="datetimerange" size="40" style="text-align:center; border: 1px solid #000;" value="2021-10-29 00:00:00 - 2021-10-29 23:59:59">
-
-        <canvas id="${chartName}"></canvas>
-    `;
-
-    output.className = 'one-block bg-white';
-
-    const ctx = document.getElementById(chartName);
-
-    const myChart = new Chart(ctx, 
-        {
-            type: 'line', // 'doughnut', 'bar', 'radar', 'bubble', 'scatter', 'pie', 'polarArea'
-            data: {
-                labels,
-                datasets: [{
-                    label,
-                    data,
-                    borderWidth: 1,
-                    borderColor: '#337ab7',
-                    pointRadius: 0
-                }]
-            },
-
-            options: {
-
-                plugins: {
-
-                    // сховав назву з графіка
-                    legend: {
-                        display: false
-                    },
-
-                // zoom, scroll and touch
-                zoom: {
-                        zoom: {
-                            wheel: {
-                                enabled: true,
-                            },
-                            pinch: {
-                                enabled: true
-                            },
-                            mode: 'xy',
-                            },
-                        pan: {
-                            enabled: true,
-                            mode: 'xy',                        
-                        }
-                    }
-                }
-            }    
-        }
-    );
-}
-
-// TODO: дописати і протестувати функцію
-
-// календар для графіка
-function calendar(){
-    
-    let arr;
-
-    new DateRangePicker('datetimerange', {
-            timePicker: true,
-            opens: 'left',
-            ranges: {
-                'Нині': [moment().startOf('day'), moment().endOf('day')],
-                'Вчора': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
-                'Тиждень': [moment().subtract(6, 'days').startOf('day'), moment().endOf('day')],
-                'Місяць': [moment().startOf('month').startOf('day'), moment().endOf('month').endOf('day')],
-                'Квартал': [moment().subtract(3, 'month').startOf('day'), moment().endOf('month').endOf('day')],
-                'Рік': [moment().subtract(1, 'year').startOf('day'), moment().endOf('month').endOf('day')],
-            },
-            locale: {
-                format: "YYYY-MM-DD HH:mm:ss",
-            }
-        },
-        function (start, end) {
-            // document.getElementById('output').innerHTML = start.format() + " - " + end.format();
-            // console.log(start.format() + " - " + end.format());
-            // alert(console.log(start.format() + " - " + end.format()))
-
-            // отримуємо 2 значення і підставляємо у запит 
-            // TODO: include
-
-            arr = [start.format(), end.format()];
-            
-        }
-    );
-
-    return arr;
-}
-
-// test
-// calendar();
-
-// відмальовує хлібні крихти
-function renderBreadcrumbs(){
-
-    const length = global.length;
-    // const breadcrumbs = document.getElementById('breadcrumbs');
-
-    // clear
-    breadcrumbs && (breadcrumbs.innerHTML = '');
-
-    let tmp = '';
-
-    for(let i = 0; i < length; i++){
-
-        tmp += `<li><p data-level="${global[i].level}">${global[i].name}</p></li>`;
-    }
-
-    breadcrumbs && (breadcrumbs.innerHTML = tmp);
-}
-
-// відмальовує контент на сторінці, використовуючи останній елемент глобала
-function renderOutput(){
-
-    if(global.length > 0){
-
-        // останній елемент масива глобал
-        const last = global[global.length-1];
-    
-        output && (output.innerHTML = last.data);
-        output && (output.className = last.cls);
-    } else {
-
-        output.innerHTML = '<h1>Вихід зі системи</h1>';
-        output.className = 'one-block';
-    }
-
-}
-
-// check devices
-function isTouchDevice() {
-
-    // true if not desktop
-    return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0));
-}
-
-// catch all error
-function checkError(err) {
-
-    switch(err){
-        case 400: message = 'Bad request'; break;
-        case 401: message = 'Unauthenticated'; break;
-        case 403: message = 'Forbidden'; break;
-        case 404: message = 'Not Found'; break;
-        case 422: message = 'Неправильний логін і/або пароль!'; break;
-        default: message = err;
-    }      
-    
-    if(document.getElementById('login-panel-content')){
-        
-        // login-panel
-        document.getElementById('login-panel-content').innerHTML = `<p class="flex-center">${message}</p>`;
-    } else {
-
-        // admin-panel
-        output.innerHTML = `<p class="flex-center">${message}</p>`;
-    }
-
-    // може ліпше повертати message?
-}
-
-// change status
-function checkStatus(s){
-
-    let status;
-
-    switch(s){
-        case 0: status = 'gray'; break; // disabled
-        case 1: status = 'green'; break; // up
-        case 2: status = 'tomato'; break; // down
-        case 3: status = 'gray'; break; // partially down (not in use now)
-        default: status = 'orange';
-    }
-
-    return status;
-}
-
-// show loader
-function showLoader(modified = null){
-
-    loader.classList.add('active');
-    
-    // додатковий модифкатор для зміни позиціонування
-    if(modified !== null){
-
-        loader.classList.add(modified);
-    }
-}
-
-// hide (по дефолту лоудер схований)
-function hideLoader(){
-
-    loader.className = '';
-}
-
-// 28-10-2021
+// 29-10-2021

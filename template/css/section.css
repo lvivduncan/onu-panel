@@ -60,6 +60,7 @@
     text-decoration: none;
     color: var(--gray);
     cursor: text;
+    pointer-events: none;
 }
 
 /* ///////////////////
@@ -551,4 +552,10 @@
 #datetimerange 
 {
     position: relative;
+    border-color: var(--blue-dark)!important;
+    margin: auto;
+    text-align: center;
+    color: var(--blue-dark);
+    cursor: pointer;
+    width: auto;
 }
