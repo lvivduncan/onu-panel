@@ -210,6 +210,8 @@ function checkError(err) {
     }      
     
     if(document.getElementById('login-panel-content')){
+
+        // alert(message)
         
         // login-panel
         document.getElementById('login-panel-content').innerHTML = `<p class="flex-center">${message}</p>`;
@@ -218,8 +220,6 @@ function checkError(err) {
         // admin-panel
         output.innerHTML = `<p class="flex-center">${message}</p>`;
     }
-
-    // може ліпше повертати message?
 }
 
 // change status

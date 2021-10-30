@@ -6,15 +6,13 @@
 // TODO: перевірити крихти на кроці, коли малюється графік (не показує назву!)
 // TODO: додати назву ону в графік
 
-// TODO: пофіксити bug -- коли є графік і клікнути не на вибір дати, а біля неї -- графік ламається
-
+// TODO: приховати з крихт "Початок" та "Обладнання"
 
 // крихти
 const breadcrumbs = document.getElementById('breadcrumbs');
 
 // блок виводу основної інформації для адміністраторів
 const output = document.getElementById('output');
-
 
 // глобальний масив з об'єктами, в який пушимо значення при переході в глибину
 // видаляємо значення при кліку по елементу хлібних крихт
@@ -27,6 +25,7 @@ const global = [];
 // початкові дані (при вході в адмінку)
 const origin = {
     name: 'Початок',
+    // name: '',
     cls: 'one-block',
     level: '0',
     data: '<h1>Початок</h1><p>Тут буде виводитися якась стартова інформація</p>',
@@ -42,7 +41,6 @@ breadcrumbs && renderBreadcrumbs();
 output && renderOutput();
 
 // клік на пункт меню у сайдбарі
-// TODO: перевірити, чи буде працювати без плагіна скрола (скоротити код)
 const asideLink = document.querySelectorAll('#scroll p');
 const asideLength = asideLink.length;
 
@@ -223,8 +221,7 @@ for(let el = 0; el < asideLength; el++){
                     renderOutput();
 
                     // render breadcrumbs
-                    renderBreadcrumbs();   
-
+                    renderBreadcrumbs();
                 }
 
                 break;
@@ -255,7 +252,7 @@ output && output.addEventListener('click', event => {
 
         switch(level){
 
-            // home (а якщо раптом несподівано потрапимо на початкову інфу о_О)
+            // home (якщо раптом несподівано потрапимо на початкову інфу о_О)
             case '0':
 
                 global.length = 0; 
@@ -465,16 +462,16 @@ output && output.addEventListener('click', event => {
                     // вкидаємо масив значень + назву ону, виводимо
                     renderCharts(devices, name, 'llll', id);
 
-                    // render breadcrumbs
-                    renderBreadcrumbs();
-
                     // оновлюємо конкретний елемент масива global[level]
                     global[4] = {
                         name,
                         cls: 'one-block bg-white',
                         level: '4',
-                        data: '' // -empty-
+                        data: 'empty data' // -empty-
                     }
+
+                    // render breadcrumbs
+                    renderBreadcrumbs();
 
                     hideLoader();
                     
@@ -487,16 +484,6 @@ output && output.addEventListener('click', event => {
                 default: '';
         }
     } 
-    
-    // акаунт
-    // else if(event.target.id = 'color-mode'){
-
-    //     console.log(event)
-    // }
-
-
-
-
 
 });
 
@@ -518,15 +505,5 @@ breadcrumbs && breadcrumbs.addEventListener('click', event => {
         renderOutput();
     }
 });
-
-
-
-
-
-
-
-
-
-
 
 // 30-10-2021
