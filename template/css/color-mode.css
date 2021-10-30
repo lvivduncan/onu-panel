@@ -8,6 +8,12 @@
     gap: 10px;
 }
 
+/* акаунт */
+#output #color-mode
+{
+    justify-content: flex-start;
+}
+
 #color-mode.active
 {
     color: var(--white)

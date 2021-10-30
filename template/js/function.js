@@ -11,8 +11,6 @@ function randomString(length = 7) {
     return result;
 }
 
-
-
 /**
  * @param {*} devices -- дані, які приходять і будуть оброблятися 
  * @param {*} label -- назва девайса
@@ -36,14 +34,17 @@ function renderCharts(devices = 0, label = 'noname', dateFormat = 'LT', id){
         data.push(devices[item]);
 
         // час
-        labels.push(moment(item).format(dateFormat));
+        // labels.push(moment(item).format(dateFormat));
+        labels.push('');
     }  
 
     // генеруємо унікальну айдішку для графіка
     const chartName = randomString();
 
+    //  data-id="${id}"
+    //  style="text-align:center"
     output.innerHTML = `
-        <input type="text" id="datetimerange" size="40" style="text-align:center" data-id="${id}">
+        <input type="text" id="datetimerange">
 
         <canvas id="${chartName}"></canvas>
     `;
@@ -90,17 +91,19 @@ function renderCharts(devices = 0, label = 'noname', dateFormat = 'LT', id){
                 })
                 .then(devices => {
                     
+                    // TODO: замінити/доопрацювати рекурсію
                     renderCharts(devices, name, 'LTS', id);
                 })
                 .catch(error => checkError(error));
         }
     );
 
-    // calendar()
-
     output.className = 'one-block bg-white';
 
     const ctx = document.getElementById(chartName);
+
+    Chart.defaults.scales.linear.min = 0;
+    Chart.defaults.scales.linear.max = -32;
 
     const myChart = new Chart(ctx, 
         {
@@ -110,14 +113,13 @@ function renderCharts(devices = 0, label = 'noname', dateFormat = 'LT', id){
                 datasets: [{
                     label,
                     data,
-                    borderWidth: 1,
+                    borderWidth: 2,
                     borderColor: '#337ab7',
                     pointRadius: 0
-                }]
+                }],
             },
 
             options: {
-
                 plugins: {
 
                     // сховав назву з графіка
@@ -145,84 +147,11 @@ function renderCharts(devices = 0, label = 'noname', dateFormat = 'LT', id){
             }    
         }
     );
+
+
 }
 
 
-// TODO: має тільки рендерити графік, але не міняти крихти!
-
-// календар для графіка
-function calendar(id,name){
-
-    // global[5] = {
-    //     name,
-    //     cls: 'one-block bg-white',
-    //     level: '5',
-    //     data: '' // -empty-
-    // }
-
-    console.log(global)
-
-    new DateRangePicker('datetimerange', {
-            timePicker: true,
-            opens: 'left',
-            ranges: {
-                'Нині': [moment().startOf('day'), moment().endOf('day')],
-                'Вчора': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
-                'Тиждень': [moment().subtract(6, 'days').startOf('day'), moment().endOf('day')],
-                'Місяць': [moment().startOf('month').startOf('day'), moment().endOf('month').endOf('day')],
-                'Квартал': [moment().subtract(3, 'month').startOf('day'), moment().endOf('month').endOf('day')],
-                'Рік': [moment().subtract(1, 'year').startOf('day'), moment().endOf('month').endOf('day')],
-            },
-            locale: {
-                format: "YYYY-MM-DD HH:mm:ss",
-            }
-        },
-        function (start, end) {          
-            
-            const prev = start.format().slice(0,10) + 'T00%3A00%3A01Z';
-            const next = end.format().slice(0,10) + 'T23%3A59%3A59Z';
-
-            fetch(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/metric/rxPower?startDt=${prev}&endDt=${next}`, 
-                {
-                    method: "GET",
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
-                    },
-                })
-                .then(res => {
-                    if (res.status === 200) {
-        
-                        return res.json();
-                    } else {
-        
-                        error = res.status;
-                        throw error;
-                    }
-                })
-                .then(devices => {
-                    
-                    renderCharts(devices, name, 'LTS', id);
-
-                    // render breadcrumbs
-                    renderBreadcrumbs();
-
-                    // edit
-                    global[5] = {
-                        name,
-                        cls: 'one-block bg-white',
-                        level: '4',
-                        data: '' // -empty-
-                    }
-
-                    hideLoader();
-
-                })
-                .catch(error => checkError(error));
-        }
-    );
-}
 
 // відмальовує хлібні крихти
 function renderBreadcrumbs(){

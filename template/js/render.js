@@ -2,9 +2,11 @@
 
 // TODO: пропонувати у налаштуваннях юзати кеш (локалСторедж)
 // TODO: generate urls
-// TODO: add zoom 
+
 // TODO: перевірити крихти на кроці, коли малюється графік (не показує назву!)
 // TODO: додати назву ону в графік
+
+// TODO: пофіксити bug -- коли є графік і клікнути не на вибір дати, а біля неї -- графік ламається
 
 
 // крихти
@@ -34,10 +36,10 @@ const origin = {
 global[0] = origin;
 
 // початковий рендер крихт:
-renderBreadcrumbs();
+breadcrumbs && renderBreadcrumbs();
 
 // ... та контенту:
-renderOutput();
+output && renderOutput();
 
 // клік на пункт меню у сайдбарі
 // TODO: перевірити, чи буде працювати без плагіна скрола (скоротити код)
@@ -89,7 +91,6 @@ for(let el = 0; el < asideLength; el++){
 
                 window.location.href = 'index.html';
                 localStorage.clear();
-
 
                 // виводимо на сторінці
                 renderOutput();
@@ -210,7 +211,12 @@ for(let el = 0; el < asideLength; el++){
                         name: 'Акаунт',
                         cls: 'one-block',
                         level: '1',
-                        data: '<h1>Акаунт</h1><p>Тут буде виводитися якась інформація щодо налаштувань акаунта</p>',
+                        data: `
+                            <h1>Акаунт</h1>
+                            <p>Тут буде виводитися якась інформація щодо налаштувань акаунта</p>
+                            <div id="color-mode">
+                                <em>light</em><span></span><em>dark</em>
+                            </div>`,
                     }
 
                     // виводимо на сторінці
@@ -227,7 +233,7 @@ for(let el = 0; el < asideLength; el++){
         }
 
         // close search
-        searchForm.classList.remove('active');
+        // searchForm.classList.remove('active');
 
     }); // 'click'
 }
@@ -235,19 +241,7 @@ for(let el = 0; el < asideLength; el++){
 // клік на елемент в аутпуті
 output && output.addEventListener('click', event => {
 
-
-        // // отримуємо дата-атрибут для перевірки
-        // const level = event.target.dataset.level;
-
-        // // айді поточного блоку (ітема)
-        // const id = event.target.dataset.id;
-
-        // // назва сторінки, де знаходимося!
-        // const name = event.target.dataset.name
-
-
-
-    // клік має бути на елементі, а не на цілому блоці
+    // клік має бути на елементі, а не на цілому блоці (обладнання)
     if(event.target.classList.contains('output-item')){
 
         // отримуємо дата-атрибут для перевірки
@@ -494,266 +488,18 @@ output && output.addEventListener('click', event => {
         }
     } 
     
+    // акаунт
+    // else if(event.target.id = 'color-mode'){
 
-    // // якщо клікнули у поле дейт-пікера
-    // else if(event.target.id === 'datetimerange'){
-
-    //     // айді поточного блоку (ітема)
-    //     const id = event.target.dataset.id;
-
-    //     // назва сторінки, де знаходимося!
-    //     const name = event.target.dataset.name
-
-    //     // const id = event.target.dataset.id;
-
-    //     // calendar(id,name);
-
-    //     // global[5] = {
-    //     //     name,
-    //     //     cls: 'one-block bg-white',
-    //     //     level: '5',
-    //     //     data: '' // -empty-
-    //     // }
-
-    //     new DateRangePicker('datetimerange', {
-    //             timePicker: true,
-    //             opens: 'left',
-    //             ranges: {
-    //                 'Нині': [moment().startOf('day'), moment().endOf('day')],
-    //                 'Вчора': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
-    //                 'Тиждень': [moment().subtract(6, 'days').startOf('day'), moment().endOf('day')],
-    //                 'Місяць': [moment().startOf('month').startOf('day'), moment().endOf('month').endOf('day')],
-    //                 'Квартал': [moment().subtract(3, 'month').startOf('day'), moment().endOf('month').endOf('day')],
-    //                 'Рік': [moment().subtract(1, 'year').startOf('day'), moment().endOf('month').endOf('day')],
-    //             },
-    //             autoUpdateInput: true,
-    //             locale: {
-    //                 format: "YYYY-MM-DD HH:mm:ss",
-    //             }
-    //         },
-    //         function (start, end) {
-    
-    //             const prev = start.format();
-    //             const next = end.format();
-
-    //             console.log(prev, next);
-    //         }
-    //     );
-    
-    
+    //     console.log(event)
     // }
 
 
-/*
 
-    else if(event.target.classList.contains('charts-item')){ // якщо клік на кнопці рендерингу графіка
 
-        // console.log(calendar())
-
-        // дата-атрибут за який період показувати дані
-        const date = event.target.dataset.date;
-
-        // айді поточного блоку (ітема)
-        const id = event.target.dataset.id;
-
-        // назва сторінки, де знаходимося!
-        const name = event.target.dataset.name
-
-        // різні дати для обробки
-        const d = new Date();
-        const day = d.getDay();
-        const month = d.getMonth();
-        // TODO: перевірити на останній/попередній місяць у році
-        const previousMonth = d.getMonth() - 1;
-        // TODO: перевірити
-        const quarter = d.getMonth() - 3;
-        const year = d.getFullYear();
-        // TODO: перевірити
-        const previousYear = d.getFullYear() - 1;
-
-        switch(date){
-
-            // нинішня статистика
-            case 'day': 
-
-                showLoader();
-            
-                fetch(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/metric/rxPower`, {
-                    method: "GET",
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
-                    },
-                })
-                .then(res => {
-                    if (res.status === 200) {
-        
-                        return res.json();
-                    } else {
-        
-                        error = res.status;
-                        throw error;
-                    }
-                })
-                .then(devices => {
-                    
-                    renderCharts(devices, name, 'LTS', id);
-
-                    // render breadcrumbs
-                    renderBreadcrumbs();
-
-                    // edit
-                    global[5] = {
-                        name,
-                        cls: 'one-block bg-white',
-                        level: '4',
-                        data: '' // -empty-
-                    }
-
-                    hideLoader();
-
-                })
-                .catch(error => checkError(error));
-
-                break;
-
-            // за місяць (до нині)
-            case 'month': 
-
-                showLoader();
-                
-                fetch(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/metric/rxPower?startDt=${year}-${previousMonth}-${day}T00%3A00%3A00`, {
-                    method: "GET",
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
-                    },
-                })
-                .then(res => {
-                    if (res.status === 200) {
-        
-                        return res.json();
-                    } else {
-        
-                        error = res.status;
-                        throw error;
-                    }
-                })
-                .then(devices => {
-
-                    renderCharts(devices, name, 'l', id);
-
-                    // edit
-                    global[5] = {
-                        name,
-                        cls: 'one-block bg-white',
-                        level: '4',
-                        data: '' // -empty-
-                    }
-
-                    hideLoader();
-
-                })
-                .catch(error => checkError(error));
-
-                break;
-
-            // за квартал (до нині)
-            case 'quarter':
-            
-                showLoader();
-                
-                fetch(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/metric/rxPower?startDt=${year}-${quarter}-${day}T00%3A00%3A00`, {
-                    method: "GET",
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
-                    },
-                })
-                .then(res => {
-                    if (res.status === 200) {
-        
-                        return res.json();
-                    } else {
-        
-                        error = res.status;
-                        throw error;
-                    }
-                })
-                .then(devices => {
-                    
-                    renderCharts(devices, name, 'l', id);
-
-                    // edit
-                    global[5] = {
-                        name,
-                        cls: 'one-block bg-white',
-                        level: '4',
-                        data: '' // -empty-
-                    }
-
-                    hideLoader();
-
-                })
-                .catch(error => checkError(error));
-            
-                break;
-
-            // за рік (до нині)
-            case 'year':
-
-                showLoader();
-                
-                fetch(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/metric/rxPower?startDt=${previousYear}-${month}-${day}T00%3A00%3A00`, {
-                    method: "GET",
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
-                    },
-                })
-                .then(res => {
-                    if (res.status === 200) {
-        
-                        return res.json();
-                    } else {
-        
-                        error = res.status;
-                        throw error;
-                    }
-                })
-                .then(devices => {
-                    
-                    renderCharts(devices, name, 'l', id);
-
-                    // edit
-                    global[5] = {
-                        name,
-                        cls: 'one-block bg-white',
-                        level: '4',
-                        data: '' // -empty-
-                    }
-
-                    hideLoader();
-
-                })
-                .catch(error => checkError(error));
-            
-            break;
-
-            // це не тре
-            default: '';
-
-        }
-    }
-*/
 
 });
 
-// вибірка за айдішкою без її створення працює, це не хак, це фіча!
 // клік на хлібних крихтах
 breadcrumbs && breadcrumbs.addEventListener('click', event => {
 
@@ -783,4 +529,4 @@ breadcrumbs && breadcrumbs.addEventListener('click', event => {
 
 
 
-// 29-10-2021
+// 30-10-2021
