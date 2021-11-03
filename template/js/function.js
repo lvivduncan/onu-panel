@@ -45,8 +45,12 @@ function renderCharts(devices = 0, dateFormat = 'LT', id, dataTest){ // label de
     const chartName = randomString();
 
     output.innerHTML = `
-        ${dataTest.name}
-
+        <div class="onu-small-data">
+            <p>${dataTest.name}</p>
+            <p>${dataTest.meta_data.last_pooling_at}</p>
+            <p>${dataTest.meta_data.rxpower}</p>
+        </div>
+        
         <input type="text" id="datetimerange">
 
         <canvas id="${chartName}"></canvas>
