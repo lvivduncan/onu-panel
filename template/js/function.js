@@ -63,6 +63,8 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
 
         return data;
     })
+
+    // console.log(testOnu(test1))
     
 /* 
         const onuSmallData = fetch(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`, {
@@ -108,12 +110,14 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
 
     output.innerHTML = `
         ${test1}
-        
+
         ${test2}
 
         ${test2.name}
 
         ${test3}
+
+        ${testOnu(test1)}
 
         <input type="text" id="datetimerange">
 
@@ -528,5 +532,5 @@ function getMetric(devices, name, id){
 
 function testOnu(onu){
 
-    return onu.name;
+    return await onu;
 }
