@@ -543,7 +543,10 @@
 
 
 /* інформація про ону над графіком */
-.output-item .onu-small-data 
+.onu-small-data 
 {
     margin: 0 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }

@@ -183,7 +183,7 @@ function renderOutput(){
     }
 
     // // debug
-    console.log(global)
+    // console.log(global)
 
 }
 

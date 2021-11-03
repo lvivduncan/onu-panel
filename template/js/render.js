@@ -311,16 +311,7 @@ output && output.addEventListener('click', event => {
                         getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/metric/rxPower`)
                     
                         .then(devices => getMetric(devices, name, id, item))
-
-                        // return devices;
                     })
-
-                // const test2 = getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/metric/rxPower`)
-                
-                // .then(devices => getMetric(devices, name))
-
-                // Promise.all([test1, test2])
-                // .then(value => console.log(value))
 
                 .catch(error => checkError(error));
 
