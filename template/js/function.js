@@ -494,7 +494,8 @@ function getMetric(devices, name, id){
 
     const data = getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
 
-    console.log(data)
+    data.then(item => console.log(item))
+    // console.log(data)
 
     // оновлюємо конкретний елемент масива global[level]
     global[4] = {
