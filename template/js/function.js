@@ -492,7 +492,7 @@ function getOnu(devices, name, id){ // id?
 function getMetric(devices, name, id){
     
     // вкидаємо масив значень + назву ону, виводимо
-    renderCharts(devices, 'llll', id); // renderCharts(devices = 0, dateFormat = 'LT', id)
+    renderCharts(devices, 'llll', id);
 
     const data = getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
 
@@ -526,7 +526,7 @@ function getMetric(devices, name, id){
 
 
 
-function getOnuSmallData(data){
+async function getOnuSmallData(data){
 
-    return data.name;
+    return await data.name;
 }
