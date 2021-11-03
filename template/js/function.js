@@ -492,7 +492,7 @@ function getMetric(devices, name, id){
     // вкидаємо масив значень + назву ону, виводимо
     renderCharts(devices, 'llll', id); // renderCharts(devices = 0, dateFormat = 'LT', id)
 
-    const data = getJSON(id).then(item => item.name);
+    const data = getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`).then(item => item.name);
 
     console.log(data)
 
