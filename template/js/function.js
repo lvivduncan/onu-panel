@@ -20,7 +20,7 @@ function randomString(length = 7) {
  * @param {*} dateFormat -- тип дати || 'LT' -- година/хвилина || 'LTS' -- година/хвилина/секунда || 'llll' -- вт. 26 жовт 2021 р., 11:59
  * @param {*} id
  */
-function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
+function renderCharts(devices = 0, dateFormat = 'LT', id, dataTest){ // label del
 
     // якщо айдішка загубилася -- все решта не має сенсу
     if(id === undefined){
@@ -44,75 +44,8 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
     // генеруємо унікальну айдішку для графіка
     const chartName = randomString();
 
-
-    // console.log(
-    // let test2;
-
-    // const test1 = getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
-
-    // const test2 = test1.then(data => {
-
-    //     console.log(data.name, data)
-
-    //     // return testOnu(data);
-    //     return data;
-    // })
-
-    // const test3 = test2.then(data => {
-
-    //     console.log(data.name, data)
-
-    //     return data;
-    // })
-
-    // console.log(testOnu(test1))
-    
-/* 
-        const onuSmallData = fetch(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`, {
-            method: "GET",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('access_token')
-            },
-        })
-        .then(data => {
-            console.log(data.json())
-            return data.json();
-        })
-        .then(data2 => {
-            console.log(data2)
-            return data2.name
-        }) */
-
-        // console.log(onuSmallData)
-    // );
-
-    // робимо запит, щоб отримати дані по айдішці та вивести ці дані над графіком
-    // console.log(
-    //     getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
-    //         .then(data => {
-    //             console.log(data)
-    //             return data;
-    //         })
-    //         .then(data2 => {
-    //             console.log(data2)
-    //             return data2.name
-    //         })
-    //         .then(data3 => {
-    //             console.log(data3)
-    //             return data3.name
-    //         })
-    //         .then(data4 => {
-    //             console.log(data4)
-    //             return data4.name
-    //         })
-    // )
-
-    
-
     output.innerHTML = `
-        ${global[4]}
+        ${dataTest.name}
 
         <input type="text" id="datetimerange">
 
@@ -492,7 +425,7 @@ function getOnu(devices, name, id){ // id?
 function getMetric(devices, name, id, dataTest){
     
     // вкидаємо масив значень + назву ону, виводимо
-    renderCharts(devices, 'llll', id);
+    renderCharts(devices, 'llll', id, dataTest);
 
     // const data = getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
 
