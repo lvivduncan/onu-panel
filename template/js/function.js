@@ -48,7 +48,7 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
     // console.log(
     // let test2;
 
-    const test1 = getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
+    const test1 = await getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
 
     const test2 = test1.then(data => {
 
@@ -116,8 +116,6 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
         ${test2.name}
 
         ${test3}
-
-        ${testOnu(test1)}
 
         <input type="text" id="datetimerange">
 
@@ -530,7 +528,7 @@ function getMetric(devices, name, id){
 //         </div>`;
 // }
 
-async function testOnu(onu){
+// async function testOnu(onu){
 
-    return await onu;
-}
+//     return await onu;
+// }
