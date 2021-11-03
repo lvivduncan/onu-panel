@@ -36,6 +36,7 @@ const origin = {
     cls: 'one-block',
     level: '0',
     data: '<h1>Початок</h1><p>Тут буде виводитися якась стартова інформація</p>',
+    // additional: '',
 };
 
 // вставляємо початкові дані
@@ -280,62 +281,8 @@ output && output.addEventListener('click', event => {
 
                 getJSON(`https://api.bill.lviv.ua/api/monitoring/devices/${id}/objects`)
 
-/*                 fetch(`https://api.bill.lviv.ua/api/monitoring/devices/${id}/objects`, {
-                    method: "GET",
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
-                    },
-                })
-                .then(res => {
-                    if (res.status === 200) {
-        
-                        return res.json();
-                    } else {
-        
-                        error = res.status;
-                        throw error;
-                    }
-                }) */
-                .then(devices => {
-                    
-                    let data = '';
-        
-                    for(let i = 0; i < devices.data.length; i++){
+                .then(devices => getDevices(devices, name))
 
-                        const item = devices.data[i];
-        
-                        data += `
-                            <div 
-                                class="output-item output-item-wrapper"
-                                data-id="${item.id}"
-                                data-name="${item.name}"
-                                ${item.status == '1' ? 'data-level="2"' : ''}>
-                                    <p class="flex">
-                                        <i class="${checkStatus(item.status)}"></i> 
-                                        ${item.name} 
-                                        <span class="to-right">${item.children_count}</span>
-                                    </p>
-                            </div>`.replace(/\s{2,}/g, ' ');
-
-                        hideLoader();
-                    }
-                    
-                    // оновлюємо конкретний елемент масива global[level]
-                    global[2] = {
-                        name,
-                        cls: 'grid-4',
-                        level: '2',
-                        data
-                    }
-
-                    // виводимо на сторінці
-                    renderOutput();
-
-                    // render breadcrumbs
-                    renderBreadcrumbs();  
-                })
                 .catch(error => checkError(error));
 
                 break;
@@ -346,128 +293,9 @@ output && output.addEventListener('click', event => {
 
                 getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/children?children=1`)
 
-/*                 fetch(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/children?children=1`, {
-                    method: "GET",
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
-                    },
-                })
-                .then(res => {
-                    if (res.status === 200) {
-                
-                        return res.json();
-                    } else {
-                
-                        error = res.status;
-                        throw error;
-                    }
-                }) */
-                .then(devices => {
+                // .then(devices => getOnu(devices, id, name))
+                .then(devices => getOnu(devices, name, id))
 
-                    // console.log(devices);
-                    
-                    let data = '';
-        
-                    for(let i = 0; i < devices.data.length; i++){
-
-                        const item = devices.data[i];
-                        
-                        // check status for enabled laser and ethernet
-                        const parentStatus = item.status;
-
-                        // назва 
-                        let ethernet = '';
-
-                        // TODO: теоретично їх може бути більше 1
-
-                        // якщо активно
-                        if(item.children_count > 0){
-
-                            // якщо ону не відключена, чЕкаємо статус порта
-                            if(parentStatus != 1){
-
-                                ethernet = `<p class="port status-0"><span>${item.children[0].name}</span></p>`;
-
-                            } else {
-                                
-                                ethernet = `<p class="port status-${item.children[0].status}"><span>${item.children[0].name}</span></p>`;
-                            }
-
-                        }
-
-                        // Сигнал
-                        let rxpower = '';
-
-                        if(item.meta_data.rxpower !== undefined){
-
-                            const r = item.meta_data.rxpower;
-
-                            // якщо ону не відключена, чЕкаємо статус порта
-                            if(parentStatus != 1){
-
-                                rxpower = `<p class="signal color-gray parent-status-${parentStatus}"><span>${r} dB</span></p>`;
-                            } else if(r < -16 && r >= -24){
-
-                                // green color
-                                rxpower = `<p class="signal color-green parent-status-${parentStatus}"><span>${r} dB</span></p>`;
-                            } else if(r < -24 && r > -28){
-
-                                // yellow
-                                rxpower = `<p class="signal color-yellow parent-status-${parentStatus}"><span>${r} dB</span></p>`;
-                            } else {
-
-                                // default
-                                rxpower = `<p class="signal parent-status-${parentStatus}"><span>${r} dB</span></p>`;
-                            }
-                        }
-        
-                        // виводимо левел тільки тоді, коли є вона активна
-                        data += `
-                            <div 
-                                class="output-item output-item-wrapper"
-                                data-id="${item.id}"
-                                data-name="${item.name}"
-                                ${item.status == '1' ? 'data-level="3"' : ''}>
-                                    <p class="flex">
-                                        <i class="${checkStatus(item.status)}"></i> 
-                                        ${item.name} 
-                                        <span class="to-right">${item.children_count > 4 ? 'bug: ' + item.children_count : ''}</span>
-                                    </p>
-
-                                    <hr>
-
-                                    <p>Причина дереєстрації: 
-                                        <span>${item.meta_data.deregreason !== undefined ? `${item.meta_data.deregreason}` : 'Немає даних'}</span></p>
-                                        
-                                    <p>Останній час дереєстрації: 
-                                        <span>${item.meta_data.deregtime !== undefined ? `${item.meta_data.deregtime}` : 'Немає даних'}</span></p>
-
-                                    ${rxpower}
-                                    ${ethernet}
-                            </div>`.replace(/\s{2,}/g, ' ');
-
-                        hideLoader();
-                    }
-
-                    // перевірка. вставляємо тестові дані (елемент, на який клікнули)
-                    testData = data;
-                    
-                    // оновлюємо конкретний елемент масива global[level]
-                    global[3] = {
-                        name,
-                        cls: 'grid-4',
-                        level: '3',
-                        data
-                    }
-
-                    // виводимо на сторінці
-                    renderOutput();
-
-                    // render breadcrumbs
-                    renderBreadcrumbs();  
-                })
                 .catch(error => checkError(error));
 
                 break;
@@ -478,51 +306,15 @@ output && output.addEventListener('click', event => {
 
                 getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/metric/rxPower`)
                 
-/*                 fetch(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/metric/rxPower`, {
-                    method: "GET",
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
-                    },
-                })
-                .then(res => {
-                    if (res.status === 200) {
+                // .then(devices => getMetric(devices, id, name))
+                .then(devices => getMetric(devices, name, id))
 
-                        return res.json();
-                    } else {
-
-                        error = res.status;
-                        throw error;
-                    }
-                }) */
-                .then(devices => {
-                    
-                    // вкидаємо масив значень + назву ону, виводимо
-                    renderCharts(devices, name, 'llll', id, testData);
-
-                    // оновлюємо конкретний елемент масива global[level]
-                    global[4] = {
-                        name,
-                        cls: 'one-block bg-white',
-                        level: '4',
-                        data: 'empty data' // сюди писати дані елемента? 
-                    }
-
-                    // console.log(testData)
-
-                    // render breadcrumbs
-                    renderBreadcrumbs();
-
-                    hideLoader();
-                    
-                })
                 .catch(error => checkError(error));
 
                 break;
 
-                // else
-                default: '';
+            // else
+            default: '';
         }
     } 
 
@@ -547,9 +339,7 @@ breadcrumbs && breadcrumbs.addEventListener('click', event => {
     }
 });
 
-// 01-11-2021
-
-
+// 03-11-2021
 
 
 
