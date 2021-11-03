@@ -496,8 +496,7 @@ function getMetric(devices, name, id){
 
     const data = getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
 
-    data.then(item => {
-        console.log(item, item.name)
+    .then(item => {
         return item.name;
     })
 
