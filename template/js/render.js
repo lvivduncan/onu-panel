@@ -304,11 +304,11 @@ output && output.addEventListener('click', event => {
 
                 showLoader();
 
-                let dataOnu;
+                ;
                 // small data onu
-                getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
+                let dataOnu = getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
                 .then(devices => {
-                    dataOnu =  getOnuSmallData(devices)
+                    return devices.name
                 })
 
 
