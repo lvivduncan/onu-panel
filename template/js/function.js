@@ -56,15 +56,15 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
             },
         })
         .then(data => {
-            // console.log(data)
-            return data;
+            console.log(data.json())
+            return data.json();
         })
         .then(data2 => {
-            // console.log(data2)
+            console.log(data2)
             return data2.name
         })
 
-        console.log(onuSmallData)
+        // console.log(onuSmallData)
     // );
 
     // робимо запит, щоб отримати дані по айдішці та вивести ці дані над графіком
