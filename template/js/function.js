@@ -530,7 +530,7 @@ function getMetric(devices, name, id){
 //         </div>`;
 // }
 
-function testOnu(onu){
+async function testOnu(onu){
 
     return await onu;
 }
