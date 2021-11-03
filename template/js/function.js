@@ -54,9 +54,15 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
 
         console.log(data.name, data)
 
-        return `<p>${data.name}</p>`;
+        return data;
     })
 
+    const test3 = test2.then(data => {
+
+        console.log(data.name, data)
+
+        return data;
+    })
     
 /* 
         const onuSmallData = fetch(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`, {
@@ -101,9 +107,13 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
     // )
 
     output.innerHTML = `
+        ${test1}
+        
         ${test2}
 
-        ${test2.resolve()}
+        ${test2.name}
+
+        ${test3}
 
         <input type="text" id="datetimerange">
 
