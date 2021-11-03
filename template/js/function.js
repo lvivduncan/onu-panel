@@ -47,8 +47,8 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
     // робимо запит, щоб отримати дані по айдішці та вивести ці дані над графіком
     const onuSmallData = getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
 
-/* 
-    .then(devices => {
+
+    const onuHeader = onuSmallData.then(devices => {
             return `
                 <div class="onu-small-data">
                     <p>name: ${devices.name}</p>
@@ -59,11 +59,11 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
                 </div>`
             }
         )
- */
+
 
     .then(devices => getOnuSmallData(devices))
 
-    console.log(onuSmallData)
+    console.log(onuHeader)
 
     output.innerHTML = `
         ${onuSmallData}
@@ -467,7 +467,7 @@ function getMetric(devices, name, id){
 // коли виводиться 5 крок (графік), потрібно вивести дані по ону, для якого і виводиться графік
 function getOnuSmallData(devices){
 
-    console.log(devices.name, devices.meta_data.rxpower, devices.meta_data.last_pooling_at, devices)
+    // console.log(devices.name, devices.meta_data.rxpower, devices.meta_data.last_pooling_at, devices)
 
     return `
         <div class="onu-small-data">
