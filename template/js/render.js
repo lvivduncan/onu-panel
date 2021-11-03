@@ -305,17 +305,22 @@ output && output.addEventListener('click', event => {
                 showLoader();
 
                 // small data onu
-                const test1 = getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
-                .then(devices => {
-                    return devices;
-                })
+                getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
+                    .then(item => {
 
-                const test2 = getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/metric/rxPower`)
+                        getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/metric/rxPower`)
+                    
+                        .then(devices => getMetric(devices, name, item))
+
+                        // return devices;
+                    })
+
+                // const test2 = getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/metric/rxPower`)
                 
-                .then(devices => getMetric(devices, name))
+                // .then(devices => getMetric(devices, name))
 
-                Promise.all([test1, test2])
-                .then(value => console.log(value))
+                // Promise.all([test1, test2])
+                // .then(value => console.log(value))
 
                 .catch(error => checkError(error));
 
