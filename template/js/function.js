@@ -47,7 +47,7 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
 
     // console.log(
 
-        fetch(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`, {
+        const onuSmallData = fetch(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`, {
             method: "GET",
             headers: {
                 'Accept': 'application/json',
@@ -56,56 +56,38 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
             },
         })
         .then(data => {
-            console.log(data)
+            // console.log(data)
             return data;
         })
         .then(data2 => {
-            console.log(data2)
+            // console.log(data2)
             return data2.name
         })
     // );
 
     // робимо запит, щоб отримати дані по айдішці та вивести ці дані над графіком
-    console.log(
-        getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
-            .then(data => {
-                console.log(data)
-                return data;
-            })
-            .then(data2 => {
-                console.log(data2)
-                return data2.name
-            })
-            .then(data3 => {
-                console.log(data3)
-                return data3.name
-            })
-            .then(data4 => {
-                console.log(data4)
-                return data4.name
-            })
-    )
+    // console.log(
+    //     getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
+    //         .then(data => {
+    //             console.log(data)
+    //             return data;
+    //         })
+    //         .then(data2 => {
+    //             console.log(data2)
+    //             return data2.name
+    //         })
+    //         .then(data3 => {
+    //             console.log(data3)
+    //             return data3.name
+    //         })
+    //         .then(data4 => {
+    //             console.log(data4)
+    //             return data4.name
+    //         })
+    // )
 
     output.innerHTML = `
-        ${
-            getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
-            .then(data => {
-                console.log(data)
-                return data;
-            })
-            .then(data2 => {
-                console.log(data2)
-                return data2.name
-            })
-            .then(data3 => {
-                console.log(data3)
-                return data3.name
-            })
-            .then(data4 => {
-                console.log(data4)
-                return data4.name
-            })
-        }
+        ${onuSmallData}
 
         <input type="text" id="datetimerange">
 
