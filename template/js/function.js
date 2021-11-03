@@ -489,7 +489,7 @@ function getOnu(devices, name, id){ // id?
 }
 
 // 5 крок -- метрика
-function getMetric(devices, name, id, data){
+function getMetric(devices, name, id){
     
     // вкидаємо масив значень + назву ону, виводимо
     renderCharts(devices, 'llll', id);
