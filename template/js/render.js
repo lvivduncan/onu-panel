@@ -310,7 +310,7 @@ output && output.addEventListener('click', event => {
 
                         getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/metric/rxPower`)
                     
-                        .then(devices => getMetric(devices, name, item))
+                        .then(devices => getMetric(devices, name, id, item))
 
                         // return devices;
                     })

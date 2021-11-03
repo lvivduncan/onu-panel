@@ -489,7 +489,7 @@ function getOnu(devices, name, id){ // id?
 }
 
 // 5 крок -- метрика
-function getMetric(devices, name, id, data){
+function getMetric(devices, name, id, dataTest){
     
     // вкидаємо масив значень + назву ону, виводимо
     renderCharts(devices, 'llll', id);
@@ -506,7 +506,7 @@ function getMetric(devices, name, id, data){
         cls: 'one-block bg-white',
         level: '4',
         //data: '-empty data-', // сюди писати дані елемента? 
-        data
+        data: dataTest
     }
 
     // render breadcrumbs
@@ -516,7 +516,7 @@ function getMetric(devices, name, id, data){
     hideLoader();
 }
 
-function getOnuSmallData(data){
+// function getOnuSmallData(data){
 
-    return data.name;
-}
+//     return data.name;
+// }
