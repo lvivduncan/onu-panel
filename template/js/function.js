@@ -1,4 +1,35 @@
 
+// 1 частина обробки запиту
+// link -- fetch-лінк
+async function getJSON(link){
+
+    try{
+
+        const data = await fetch(link, {
+            method: "GET",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+            },
+        });
+
+        if (data.status === 200) {
+
+            return await data.json();
+        } else {
+
+            const error = data.status;            
+            throw error;
+        }
+
+    } catch(error){
+
+        console.error('error: ', error)
+    }
+}
+
+
 // генерує вибадковий рядок
 function randomString(length = 7) {
     let result = '';
@@ -17,7 +48,9 @@ function randomString(length = 7) {
  * @param {*} dateFormat -- тип дати || 'LT' -- година/хвилина || 'LTS' -- година/хвилина/секунда || 'llll' -- вт. 26 жовт 2021 р., 11:59
  * @param {*} id
  */
-function renderCharts(devices = 0, label = 'noname', dateFormat = 'LT', id){
+
+
+function renderCharts(devices = 0, label = 'noname', dateFormat = 'LT', id, testData){
 
     // якщо айдішка загубилася -- все решта не має сенсу
     if(id === undefined){
@@ -41,9 +74,8 @@ function renderCharts(devices = 0, label = 'noname', dateFormat = 'LT', id){
     // генеруємо унікальну айдішку для графіка
     const chartName = randomString();
 
-    //  data-id="${id}"
-    //  style="text-align:center"
     output.innerHTML = `
+    ${testData = testData ? testData : testData}
         <input type="text" id="datetimerange">
 
         <canvas id="${chartName}"></canvas>
@@ -92,18 +124,24 @@ function renderCharts(devices = 0, label = 'noname', dateFormat = 'LT', id){
                 .then(devices => {
                     
                     // TODO: замінити/доопрацювати рекурсію
-                    renderCharts(devices, name, 'LTS', id);
+                    renderCharts(devices, name, 'LTS', id, testData);
                 })
                 .catch(error => checkError(error));
         }
     );
 
-    output.className = 'one-block bg-white';
+    output.className = 'one-block';
 
     const ctx = document.getElementById(chartName);
 
+    // максимальне значення графіка, яке відображається
     Chart.defaults.scales.linear.min = 0;
+
+    // мінімальне значення графіка, яке відображається
     Chart.defaults.scales.linear.max = -32;
+
+    // колір у вертикальній графі
+    Chart.defaults.color = '#42a5f5';
 
     const myChart = new Chart(ctx, 
         {

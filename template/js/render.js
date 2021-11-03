@@ -1,10 +1,12 @@
 // 24-09-2021
 
+
+// TODO: глобальне оновлення від 2-11-2021
+// глобал повинен зберігати дані по кліку не тільки 1 елемента, а одразу всі вкладені!
+
+
 // TODO: пропонувати у налаштуваннях юзати кеш (локалСторедж)
 // TODO: generate urls
-
-// TODO: перевірити крихти на кроці, коли малюється графік (не показує назву!)
-// TODO: додати назву ону в графік
 
 // TODO: приховати з крихт "Початок" та "Обладнання"
 
@@ -19,13 +21,18 @@ const output = document.getElementById('output');
 // рендер хлібних крихт і контенту на сторінці по кожній зміні
 const global = [];
 
+
+// передача даних про елемент (і це дуже погано)
+let testData = '';
+// TODO: видалити, бо це діч! 
+
+
 // TODO: додати лінк на поточну сторінку global
 // TODO: додати SEO-LINK (get-параметри)
 
 // початкові дані (при вході в адмінку)
 const origin = {
     name: 'Початок',
-    // name: '',
     cls: 'one-block',
     level: '0',
     data: '<h1>Початок</h1><p>Тут буде виводитися якась стартова інформація</p>',
@@ -271,7 +278,9 @@ output && output.addEventListener('click', event => {
 
                 showLoader();
 
-                fetch(`https://api.bill.lviv.ua/api/monitoring/devices/${id}/objects`, {
+                getJSON(`https://api.bill.lviv.ua/api/monitoring/devices/${id}/objects`)
+
+/*                 fetch(`https://api.bill.lviv.ua/api/monitoring/devices/${id}/objects`, {
                     method: "GET",
                     headers: {
                         'Accept': 'application/json',
@@ -288,12 +297,9 @@ output && output.addEventListener('click', event => {
                         error = res.status;
                         throw error;
                     }
-                })
+                }) */
                 .then(devices => {
                     
-                    // назва сторінки, де знаходимося!
-                    // const name = event.target.dataset.name;
-
                     let data = '';
         
                     for(let i = 0; i < devices.data.length; i++){
@@ -305,13 +311,12 @@ output && output.addEventListener('click', event => {
                                 class="output-item output-item-wrapper"
                                 data-id="${item.id}"
                                 data-name="${item.name}"
-                                data-level="2">
+                                ${item.status == '1' ? 'data-level="2"' : ''}>
                                     <p class="flex">
                                         <i class="${checkStatus(item.status)}"></i> 
                                         ${item.name} 
                                         <span class="to-right">${item.children_count}</span>
                                     </p>
-                                    <!-- <p>debug, id - ${item.id}</p> -->
                             </div>`.replace(/\s{2,}/g, ' ');
 
                         hideLoader();
@@ -339,7 +344,9 @@ output && output.addEventListener('click', event => {
 
                 showLoader();
 
-                fetch(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/children`, {
+                getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/children?children=1`)
+
+/*                 fetch(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/children?children=1`, {
                     method: "GET",
                     headers: {
                         'Accept': 'application/json',
@@ -356,8 +363,10 @@ output && output.addEventListener('click', event => {
                         error = res.status;
                         throw error;
                     }
-                })
+                }) */
                 .then(devices => {
+
+                    // console.log(devices);
                     
                     let data = '';
         
@@ -368,6 +377,26 @@ output && output.addEventListener('click', event => {
                         // check status for enabled laser and ethernet
                         const parentStatus = item.status;
 
+                        // назва 
+                        let ethernet = '';
+
+                        // TODO: теоретично їх може бути більше 1
+
+                        // якщо активно
+                        if(item.children_count > 0){
+
+                            // якщо ону не відключена, чЕкаємо статус порта
+                            if(parentStatus != 1){
+
+                                ethernet = `<p class="port status-0"><span>${item.children[0].name}</span></p>`;
+
+                            } else {
+                                
+                                ethernet = `<p class="port status-${item.children[0].status}"><span>${item.children[0].name}</span></p>`;
+                            }
+
+                        }
+
                         // Сигнал
                         let rxpower = '';
 
@@ -375,7 +404,11 @@ output && output.addEventListener('click', event => {
 
                             const r = item.meta_data.rxpower;
 
-                            if(r < -16 && r >= -24){
+                            // якщо ону не відключена, чЕкаємо статус порта
+                            if(parentStatus != 1){
+
+                                rxpower = `<p class="signal color-gray parent-status-${parentStatus}"><span>${r} dB</span></p>`;
+                            } else if(r < -16 && r >= -24){
 
                                 // green color
                                 rxpower = `<p class="signal color-green parent-status-${parentStatus}"><span>${r} dB</span></p>`;
@@ -411,11 +444,15 @@ output && output.addEventListener('click', event => {
                                     <p>Останній час дереєстрації: 
                                         <span>${item.meta_data.deregtime !== undefined ? `${item.meta_data.deregtime}` : 'Немає даних'}</span></p>
 
-                                    <p>${rxpower}</p>
+                                    ${rxpower}
+                                    ${ethernet}
                             </div>`.replace(/\s{2,}/g, ' ');
 
                         hideLoader();
                     }
+
+                    // перевірка. вставляємо тестові дані (елемент, на який клікнули)
+                    testData = data;
                     
                     // оновлюємо конкретний елемент масива global[level]
                     global[3] = {
@@ -438,8 +475,10 @@ output && output.addEventListener('click', event => {
             case '3': 
 
                 showLoader();
+
+                getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/metric/rxPower`)
                 
-                fetch(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/metric/rxPower`, {
+/*                 fetch(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/metric/rxPower`, {
                     method: "GET",
                     headers: {
                         'Accept': 'application/json',
@@ -456,19 +495,21 @@ output && output.addEventListener('click', event => {
                         error = res.status;
                         throw error;
                     }
-                })
+                }) */
                 .then(devices => {
                     
                     // вкидаємо масив значень + назву ону, виводимо
-                    renderCharts(devices, name, 'llll', id);
+                    renderCharts(devices, name, 'llll', id, testData);
 
                     // оновлюємо конкретний елемент масива global[level]
                     global[4] = {
                         name,
                         cls: 'one-block bg-white',
                         level: '4',
-                        data: 'empty data' // -empty-
+                        data: 'empty data' // сюди писати дані елемента? 
                     }
+
+                    // console.log(testData)
 
                     // render breadcrumbs
                     renderBreadcrumbs();
@@ -506,4 +547,109 @@ breadcrumbs && breadcrumbs.addEventListener('click', event => {
     }
 });
 
-// 30-10-2021
+// 01-11-2021
+
+
+
+
+
+
+/* 
+fetch(`https://api.bill.lviv.ua/api/monitoring/objects/257/children?children=1
+`, {
+    method: "GET",
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+    },
+})
+.then(res => {
+    if (res.status === 200) {
+
+        return res.json();
+    } else {
+
+        error = res.status;
+        throw error;
+    }
+})
+.then(devices => {
+    
+    console.log('257: ', devices)
+
+})
+.catch(error => checkError(error));
+ */
+
+/* 
+fetch(`https://api.bill.lviv.ua/api/monitoring/objects/253/children`, {
+    method: "GET",
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+    },
+})
+.then(res => {
+    if (res.status === 200) {
+
+        return res.json();
+    } else {
+
+        error = res.status;
+        throw error;
+    }
+})
+.then(devices => {
+    
+    console.log('253: ', devices)
+
+})
+.catch(error => checkError(error));
+ */
+
+/* 
+fetch(`https://api.bill.lviv.ua/api/monitoring/objects/257/metric/rxPower`, {
+    method: "GET",
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+    },
+})
+.then(res => {
+    if (res.status === 200) {
+
+        return res.json();
+    } else {
+
+        error = res.status;
+        throw error;
+    }
+})
+.then(devices => {
+
+    console.log(devices);
+            
+})
+.catch(error => checkError(error));
+ */
+
+/* 
+let str1 = new String('str1');
+let str2 = String('str2');
+let str3 = String();
+
+console.log(str1)
+console.log(str2)
+console.log(str3)
+
+str1 =+ 'a';
+str2 =+ 'b';
+str3 =+ 'c';
+
+console.log(str1)
+console.log(str2)
+console.log(str3)
+ */

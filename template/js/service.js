@@ -47,7 +47,13 @@ resetPassword && resetPassword.addEventListener('click', event => {
     }, 2000);
 });
 
-// перемикач кольорів
+////////////////////////
+// перемикач кольорів //
+////////////////////////
+
+// колір тексту (для графіку)
+// let chartColorText = '#000';
+
 const colorMode = document.getElementById('color-mode');
 if(colorMode !== null){
 
@@ -57,6 +63,9 @@ if(colorMode !== null){
 
         body.setAttribute('id', 'dark-mode');
         colorMode && colorMode.classList.add('active');
+
+        // колір тексту (для графіку)
+        // chartColorText = '#fff';
     }
     
     colorMode && colorModeSpan.addEventListener('click', () => {
@@ -68,10 +77,14 @@ if(colorMode !== null){
             body.removeAttribute('id');
             
             localStorage.removeItem('colorMode');
+
+            // chartColorText = '#fff';
         } else {
     
             body.setAttribute('id', 'dark-mode');
             localStorage.colorMode = 1;
+
+            // chartColorText = '#000';
         }
     });
 }
