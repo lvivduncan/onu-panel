@@ -51,7 +51,7 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
 
     const test2 = test1.then(data => {
 
-        console.log(data)
+        console.log(data.name, data)
         return data;
     })
 /* 
