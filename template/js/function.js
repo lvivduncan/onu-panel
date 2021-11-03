@@ -44,43 +44,23 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
     // генеруємо унікальну айдішку для графіка
     const chartName = randomString();
 
-    // // робимо запит, щоб отримати дані по айдішці та вивести ці дані над графіком
-    // const onuSmallData = getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
-
-    // console.log(testOnu(onuSmallData), onuSmallData)
-
-    // const onuHeader = onuSmallData
-    //     .then(devices => {
-    //         return `
-    //             <div class="onu-small-data">
-    //                 <p>name: ${devices.name}</p>
-    //                 <p>rxpower: ${devices.meta_data.rxpower}</p>
-    //                 <p>last_pooling_at: ${devices.meta_data.last_pooling_at}</p>
-    //                 <p>mac: ${devices.mac}</p>
-    //                 <p>id: ${devices.id}</p>
-    //             </div>`
-    //         }
-    //     )
-
-
-    // .then(devices => getOnuSmallData(devices))
-
-
-
-
-
-
-
-
-
-    console.log(getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`).then(data => {
-        return data;
-    }))
+    // робимо запит, щоб отримати дані по айдішці та вивести ці дані над графіком
+    console.log(
+        getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
+        .then(data => {
+            return data;
+        })
+        .then(data2 => data2.name)
+    )
 
     output.innerHTML = `
-        ${getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`).then(data => {
-            return data;
-        })}
+        ${
+            getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
+            .then(data => {
+                return data;
+            })
+            .then(data2 => data2.name)
+        }
 
         <input type="text" id="datetimerange">
 
