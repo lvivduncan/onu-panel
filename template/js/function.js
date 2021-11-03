@@ -113,7 +113,7 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
 
         ${test2}
 
-        ${test2.name}
+        ${test2.then(data => data.name)}
 
         ${test3}
 
