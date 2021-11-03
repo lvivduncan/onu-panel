@@ -103,6 +103,8 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
     output.innerHTML = `
         ${test2}
 
+        ${test2.resolve()}
+
         <input type="text" id="datetimerange">
 
         <canvas id="${chartName}"></canvas>
