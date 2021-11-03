@@ -63,6 +63,8 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
             // console.log(data2)
             return data2.name
         })
+
+        console.log(onuSmallData)
     // );
 
     // робимо запит, щоб отримати дані по айдішці та вивести ці дані над графіком
