@@ -61,12 +61,12 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
         )
 
 
-    .then(devices => getOnuSmallData(devices))
+    // .then(devices => getOnuSmallData(devices))
 
     console.log(onuHeader)
 
     output.innerHTML = `
-        ${onuSmallData}
+        ${onuHeader}
 
         <input type="text" id="datetimerange">
 
@@ -464,17 +464,17 @@ function getMetric(devices, name, id){
     hideLoader();
 }
 
-// коли виводиться 5 крок (графік), потрібно вивести дані по ону, для якого і виводиться графік
-function getOnuSmallData(devices){
+// // коли виводиться 5 крок (графік), потрібно вивести дані по ону, для якого і виводиться графік
+// function getOnuSmallData(devices){
 
-    // console.log(devices.name, devices.meta_data.rxpower, devices.meta_data.last_pooling_at, devices)
+//     // console.log(devices.name, devices.meta_data.rxpower, devices.meta_data.last_pooling_at, devices)
 
-    return `
-        <div class="onu-small-data">
-            <p>name: ${devices.name}</p>
-            <p>rxpower: ${devices.meta_data.rxpower}</p>
-            <p>last_pooling_at: ${devices.meta_data.last_pooling_at}</p>
-            <p>mac: ${devices.mac}</p>
-            <p>id: ${devices.id}</p>
-        </div>`;
-}
+//     return `
+//         <div class="onu-small-data">
+//             <p>name: ${devices.name}</p>
+//             <p>rxpower: ${devices.meta_data.rxpower}</p>
+//             <p>last_pooling_at: ${devices.meta_data.last_pooling_at}</p>
+//             <p>mac: ${devices.mac}</p>
+//             <p>id: ${devices.id}</p>
+//         </div>`;
+// }
