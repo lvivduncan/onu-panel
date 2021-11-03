@@ -304,18 +304,18 @@ output && output.addEventListener('click', event => {
 
                 showLoader();
 
-                ;
                 // small data onu
-                let dataOnu = getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
+                const test1 = getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
                 .then(devices => {
-                    return devices.name
+                    return devices;
                 })
 
-
-
-                getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/metric/rxPower`)
+                const test2 = getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/metric/rxPower`)
                 
                 .then(devices => getMetric(devices, name, id, dataOnu))
+
+                Promise.all([test1, test2])
+                .then(value => console.log(value))
 
                 .catch(error => checkError(error));
 
