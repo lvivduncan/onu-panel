@@ -47,9 +47,10 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
     // робимо запит, щоб отримати дані по айдішці та вивести ці дані над графіком
     const onuSmallData = getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
 
-    console.log(onuSmallData)
+    console.log(testOnu(onuSmallData), onuSmallData)
 
-    const onuHeader = onuSmallData.then(devices => {
+    const onuHeader = onuSmallData
+        .then(devices => {
             return `
                 <div class="onu-small-data">
                     <p>name: ${devices.name}</p>
@@ -479,3 +480,8 @@ function getMetric(devices, name, id){
 //             <p>id: ${devices.id}</p>
 //         </div>`;
 // }
+
+function testOnu(onu){
+
+    return onu.name;
+}
