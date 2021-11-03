@@ -516,17 +516,7 @@ function getMetric(devices, name, id, data){
     hideLoader();
 }
 
+function getOnuSmallData(data){
 
-
-
-
-
-
-
-
-
-
-async function getOnuSmallData(data){
-
-    return await data.name;
+    return data.name;
 }

@@ -304,9 +304,12 @@ output && output.addEventListener('click', event => {
 
                 showLoader();
 
+                let dataOnu;
                 // small data onu
-                const dataOnu = getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
-                .then(devices => getOnuSmallData(devices))
+                getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
+                .then(devices => {
+                    dataOnu =  getOnuSmallData(devices)
+                })
 
 
 
