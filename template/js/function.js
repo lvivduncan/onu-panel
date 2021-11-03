@@ -58,12 +58,12 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
         return data;
     })
 
-    const test3 = test2.then(data => {
+    // const test3 = test2.then(data => {
 
-        console.log(data.name, data)
+    //     console.log(data.name, data)
 
-        return data;
-    })
+    //     return data;
+    // })
 
     // console.log(testOnu(test1))
     
@@ -116,7 +116,6 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
 
         ${test2.then(data => data.name)}
 
-        ${test3}
 
         <input type="text" id="datetimerange">
 
