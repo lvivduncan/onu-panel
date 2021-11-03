@@ -73,7 +73,7 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
 
 
 
-    console.log(getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`).then(data => data.name))
+    console.log(getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`).then(data => resolve(data.name)))
 
     output.innerHTML = `
         ${getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`).then(data => data.name)}
