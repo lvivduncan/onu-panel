@@ -496,9 +496,7 @@ function getMetric(devices, name, id){
 
     const data = getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
 
-    .then(item => {
-        return item.name;
-    })
+    .then(item => getOnuSmallData(item))
 
     // console.log(data)
 
@@ -516,4 +514,19 @@ function getMetric(devices, name, id){
 
     // hide loader
     hideLoader();
+}
+
+
+
+
+
+
+
+
+
+
+
+function getOnuSmallData(data){
+
+    return data.name;
 }
