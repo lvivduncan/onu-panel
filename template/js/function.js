@@ -44,13 +44,46 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
     // генеруємо унікальну айдішку для графіка
     const chartName = randomString();
 
+
+    // console.log(
+
+        fetch(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`, {
+            method: "GET",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+            },
+        })
+        .then(data => {
+            console.log(data)
+            return data;
+        })
+        .then(data2 => {
+            console.log(data2)
+            return data2.name
+        })
+    // );
+
     // робимо запит, щоб отримати дані по айдішці та вивести ці дані над графіком
     console.log(
         getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
-        .then(data => {
-            return data;
-        })
-        .then(data2 => data2.name)
+            .then(data => {
+                console.log(data)
+                return data;
+            })
+            .then(data2 => {
+                console.log(data2)
+                return data2.name
+            })
+            .then(data3 => {
+                console.log(data3)
+                return data3.name
+            })
+            .then(data4 => {
+                console.log(data4)
+                return data4.name
+            })
     )
 
     output.innerHTML = `
