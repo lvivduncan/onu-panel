@@ -47,6 +47,7 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
     // робимо запит, щоб отримати дані по айдішці та вивести ці дані над графіком
     const onuSmallData = getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
 
+    console.log(onuSmallData)
 
     const onuHeader = onuSmallData.then(devices => {
             return `
