@@ -46,14 +46,15 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
 
 
     // console.log(
-    let test2
+    let test2;
+
     const test1 = getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
 
     .then(data => {
 
         // console.log(data.name, data)
         // return data;
-        test2 = data.name;
+        test2 = `<p>${data.name}</p>`;
     })
 
     
