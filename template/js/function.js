@@ -47,6 +47,14 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
 
     // console.log(
 
+    const test1 = getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`);
+
+    const test2 = test1.then(data => {
+
+        console.log(data)
+        return data;
+    })
+/* 
         const onuSmallData = fetch(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`, {
             method: "GET",
             headers: {
@@ -62,7 +70,7 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
         .then(data2 => {
             console.log(data2)
             return data2.name
-        })
+        }) */
 
         // console.log(onuSmallData)
     // );
@@ -89,7 +97,7 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
     // )
 
     output.innerHTML = `
-        ${onuSmallData}
+        ${test2}
 
         <input type="text" id="datetimerange">
 
