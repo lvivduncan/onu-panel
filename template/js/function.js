@@ -57,9 +57,21 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
         ${
             getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
             .then(data => {
+                console.log(data)
                 return data;
             })
-            .then(data2 => data2.name)
+            .then(data2 => {
+                console.log(data2)
+                return data2.name
+            })
+            .then(data3 => {
+                console.log(data3)
+                return data3.name
+            })
+            .then(data4 => {
+                console.log(data4)
+                return data4.name
+            })
         }
 
         <input type="text" id="datetimerange">
