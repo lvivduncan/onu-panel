@@ -110,7 +110,7 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
     // )
 
     output.innerHTML = `
-        ${global[4].data}
+        ${global[4]}
 
         <input type="text" id="datetimerange">
 
