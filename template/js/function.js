@@ -109,6 +109,8 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
     //         })
     // )
 
+    console.log(global)
+
     output.innerHTML = `
         ${global[4]}
 
