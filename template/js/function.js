@@ -494,6 +494,8 @@ function getMetric(devices, name, id){
 
     const data = getJSON(id).then(item => item.name);
 
+    console.log(data)
+
     // оновлюємо конкретний елемент масива global[level]
     global[4] = {
         name,
