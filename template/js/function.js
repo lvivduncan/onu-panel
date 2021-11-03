@@ -1,34 +1,4 @@
 
-// 1 частина обробки запиту
-// link -- fetch-лінк
-async function getJSON(link){
-
-    try{
-
-        const data = await fetch(link, {
-            method: "GET",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('access_token')
-            },
-        });
-
-        if (data.status === 200) {
-
-            return await data.json();
-        } else {
-
-            const error = data.status;            
-            throw error;
-        }
-
-    } catch(error){
-
-        console.error('error: ', error)
-    }
-}
-
 
 // генерує вибадковий рядок
 function randomString(length = 7) {
@@ -189,8 +159,6 @@ function renderCharts(devices = 0, label = 'noname', dateFormat = 'LT', id, test
 
 }
 
-
-
 // відмальовує хлібні крихти
 function renderBreadcrumbs(){
 
@@ -293,3 +261,33 @@ function hideLoader(){
 
     loader.className = '';
 }
+
+// 1 частина обробки запиту
+async function getJSON(link){
+
+    try{
+
+        const data = await fetch(link, {
+            method: "GET",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+            },
+        });
+
+        if (data.status === 200) {
+
+            return await data.json();
+        } else {
+
+            const error = data.status;            
+            throw error;
+        }
+
+    } catch(error){
+
+        console.error('error: ', error)
+    }
+}
+

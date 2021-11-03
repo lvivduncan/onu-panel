@@ -51,9 +51,36 @@
         </div>        
     </div>
     
-    <script src="js/function.js"></script>
+    <!-- <script src="js/function.js"></script> -->
     <script src="js/service.js"></script>
     <script src="js/render.js"></script>
+
+<!--     <script>
+function checkError(err) {
+
+switch(err){
+    case 400: message = 'Bad request'; break;
+    case 401: message = 'Unauthenticated'; break;
+    case 403: message = 'Forbidden'; break;
+    case 404: message = 'Not Found'; break;
+    case 422: message = 'Неправильний логін і/або пароль!'; break;
+    default: message = err;
+}      
+
+if(document.getElementById('login-panel-content')){
+
+    // alert(message)
+    
+    // login-panel
+    document.getElementById('login-panel-content').innerHTML = `<p class="flex-center">${message}</p>`;
+} else {
+
+    // admin-panel
+    output.innerHTML = `<p class="flex-center">${message}</p>`;
+}
+}
+
+    </script> -->
 
 </body>
 </html>
