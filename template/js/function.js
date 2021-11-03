@@ -48,15 +48,15 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
     // console.log(
     // let test2;
 
-    const test1 = getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
+    // const test1 = getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
 
-    const test2 = test1.then(data => {
+    // const test2 = test1.then(data => {
 
-        console.log(data.name, data)
+    //     console.log(data.name, data)
 
-        // return testOnu(data);
-        return data;
-    })
+    //     // return testOnu(data);
+    //     return data;
+    // })
 
     // const test3 = test2.then(data => {
 
@@ -110,12 +110,7 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
     // )
 
     output.innerHTML = `
-        ${test1}
-
-        ${test2}
-
-        ${test2.then(data => data.name)}
-
+        ${global[4].data}
 
         <input type="text" id="datetimerange">
 
@@ -503,7 +498,7 @@ function getMetric(devices, name, id){
         cls: 'one-block bg-white',
         level: '4',
         //data: '-empty data-', // сюди писати дані елемента? 
-        data: id
+        data: getJSON(id).then(data => data.name)
     }
 
     // render breadcrumbs
@@ -512,23 +507,3 @@ function getMetric(devices, name, id){
     // hide loader
     hideLoader();
 }
-
-// // коли виводиться 5 крок (графік), потрібно вивести дані по ону, для якого і виводиться графік
-// function getOnuSmallData(devices){
-
-//     // console.log(devices.name, devices.meta_data.rxpower, devices.meta_data.last_pooling_at, devices)
-
-//     return `
-//         <div class="onu-small-data">
-//             <p>name: ${devices.name}</p>
-//             <p>rxpower: ${devices.meta_data.rxpower}</p>
-//             <p>last_pooling_at: ${devices.meta_data.last_pooling_at}</p>
-//             <p>mac: ${devices.mac}</p>
-//             <p>id: ${devices.id}</p>
-//         </div>`;
-// }
-
-// async function testOnu(onu){
-
-//     return await onu;
-// }
