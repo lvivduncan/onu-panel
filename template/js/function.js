@@ -54,7 +54,8 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
 
         console.log(data.name, data)
 
-        return testOnu(data);
+        // return testOnu(data);
+        return data;
     })
 
     const test3 = test2.then(data => {
@@ -528,7 +529,7 @@ function getMetric(devices, name, id){
 //         </div>`;
 // }
 
-async function testOnu(onu){
+// async function testOnu(onu){
 
-    return await onu;
-}
+//     return await onu;
+// }
