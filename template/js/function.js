@@ -489,14 +489,14 @@ function getOnu(devices, name, id){ // id?
 }
 
 // 5 крок -- метрика
-function getMetric(devices, name, id){
+function getMetric(devices, name, id, data){
     
     // вкидаємо масив значень + назву ону, виводимо
     renderCharts(devices, 'llll', id);
 
-    const data = getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
+    // const data = getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
 
-    .then(item => getOnuSmallData(item))
+    // .then(item => getOnuSmallData(item))
 
     // console.log(data)
 

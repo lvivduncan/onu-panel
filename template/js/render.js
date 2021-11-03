@@ -304,10 +304,15 @@ output && output.addEventListener('click', event => {
 
                 showLoader();
 
+                // small data onu
+                const dataOnu = getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
+                .then(devices => getOnuSmallData(devices))
+
+
+
                 getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/metric/rxPower`)
                 
-                // .then(devices => getMetric(devices, id, name))
-                .then(devices => getMetric(devices, name, id))
+                .then(devices => getMetric(devices, name, id, dataOnu))
 
                 .catch(error => checkError(error));
 
