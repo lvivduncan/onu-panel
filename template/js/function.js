@@ -50,9 +50,9 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
 
     const test1 = getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
 
-    const test2 = test1.then(data => {
+    const test2 = await test1.then(data => {
 
-        // console.log(data.name, data)
+        console.log(data.name, data)
         // return data;
         return `<p>${data.name}</p>`;
 
