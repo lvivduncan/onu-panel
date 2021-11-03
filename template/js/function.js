@@ -492,13 +492,15 @@ function getMetric(devices, name, id){
     // вкидаємо масив значень + назву ону, виводимо
     renderCharts(devices, 'llll', id); // renderCharts(devices = 0, dateFormat = 'LT', id)
 
+    const data = getJSON(id).then(item => item.name);
+
     // оновлюємо конкретний елемент масива global[level]
     global[4] = {
         name,
         cls: 'one-block bg-white',
         level: '4',
         //data: '-empty data-', // сюди писати дані елемента? 
-        data: getJSON(id).then(data => data.name)
+        data
     }
 
     // render breadcrumbs
