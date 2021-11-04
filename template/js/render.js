@@ -284,6 +284,8 @@ output && output.addEventListener('click', event => {
 
                 .then(devices => getDevices(devices, name))
 
+                // TODO: після цього кроку робити рендер, а не у функції getDevices()
+
                 .catch(error => checkError(error));
 
                 break;
@@ -296,6 +298,8 @@ output && output.addEventListener('click', event => {
 
                 .then(devices => getOnu(devices, name, id))
 
+                // TODO: після цього кроку робити рендер, а не у функції getOnu()
+
                 .catch(error => checkError(error));
 
                 break;
@@ -307,6 +311,8 @@ output && output.addEventListener('click', event => {
                 getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/metric/rxPower`)
                 
                 .then(devices => getMetric(devices, name, id))
+
+                // TODO: після цього кроку робити рендер, а не у функції getMetric()
 
                 .catch(error => checkError(error));
 

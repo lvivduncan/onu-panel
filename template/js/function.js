@@ -1,6 +1,6 @@
 
 
-// генерує вибадковий рядок
+// генерує випадковий рядок
 function randomString(length = 7) {
     let result = '';
     const characters = 'abcdefghijklmnopqrstuvwxyz';
@@ -20,7 +20,7 @@ function randomString(length = 7) {
  * @param {*} dateFormat -- тип дати || 'LT' -- година/хвилина || 'LTS' -- година/хвилина/секунда || 'llll' -- вт. 26 жовт 2021 р., 11:59
  * @param {*} id
  */
-function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
+function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del // TODO: видалити тип дати? 
 
     // якщо айдішка загубилася -- все решта не має сенсу
     if(id === undefined){
@@ -44,115 +44,140 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
     // генеруємо унікальну айдішку для графіка
     const chartName = randomString();
 
-    // заглушка для виводу у майбутньому даних над графіком
-    const plug = `
-        <div class="output-item output-item-wrapper">
-            <p>TODO: Дані онушки з попереднього кроку</p>
-        </div>
-        <div class="output-item">
-            <p>TODO: Конфігурація</p>
-        </div>
-        <div class="output-item">
-            <p>TODO: Примітки</p>
-        </div>
-    `;
+    // дані ону 
+    getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
+    
+    .then(devices => {
 
-    output.innerHTML = `
-        ${plug}
-        
-        <div class="output-item canvas">
-            <input type="text" id="datetimerange">
-            <canvas id="${chartName}"></canvas>
-        </div>
-    `;
+        // console.log(devices)
+
+        const onu = `
+            <div class="output-item">
+                <p class="flex"><i class="${checkStatus(devices.status)}"></i> ${devices.name} <span class="to-right"></span></p>
+                <hr>
+                <p class="signal parent-status-${checkStatus(devices.status)}"><span>${devices.meta_data.rxpower} dB</span></p>
+            </div>`;
+
+        // TODO: bug: після вибору дати value скидається на поточне
+        output.innerHTML = `
+            ${onu}
+
+            <div class="output-item">
+                <p><strong>TODO:</strong> Конфігурація</p>
+            </div>
+            <div class="output-item">
+                <p><strong>TODO:</strong> Примітки</p>
+            </div>
+            
+            <div class="output-item canvas">
+                <input type="text" id="datetimerange">
+                <canvas id="${chartName}"></canvas>
+            </div>
+        `;
 
         new DateRangePicker('datetimerange', {
-            timePicker: true,
-            opens: 'left',
-            ranges: {
-                'Нині': [moment().startOf('day'), moment().endOf('day')],
-                'Вчора': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
-                'Тиждень': [moment().subtract(6, 'days').startOf('day'), moment().endOf('day')],
-                'Місяць': [moment().startOf('month').startOf('day'), moment().endOf('month').endOf('day')],
-                'Квартал': [moment().subtract(3, 'month').startOf('day'), moment().endOf('month').endOf('day')],
-                'Рік': [moment().subtract(1, 'year').startOf('day'), moment().endOf('month').endOf('day')],
+                timePicker: true,
+                opens: 'left',
+                ranges: {
+                    'Нині': [moment().startOf('day'), moment().endOf('day')],
+                    'Вчора': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
+                    'Тиждень': [moment().subtract(6, 'days').startOf('day'), moment().endOf('day')],
+                    'Місяць': [moment().startOf('month').startOf('day'), moment().endOf('month').endOf('day')],
+                    'Квартал': [moment().subtract(3, 'month').startOf('day'), moment().endOf('month').endOf('day')],
+                    'Рік': [moment().subtract(1, 'year').startOf('day'), moment().endOf('month').endOf('day')],
+                },
+                autoUpdateInput: true,
+                locale: {
+                    format: "YYYY-MM-DD HH:mm:ss",
+                }
             },
-            autoUpdateInput: true,
-            locale: {
-                format: "YYYY-MM-DD HH:mm:ss",
+            function (start, end) {
+
+                const prev = start.format().slice(0,10) + 'T00%3A00%3A01Z';
+                const next = end.format().slice(0,10) + 'T23%3A59%3A59Z';
+
+                getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/metric/rxPower?startDt=${prev}&endDt=${next}`)
+
+                .then(devices => {
+                    
+                    // TODO: замінити/доопрацювати рекурсію
+                    renderCharts(devices, 'LTS', id);
+                })
+                .catch(error => checkError(error));
             }
-        },
-        function (start, end) {
+        );
 
-            const prev = start.format().slice(0,10) + 'T00%3A00%3A01Z';
-            const next = end.format().slice(0,10) + 'T23%3A59%3A59Z';
+        output.className = 'last';
 
-            getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/metric/rxPower?startDt=${prev}&endDt=${next}`)
+        const ctx = document.getElementById(chartName);
 
-            .then(devices => {
-                
-                // TODO: замінити/доопрацювати рекурсію
-                renderCharts(devices, 'LTS', id);
-            })
-            .catch(error => checkError(error));
-        }
-    );
+        // максимальне значення графіка, яке відображається
+        Chart.defaults.scales.linear.min = 0;
 
-    output.className = 'last';
+        // мінімальне значення графіка, яке відображається
+        Chart.defaults.scales.linear.max = -32;
 
-    const ctx = document.getElementById(chartName);
+        // колір у вертикальній графі
+        Chart.defaults.color = '#42a5f5';
 
-    // максимальне значення графіка, яке відображається
-    Chart.defaults.scales.linear.min = 0;
+        const myChart = new Chart(ctx, 
+            {
+                type: 'line', // 'doughnut', 'bar', 'radar', 'bubble', 'scatter', 'pie', 'polarArea'
+                data: {
+                    labels,
+                    datasets: [{
+                        // label,
+                        data,
+                        borderWidth: 2,
+                        borderColor: '#337ab7',
+                        pointRadius: 0
+                    }],
+                },
 
-    // мінімальне значення графіка, яке відображається
-    Chart.defaults.scales.linear.max = -32;
+                options: {
+                    plugins: {
 
-    // колір у вертикальній графі
-    Chart.defaults.color = '#42a5f5';
+                        // сховав назву з графіка
+                        legend: {
+                            display: false
+                        },
 
-    const myChart = new Chart(ctx, 
-        {
-            type: 'line', // 'doughnut', 'bar', 'radar', 'bubble', 'scatter', 'pie', 'polarArea'
-            data: {
-                labels,
-                datasets: [{
-                    // label,
-                    data,
-                    borderWidth: 2,
-                    borderColor: '#337ab7',
-                    pointRadius: 0
-                }],
-            },
-
-            options: {
-                plugins: {
-
-                    // сховав назву з графіка
-                    legend: {
-                        display: false
-                    },
-
-                // zoom, scroll and touch
-                zoom: {
-                        zoom: {
-                            wheel: {
+                    // zoom, scroll and touch
+                    zoom: {
+                            zoom: {
+                                wheel: {
+                                    enabled: true,
+                                },
+                                pinch: {
+                                    enabled: true
+                                },
+                                mode: 'xy',
+                                },
+                            pan: {
                                 enabled: true,
-                            },
-                            pinch: {
-                                enabled: true
-                            },
-                            mode: 'xy',
-                            },
-                        pan: {
-                            enabled: true,
-                            mode: 'xy',                        
+                                mode: 'xy',                        
+                            }
                         }
                     }
-                }
-            }    
-        }
-    );
+                }    
+            }
+        );
+
+
+    })
+    
+    .catch(error => checkError(error));  
+  
+
+    // // TODO: bug: після вибору дати value скидається на поточне
+    // output.innerHTML = `
+    //    ${plug}
+        
+    //     <div class="output-item canvas">
+    //         <input type="text" id="datetimerange">
+    //         <canvas id="${chartName}"></canvas>
+    //     </div>
+    // `;
 
 
 }
@@ -332,7 +357,7 @@ function getDevices(devices, name){
     renderBreadcrumbs();
 }
 
-// 3/4 крок -- ону
+// 3/4 крок -- онушки
 function getOnu(devices, name, id){ // id?
                     
     let data = '';
@@ -436,7 +461,7 @@ function getOnu(devices, name, id){ // id?
         level: '3',
         data,
 
-        additional: id // сюди тре класти id елемента, на який клікнули?
+        // additional: id // сюди тре класти id елемента, на який клікнули?
     }
 
     // виводимо на сторінці
@@ -466,8 +491,3 @@ function getMetric(devices, name, id){
     // hide loader
     hideLoader();
 }
-
-// function getOnuSmallData(data){
-
-//     return data.name;
-// }
