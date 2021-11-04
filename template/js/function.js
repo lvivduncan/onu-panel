@@ -47,22 +47,23 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
     // заглушка для виводу у майбутньому даних над графіком
     const plug = `
         <div class="output-item output-item-wrapper">
-            <p>Дані онушку з попереднього кроку</p>
+            <p>TODO: Дані онушки з попереднього кроку</p>
         </div>
         <div class="output-item">
-            <p>Конфігурація</p>
+            <p>TODO: Конфігурація</p>
         </div>
         <div class="output-item">
-            <p>Примітки</p>
+            <p>TODO: Примітки</p>
         </div>
     `;
 
     output.innerHTML = `
         ${plug}
-
-        <input type="text" id="datetimerange">
-
-        <canvas id="${chartName}"></canvas>
+        
+        <div class="output-item canvas">
+            <input type="text" id="datetimerange">
+            <canvas id="${chartName}"></canvas>
+        </div>
     `;
 
         new DateRangePicker('datetimerange', {

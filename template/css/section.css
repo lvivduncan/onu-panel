@@ -155,15 +155,25 @@
     grid-gap: 20px;
     grid-template-areas: 
         'el-1 el-2 el-3'
-        'datetimerange datetimerange datetimerange'
         'canvas canvas canvas'
+}
+
+@media(max-width:450px)
+{
+    #output.last
+    {
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+            'el-1'
+            'el-2'
+            'el-3'
+            'canvas'
+    }    
 }
 
 /* date-picker */
 #datetimerange 
 {
-    grid-area: datetimerange;
-
     position: relative;
     border-color: var(--blue-dark)!important;
     margin: auto;
@@ -183,7 +193,7 @@
 
 
 /* TODO: може бути кілька графіків і тоді в кожного має бути своя назва */
-#output.last canvas 
+#output.last .canvas 
 {
     grid-area: canvas;
 
@@ -298,8 +308,7 @@
 /* окремий елемент */
 #output.grid-4 .output-item,
 #output.grid-2 .output-item,
-#output.last .output-item,
-#output.last canvas
+#output.last .output-item
 {
     background: var(--bg-block);
     color: var(--color-block);
