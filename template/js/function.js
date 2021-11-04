@@ -44,13 +44,22 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
     // генеруємо унікальну айдішку для графіка
     const chartName = randomString();
 
-    {/* <div class="onu-small-data">
-    <p>${dataTest.name}</p>
-    <p>${dataTest.meta_data.last_pooling_at}</p>
-    <p>${dataTest.meta_data.rxpower}</p>
-</div> */}
+    // заглушка для виводу у майбутньому даних над графіком
+    const plug = `
+        <div class="output-item output-item-wrapper">
+            <p>Дані онушку з попереднього кроку</p>
+        </div>
+        <div class="output-item">
+            <p>Конфігурація</p>
+        </div>
+        <div class="output-item">
+            <p>Примітки</p>
+        </div>
+    `;
 
-    output.innerHTML = `        
+    output.innerHTML = `
+        ${plug}
+
         <input type="text" id="datetimerange">
 
         <canvas id="${chartName}"></canvas>
@@ -88,7 +97,7 @@ function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
         }
     );
 
-    output.className = 'one-block';
+    output.className = 'last';
 
     const ctx = document.getElementById(chartName);
 
@@ -364,18 +373,29 @@ function getOnu(devices, name, id){ // id?
             // якщо ону не відключена, чЕкаємо статус порта
             if(parentStatus != 1){
 
+                //disabled
                 rxpower = `<p class="signal color-gray parent-status-${parentStatus}"><span>${r} dB</span></p>`;
-            } else if(r < -16 && r >= -24){
+
+            } else if(r < 0 && r >= -16){
+
+                // red
+                rxpower = `<p class="signal parent-status-${parentStatus}"><span>${r} dB</span></p>`;
+
+            } else if(r < -16 && r >= -22){
+
+                // yellow
+                rxpower = `<p class="signal color-yellow parent-status-${parentStatus}"><span>${r} dB</span></p>`;
+            } else if(r < -22 && r >= -26){
 
                 // green color
                 rxpower = `<p class="signal color-green parent-status-${parentStatus}"><span>${r} dB</span></p>`;
-            } else if(r < -24 && r > -28){
+            } else if(r < -26 && r >= -28){
 
                 // yellow
                 rxpower = `<p class="signal color-yellow parent-status-${parentStatus}"><span>${r} dB</span></p>`;
             } else {
 
-                // default
+                // red
                 rxpower = `<p class="signal parent-status-${parentStatus}"><span>${r} dB</span></p>`;
             }
         }
@@ -431,19 +451,12 @@ function getMetric(devices, name, id){
     // вкидаємо масив значень + назву ону, виводимо
     renderCharts(devices, 'llll', id);
 
-    // const data = getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
-
-    // .then(item => getOnuSmallData(item))
-
-    // console.log(data)
-
     // оновлюємо конкретний елемент масива global[level]
     global[4] = {
         name,
-        cls: 'one-block bg-white',
+        cls: 'last',
         level: '4',
         data: '-empty data-', // сюди писати дані елемента? 
-        // data: dataTest
     }
 
     // render breadcrumbs

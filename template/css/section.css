@@ -138,13 +138,87 @@
 }
 /* один великий блок з текстовою інформацією */
 
-/* графік -- слонова кістка */
+/* графік -- слонова кістка (.bg-white не використовується) */ 
 #output.one-block.bg-white
 {
     /* background: #fffff0; */
 
     padding: 5px;
 }
+
+/* TODO: блок з різними елементами (останній) */
+#output.last
+{
+
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-gap: 20px;
+    grid-template-areas: 
+        'el-1 el-2 el-3'
+        'datetimerange datetimerange datetimerange'
+        'canvas canvas canvas'
+}
+
+/* date-picker */
+#datetimerange 
+{
+    grid-area: datetimerange;
+
+    position: relative;
+    border-color: var(--blue-dark)!important;
+    margin: auto;
+    text-align: center;
+    color: var(--blue-dark);
+    cursor: pointer;
+    width: 290px;
+}
+@media(max-width:450px)
+{
+    #datetimerange
+    {
+        width: 100%;
+    }
+}
+/* output: 2021-10-30 00:00:00 - 2021-10-30 23:59:59 */
+
+
+/* TODO: може бути кілька графіків і тоді в кожного має бути своя назва */
+#output.last canvas 
+{
+    grid-area: canvas;
+
+
+}
+
+/* 1 element */
+#output.last .output-item:nth-child(1)
+{
+    grid-area: el-1;
+
+}
+
+/* 2 element */
+#output.last .output-item:nth-child(2)
+{
+    grid-area: el-2;
+
+}
+
+/* 3 element */
+#output.last .output-item:nth-child(3)
+{
+    grid-area: el-3;
+
+}
+
+
+
+
+
+
+
+
+
 
 
 /* грід на 4 / 3 / 2 блоки */
@@ -223,7 +297,9 @@
 
 /* окремий елемент */
 #output.grid-4 .output-item,
-#output.grid-2 .output-item
+#output.grid-2 .output-item,
+#output.last .output-item,
+#output.last canvas
 {
     background: var(--bg-block);
     color: var(--color-block);
@@ -528,18 +604,7 @@
     border-top: 1px solid var(--gray);
 }
 
-/* date-picker */
-#datetimerange 
-{
-    position: relative;
-    border-color: var(--blue-dark)!important;
-    margin: auto;
-    text-align: center;
-    color: var(--blue-dark);
-    cursor: pointer;
-    width: auto;
-}
-/* 2021-10-30 00:00:00 - 2021-10-30 23:59:59 */
+
 
 
 /* інформація про ону над графіком */

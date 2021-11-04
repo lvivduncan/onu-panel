@@ -273,7 +273,7 @@ output && output.addEventListener('click', event => {
 
                 // render breadcrumbs
                 renderBreadcrumbs();
-                
+
                 break;
 
             case '1':
@@ -294,7 +294,6 @@ output && output.addEventListener('click', event => {
 
                 getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/children?children=1`)
 
-                // .then(devices => getOnu(devices, id, name))
                 .then(devices => getOnu(devices, name, id))
 
                 .catch(error => checkError(error));
@@ -304,12 +303,6 @@ output && output.addEventListener('click', event => {
             case '3': 
 
                 showLoader();
-
-                // // small data onu
-                // getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
-                //     .then(item => {
-
-                //     })
 
                 getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/metric/rxPower`)
                 
@@ -345,7 +338,7 @@ breadcrumbs && breadcrumbs.addEventListener('click', event => {
     }
 });
 
-// 03-11-2021
+// 04-11-2021
 
 
 
