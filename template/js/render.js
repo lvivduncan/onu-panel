@@ -272,7 +272,8 @@ output && output.addEventListener('click', event => {
                 renderOutput();
 
                 // render breadcrumbs
-                renderBreadcrumbs();   
+                renderBreadcrumbs();
+                
                 break;
 
             case '1':
@@ -304,14 +305,15 @@ output && output.addEventListener('click', event => {
 
                 showLoader();
 
-                // small data onu
-                getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
-                    .then(item => {
+                // // small data onu
+                // getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
+                //     .then(item => {
 
-                        getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/metric/rxPower`)
-                    
-                        .then(devices => getMetric(devices, name, id, item))
-                    })
+                //     })
+
+                getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}/metric/rxPower`)
+                
+                .then(devices => getMetric(devices, name, id))
 
                 .catch(error => checkError(error));
 

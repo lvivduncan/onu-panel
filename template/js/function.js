@@ -20,7 +20,7 @@ function randomString(length = 7) {
  * @param {*} dateFormat -- тип дати || 'LT' -- година/хвилина || 'LTS' -- година/хвилина/секунда || 'llll' -- вт. 26 жовт 2021 р., 11:59
  * @param {*} id
  */
-function renderCharts(devices = 0, dateFormat = 'LT', id, dataTest){ // label del
+function renderCharts(devices = 0, dateFormat = 'LT', id){ // label del
 
     // якщо айдішка загубилася -- все решта не має сенсу
     if(id === undefined){
@@ -44,13 +44,13 @@ function renderCharts(devices = 0, dateFormat = 'LT', id, dataTest){ // label de
     // генеруємо унікальну айдішку для графіка
     const chartName = randomString();
 
-    output.innerHTML = `
-        <div class="onu-small-data">
-            <p>${dataTest.name}</p>
-            <p>${dataTest.meta_data.last_pooling_at}</p>
-            <p>${dataTest.meta_data.rxpower}</p>
-        </div>
-        
+    {/* <div class="onu-small-data">
+    <p>${dataTest.name}</p>
+    <p>${dataTest.meta_data.last_pooling_at}</p>
+    <p>${dataTest.meta_data.rxpower}</p>
+</div> */}
+
+    output.innerHTML = `        
         <input type="text" id="datetimerange">
 
         <canvas id="${chartName}"></canvas>
@@ -426,10 +426,10 @@ function getOnu(devices, name, id){ // id?
 }
 
 // 5 крок -- метрика
-function getMetric(devices, name, id, dataTest){
+function getMetric(devices, name, id){
     
     // вкидаємо масив значень + назву ону, виводимо
-    renderCharts(devices, 'llll', id, dataTest);
+    renderCharts(devices, 'llll', id);
 
     // const data = getJSON(`https://api.bill.lviv.ua/api/monitoring/objects/${id}`)
 
@@ -442,8 +442,8 @@ function getMetric(devices, name, id, dataTest){
         name,
         cls: 'one-block bg-white',
         level: '4',
-        //data: '-empty data-', // сюди писати дані елемента? 
-        data: dataTest
+        data: '-empty data-', // сюди писати дані елемента? 
+        // data: dataTest
     }
 
     // render breadcrumbs
